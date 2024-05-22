@@ -781,14 +781,6 @@ void registerCoreAttribDataTypes()
     NULL,
     MR_NULL_NO_OUTPUT_DEBUGGING(AttribDataUIntArray::serializeTx));
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_UINT64_ARRAY),
-    NMP_NULL_ON_SPU(AttribDataUInt64Array::locate),
-    NMP_NULL_ON_SPU(AttribDataUInt64Array::dislocate),
-    NULL,
-    AttribDataUInt64Array::relocate,
-    NULL,
-    NULL);
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_INT_ARRAY),
     NMP_NULL_ON_SPU(AttribDataIntArray::locate),
     NMP_NULL_ON_SPU(AttribDataIntArray::dislocate),
@@ -1076,16 +1068,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataRandomFloatOperation::dislocate));
 
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_BOOLEAN_OPERATION),
-    NMP_NULL_ON_SPU(AttribDataBooleanOperation::locate),
-    NMP_NULL_ON_SPU(AttribDataBooleanOperation::dislocate));
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_VALUE_COMPARE_OPERATION),
-    NMP_NULL_ON_SPU(AttribDataValueCompareOperation::locate),
-    NMP_NULL_ON_SPU(AttribDataValueCompareOperation::dislocate));
-
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT)
 #ifndef NM_HOST_CELL_SPU
     , AttribDataTimeLagInput<float, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>::locate,
@@ -1149,11 +1131,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataRayCastDef::dislocate));
 
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_INFO_DEF),
-    NMP_NULL_ON_SPU(AttribDataPhysicsInfoDef::locate),
-    NMP_NULL_ON_SPU(AttribDataPhysicsInfoDef::dislocate));
-
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_SETUP),
     NMP_NULL_ON_SPU(AttribDataPhysicsSetup::locate),
     NMP_NULL_ON_SPU(AttribDataPhysicsSetup::dislocate));
@@ -1173,10 +1150,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataPhysicsInitialisation::dislocate),
     NULL,
     AttribDataPhysicsInitialisation::relocate);
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICAL_EFFECT_DATA),
-    NMP_NULL_ON_SPU(AttribDataPhysicalEffectData::locate),
-    NMP_NULL_ON_SPU(AttribDataPhysicalEffectData::dislocate));
 
   manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_GROUPER_CONFIG),
