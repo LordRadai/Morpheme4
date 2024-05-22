@@ -189,12 +189,6 @@ void nodeOperatorRateOfChangeVectorInitInstance(NodeDef* node, Network* net)
   outputCPPin->m_attribDataHandle = AttribDataVector3::create(net->getPersistentMemoryAllocator(), 
     NMP::Vector3::InitTypeZero);
   outputCPPin->m_lastUpdateFrame = 0;
-
-  //---------------------------
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    MR::nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 } // namespace MR

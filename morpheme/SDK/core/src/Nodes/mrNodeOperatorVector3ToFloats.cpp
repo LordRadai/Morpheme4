@@ -64,10 +64,6 @@ void nodeOperatorVector3ToFloatsInitInstance(NodeDef* node, Network* net)
   outputCPPinX->m_attribDataHandle = AttribDataFloat::create(net->getPersistentMemoryAllocator(), 0.0f);
   outputCPPinY->m_attribDataHandle = AttribDataFloat::create(net->getPersistentMemoryAllocator(), 0.0f);
   outputCPPinZ->m_attribDataHandle = AttribDataFloat::create(net->getPersistentMemoryAllocator(), 0.0f);
-  if(node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 } // namespace MR

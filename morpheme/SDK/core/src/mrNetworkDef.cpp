@@ -135,6 +135,7 @@ void NetworkDef::locate()
   // Shared task function tables: Need to be located before the individual node definitions
   REFIX_SWAP_PTR(SharedTaskFnTables, m_taskQueuingFnTables);
   m_taskQueuingFnTables->locateTaskQueuingFnTables();
+
   REFIX_SWAP_PTR(SharedTaskFnTables, m_outputCPTaskFnTables);
   m_outputCPTaskFnTables->locateOutputCPTaskFnTables();
 

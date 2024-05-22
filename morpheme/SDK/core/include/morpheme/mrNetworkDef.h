@@ -327,7 +327,7 @@ public:
   /// \brief get the number of messages.
   uint32_t getNumMessages() const;
 
-  NM_INLINE const NMP::OrderedStringTable* getMessageIDNamesTable() const;
+  NM_INLINE const NMP::IDMappedStringTable* getMessageIDNamesTable() const;
 
   /// \brief get the message id for the given name.
   /// \return  "Unknown" if the name is not recognized or the debug string table is not present.
@@ -375,7 +375,7 @@ public:
   /// \brief return the character controller def used by the specified animation set.
   CharacterControllerDef* getCharacterControllerDef(AnimSetIndex animSetIndex);
 
-  NM_INLINE const NMP::OrderedStringTable* getEventTrackIDNamesTable() const;
+  NM_INLINE const NMP::IDMappedStringTable* getEventTrackIDNamesTable() const;
 
   /// \brief Finds the event track runtime id corresponding to the given name.
   ///
@@ -456,9 +456,9 @@ protected:
 
   NMP::IDMappedStringTable* m_nodeIDNamesTable;         ///< Table to allow the lookup of NodeIDs or names.
 
-  NMP::OrderedStringTable*  m_messageIDNamesTable;      ///< Table for lookup of a RequestID via the request name.
+  NMP::IDMappedStringTable*  m_messageIDNamesTable;      ///< Table for lookup of a RequestID via the request name.
 
-  NMP::OrderedStringTable*  m_eventTrackIDNamesTable;   ///< User specified names of event tracks used in this network.
+  NMP::IDMappedStringTable*  m_eventTrackIDNamesTable;   ///< User specified names of event tracks used in this network.
                                                         ///< The index of each name in the table is used as a runtime
                                                         ///< identifier for that event track. Each string in the table is unique.
                                                         ///< Note that separate event track assets may share the same name and

@@ -12,6 +12,8 @@
 // inline NodeDef, SemanticLookupTable and SharedTaskFnTables functions, included by mrNetworkDef.h
 //----------------------------------------------------------------------------------------------------------------------
 
+using namespace MR;
+
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE const char* NodeDef::getName() const
 {
@@ -123,61 +125,6 @@ NM_INLINE const CPConnection* NodeDef::getInputCPConnection(PinIndex inputPinInd
 {
   NMP_ASSERT(inputPinIndex < m_numInputCPConnections);
   return &(m_inputCPConnections[inputPinIndex]);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE MR::PinAttribDataInfo* NodeDef::getPinAttribDataInfo(uint32_t index) const
-{
-  NMP_ASSERT(index < m_numReflexiveCPPins);
-  return &m_nodePinAttribDataInfo[index];
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE MR::PinIndex NodeDef::newPinAttribDataInfo(bool perAnimSet, AttribDataSemantic semantic)
-{
-  NMP_ASSERT(m_lastPinAttribDataOffset < m_numPinAttribDataHandles);
-  NMP_ASSERT(m_lastPinAttribDataIndex < m_numReflexiveCPPins);
-
-  PinAttribDataInfo* padi = &m_nodePinAttribDataInfo[m_lastPinAttribDataIndex];
-  NMP_ASSERT(padi->m_semantic == ATTRIB_SEMANTIC_NA);
-  padi->set(m_lastPinAttribDataOffset, perAnimSet, semantic);
-  
-  return m_lastPinAttribDataIndex++;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE void NodeDef::addPinAttribDataAnimSetEntry(uint32_t NMP_USED_FOR_ASSERTS(pin), MR::AnimSetIndex NMP_USED_FOR_ASSERTS(animSetIndex))
-{
-#ifdef NMP_ENABLE_ASSERTS
-  PinAttribDataInfo* padi = &m_nodePinAttribDataInfo[pin];
-#endif
-  NMP_ASSERT(animSetIndex == 0 || padi->m_perAnimSet == true);
-  NMP_ASSERT(m_lastPinAttribDataIndex == pin + 1);
-  NMP_ASSERT(m_lastPinAttribDataOffset - m_nodePinAttribDataInfo[pin].m_offset == animSetIndex);
-  
-  m_lastPinAttribDataOffset++;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE uint32_t NodeDef::getPinAttribIndex(uint32_t pin, AnimSetIndex animSetIndex) const
-{
-  PinAttribDataInfo* padi = &m_nodePinAttribDataInfo[pin];
-  uint32_t lookupIndex = padi->m_offset;
-  if(padi->m_perAnimSet)
-  {
-    NMP_ASSERT(animSetIndex != ANIMATION_SET_ANY); // ANIMATION_SET_ANY AttribData is stored in the array for AnimSet 0.
-    lookupIndex += (uint32_t)animSetIndex;
-  }
-  NMP_ASSERT(lookupIndex < m_numPinAttribDataHandles);
-  
-  return lookupIndex;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE AttribDataHandle* NodeDef::getPinAttribDataHandle(uint32_t index, AnimSetIndex animSetIndex) const
-{
-  uint32_t lookupIndex = getPinAttribIndex(index, animSetIndex);
-  return &(m_nodePinAttribDataHandles[lookupIndex]);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

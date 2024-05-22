@@ -112,10 +112,6 @@ void NodeDef::initExcludeBaseMem(
   target->m_passThroughChildIndex = 0;
   // total output pins as specified plus reflexive
   target->m_numOutputCPPins = numOutputCPPins + (uint8_t)nodeDataPinInfo->m_reflexiveCPCount;
-  target->m_numReflexiveCPPins = nodeDataPinInfo->m_reflexiveCPCount;
-  target->m_numPinAttribDataHandles = (uint16_t)nodeDataPinInfo->m_numPinAttribData;
-  target->m_lastPinAttribDataOffset = 0;
-  target->m_lastPinAttribDataIndex = 0;
   target->m_numAttribDataHandles = numAttribDatas;
 
   //---------------------------
@@ -140,18 +136,6 @@ void NodeDef::initExcludeBaseMem(
     // Init and wipe the AttribDataHandles
     for (uint32_t i = 0; i < numAttribDatas; ++i)
       target->m_nodeAttribDataHandles[i].set(NULL, NMP::Memory::Format(0, NMP_NATURAL_TYPE_ALIGNMENT));
-  }
-
-  //---------------------------
-  if (nodeDataPinInfo->m_reflexiveCPCount > 0)
-  {
-    // Init and wipe the pin AttribDataHandles
-    for (uint32_t i = 0; i < nodeDataPinInfo->m_numPinAttribData; ++i)
-      target->m_nodePinAttribDataHandles[i].set(NULL, NMP::Memory::Format(0, NMP_NATURAL_TYPE_ALIGNMENT));
-
-    // Init the pin attribData infos, set these pin indexes to be after regular output pins.
-    for (uint32_t i = 0; i < nodeDataPinInfo->m_reflexiveCPCount; ++i)
-      target->m_nodePinAttribDataInfo[i].init((MR::PinIndex)(numOutputCPPins + i));
   }
 
   //---------------------------
@@ -194,8 +178,6 @@ void NodeDef::relocateExcludeBaseMem(
   target->m_childNodeIDs = NULL;
   target->m_inputCPConnections = NULL;
   target->m_nodeAttribDataHandles = NULL;
-  target->m_nodePinAttribDataHandles = NULL;
-  target->m_nodePinAttribDataInfo = NULL;
 
   //---------------------------
   // Init child node IDs.
@@ -218,14 +200,6 @@ void NodeDef::relocateExcludeBaseMem(
   if (numAttribDatas > 0)
   {
     target->m_nodeAttribDataHandles = (AttribDataHandle*)resource.alignAndIncrement(NMP::Memory::Format(sizeof(AttribDataHandle) * numAttribDatas, NMP_NATURAL_TYPE_ALIGNMENT));
-  }
-
-  //---------------------------
-  // Pin attrib data entries
-  if (nodeDataPinInfo->m_reflexiveCPCount > 0)
-  {
-    target->m_nodePinAttribDataHandles = (AttribDataHandle*)resource.alignAndIncrement(NMP::Memory::Format(sizeof(AttribDataHandle) * nodeDataPinInfo->m_numPinAttribData, NMP_NATURAL_TYPE_ALIGNMENT));
-    target->m_nodePinAttribDataInfo = (PinAttribDataInfo*)resource.alignAndIncrement(NMP::Memory::Format(sizeof(PinAttribDataInfo) * nodeDataPinInfo->m_reflexiveCPCount, NMP_NATURAL_TYPE_ALIGNMENT));
   }
 
   //---------------------------
@@ -315,47 +289,6 @@ void NodeDef::locate(NetworkDef* owningNetworkDef)
     }
   }
   NMP::endianSwap(m_numOutputCPPins);
-
-  //---------------------------
-  // PinAttribData data. 
-  NMP::endianSwap(m_numReflexiveCPPins);
-  if (m_numReflexiveCPPins != 0)
-  {
-    // reflexive CP pin connections.
-    REFIX_SWAP_PTR(PinAttribDataInfo, m_nodePinAttribDataInfo);
-    for (uint32_t i = 0; i < m_numReflexiveCPPins; ++i)
-    {
-      m_nodePinAttribDataInfo[i].endianSwap();
-    }
-  }
-  NMP::endianSwap(m_numPinAttribDataHandles);
-  NMP::endianSwap(m_lastPinAttribDataOffset);
-  NMP::endianSwap(m_lastPinAttribDataIndex);
-
-  if (m_numPinAttribDataHandles != 0)
-  {
-    REFIX_SWAP_PTR(AttribDataHandle, m_nodePinAttribDataHandles);
-    for (uint16_t i = 0; i < m_numPinAttribDataHandles; ++i)
-    {
-      m_nodePinAttribDataHandles[i].endianSwap();
-      if (m_nodePinAttribDataHandles[i].m_attribData)
-      {
-        REFIX_PTR(AttribData, m_nodePinAttribDataHandles[i].m_attribData);
-
-        // Locate the attrib data itself
-        AttribDataType type = m_nodePinAttribDataHandles[i].m_attribData->getTypeUnlocated();
-
-        MR::AttribLocateFn locateFn = manager.getAttribLocateFn(type);
-        NMP_ASSERT(locateFn);
-        locateFn(m_nodePinAttribDataHandles[i].m_attribData);
-
-        NMP_ASSERT_MSG(m_nodePinAttribDataHandles[i].m_attribData->getRefCount() == MR::IS_DEF_ATTRIB_DATA,
-          "Invalid ref count in node[%i] def data.  Make sure the ref count is set to MR::IS_DEF_ATTRIB_DATA in the "
-          "asset compiler.", m_nodeID);
-        NMP_ASSERT(m_nodePinAttribDataHandles[i].m_attribData->m_allocator == NULL);
-      }
-    }
-  }
 
   //---------------------------
   // AttribData data. 
@@ -532,44 +465,6 @@ void NodeDef::dislocate()
     UNFIX_SWAP_PTR(AttribDataHandle, m_nodeAttribDataHandles);
   }
   NMP::endianSwap(m_numAttribDataHandles);
-
-
-  //---------------------------
-  // PinAttribData data. 
-  NMP::endianSwap(m_lastPinAttribDataIndex);
-  NMP::endianSwap(m_lastPinAttribDataOffset);
-
-  if (m_numPinAttribDataHandles != 0)
-  {
-    for (uint16_t i = 0; i < m_numPinAttribDataHandles; ++i)
-    {
-      if (m_nodePinAttribDataHandles[i].m_attribData)
-      {
-        // Locate the attrib data itself
-        AttribDataType type = m_nodePinAttribDataHandles[i].m_attribData->getType();
-
-        MR::AttribDislocateFn dislocateFn = manager.getAttribDislocateFn(type);
-        NMP_ASSERT(dislocateFn);
-        dislocateFn(m_nodePinAttribDataHandles[i].m_attribData);
-
-        UNFIX_PTR(AttribData, m_nodePinAttribDataHandles[i].m_attribData);
-      }
-      m_nodePinAttribDataHandles[i].endianSwap();
-    }
-    UNFIX_SWAP_PTR(AttribDataHandle, m_nodePinAttribDataHandles);
-  }
-  NMP::endianSwap(m_numPinAttribDataHandles);
-
-  if (m_numReflexiveCPPins != 0)
-  {
-    // reflexive CP pin connections.
-    for (uint32_t i = 0; i < m_numReflexiveCPPins; ++i)
-    {
-      m_nodePinAttribDataInfo[i].endianSwap();
-    }
-    UNFIX_SWAP_PTR(PinAttribDataInfo, m_nodePinAttribDataInfo);
-  }
-  NMP::endianSwap(m_numReflexiveCPPins);  
 
   //---------------------------
   // Input control param connections and output pins count.

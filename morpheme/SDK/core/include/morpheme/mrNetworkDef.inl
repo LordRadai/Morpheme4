@@ -12,6 +12,8 @@
 // inline NetworkDef, EmittedControlParamsInfo & NodeIDsArray functions, included by mrNetworkDef.h
 //----------------------------------------------------------------------------------------------------------------------
 
+using namespace MR;
+
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE uint32_t NetworkDef::getEventTrackRuntimeIDFromName(const char* name) const
 {
@@ -197,7 +199,7 @@ NM_INLINE const NMP::IDMappedStringTable* NetworkDef::getNodeIDNamesTable() cons
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const NMP::OrderedStringTable* NetworkDef::getEventTrackIDNamesTable() const
+NM_INLINE const NMP::IDMappedStringTable* NetworkDef::getEventTrackIDNamesTable() const
 {
   return m_eventTrackIDNamesTable;
 }
@@ -227,7 +229,7 @@ NM_INLINE NodeID NetworkDef::getMultiplyConnectedNodeID(uint32_t index) const
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const NMP::OrderedStringTable* NetworkDef::getMessageIDNamesTable() const
+NM_INLINE const NMP::IDMappedStringTable* NetworkDef::getMessageIDNamesTable() const
 {
   return m_messageIDNamesTable;
 }

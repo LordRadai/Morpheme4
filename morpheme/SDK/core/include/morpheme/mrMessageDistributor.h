@@ -40,7 +40,7 @@ public:
 
   uint32_t          m_numMessagePresets;
   Message**         m_messagePresets;
-  NMP::OrderedStringTable* m_messagePresetIndexNamesTable;
+  NMP::IDMappedStringTable* m_messagePresetIndexNamesTable;
 
   uint32_t getNumMessagePresets() const;
   const Message* getMessagePreset(uint32_t index) const;
