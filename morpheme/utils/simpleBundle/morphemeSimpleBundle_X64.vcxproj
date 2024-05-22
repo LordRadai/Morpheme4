@@ -23,6 +23,7 @@
     <ProjectGuid>{E52E13E9-8088-407F-78A0-4C28849F6AD4}</ProjectGuid>
     <RootNamespace>morphemeSimpleBundle</RootNamespace>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -69,8 +70,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>morphemeSimpleBundle_debug</TargetName>
-    <IntDir>..\..\..\obj\x64\vs9.0\morphemeSimpleBundle\debug\</IntDir>
-    <OutDir>..\..\..\lib\x64\vs9.0\</OutDir>
+    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\morphemeSimpleBundle\debug\</IntDir>
+    <OutDir>..\..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>morphemeSimpleBundle</TargetName>

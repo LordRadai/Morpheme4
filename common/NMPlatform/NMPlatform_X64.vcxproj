@@ -23,6 +23,7 @@
     <ProjectGuid>{773E894A-FCA3-4312-37AF-0588248FC43F}</ProjectGuid>
     <RootNamespace>NMPlatform</RootNamespace>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -69,8 +70,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>NMPlatform_debug</TargetName>
-    <IntDir>..\..\obj\x64\vs9.0\NMPlatform\debug\</IntDir>
-    <OutDir>..\..\lib\x64\vs9.0\</OutDir>
+    <IntDir>..\..\obj\x64\vs$(VisualStudioVersion)\NMPlatform\debug\</IntDir>
+    <OutDir>..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>NMPlatform</TargetName>
