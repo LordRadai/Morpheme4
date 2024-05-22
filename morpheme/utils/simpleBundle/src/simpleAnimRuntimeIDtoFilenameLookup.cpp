@@ -32,10 +32,17 @@ SimpleAnimRuntimeIDtoFilenameLookup* SimpleAnimRuntimeIDtoFilenameLookup::init(
   SimpleAnimRuntimeIDtoFilenameLookup* result = (SimpleAnimRuntimeIDtoFilenameLookup*)resource.ptr;
   resource.increment(sizeof(SimpleAnimRuntimeIDtoFilenameLookup));
 
-  result->m_animIDFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, fileNames);
-  result->m_animIDAnimFormatTable = NMP::IDMappedStringTable::init(resource, numAnims, animFormats);
-  result->m_animIDSourceFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, sourceFilenames);
-  result->m_animIDSourceTakenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, sourceTakenames);
+  uint32_t* ids = new uint32_t[numAnims];
+
+  for (size_t i = 0; i < numAnims; i++)
+  {
+	  ids[i] = i;
+  }
+
+  result->m_animIDFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, ids, fileNames);
+  result->m_animIDAnimFormatTable = NMP::IDMappedStringTable::init(resource, numAnims, ids, animFormats);
+  result->m_animIDSourceFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, ids, sourceFilenames);
+  result->m_animIDSourceTakenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, ids, sourceTakenames);
   result->m_animIDFileCRCTable = (uint32_t*)resource.ptr;
   NMP::Memory::memcpy(result->m_animIDFileCRCTable, animCRCs, numAnims * sizeof(uint32_t));
 
@@ -84,19 +91,19 @@ NMP::Memory::Format SimpleAnimRuntimeIDtoFilenameLookup::getInstanceMemoryRequir
 bool SimpleAnimRuntimeIDtoFilenameLookup::locate()
 {
   NMP::endianSwap(m_animIDFilenamesTable);
-  REFIX_PTR(NMP::OrderedStringTable, m_animIDFilenamesTable);
+  REFIX_PTR(NMP::IDMappedStringTable, m_animIDFilenamesTable);
   m_animIDFilenamesTable->locate();
 
   NMP::endianSwap(m_animIDAnimFormatTable);
-  REFIX_PTR(NMP::OrderedStringTable, m_animIDAnimFormatTable);
+  REFIX_PTR(NMP::IDMappedStringTable, m_animIDAnimFormatTable);
   m_animIDAnimFormatTable->locate();
 
   NMP::endianSwap(m_animIDSourceFilenamesTable);
-  REFIX_PTR(NMP::OrderedStringTable, m_animIDSourceFilenamesTable);
+  REFIX_PTR(NMP::IDMappedStringTable, m_animIDSourceFilenamesTable);
   m_animIDSourceFilenamesTable->locate();
 
   NMP::endianSwap(m_animIDSourceTakenamesTable);
-  REFIX_PTR(NMP::OrderedStringTable, m_animIDSourceTakenamesTable);
+  REFIX_PTR(NMP::IDMappedStringTable, m_animIDSourceTakenamesTable);
   m_animIDSourceTakenamesTable->locate();
 
   NMP::endianSwap(m_animIDFileCRCTable);
@@ -114,19 +121,19 @@ bool SimpleAnimRuntimeIDtoFilenameLookup::dislocate()
   NMP::endianSwap(m_animIDFileCRCTable);
 
   m_animIDFilenamesTable->dislocate();
-  UNFIX_PTR(NMP::OrderedStringTable, m_animIDFilenamesTable);
+  UNFIX_PTR(NMP::IDMappedStringTable, m_animIDFilenamesTable);
   NMP::endianSwap(m_animIDFilenamesTable);
 
   m_animIDAnimFormatTable->dislocate();
-  UNFIX_PTR(NMP::OrderedStringTable, m_animIDAnimFormatTable);
+  UNFIX_PTR(NMP::IDMappedStringTable, m_animIDAnimFormatTable);
   NMP::endianSwap(m_animIDAnimFormatTable);
 
   m_animIDSourceFilenamesTable->dislocate();
-  UNFIX_PTR(NMP::OrderedStringTable, m_animIDSourceFilenamesTable);
+  UNFIX_PTR(NMP::IDMappedStringTable, m_animIDSourceFilenamesTable);
   NMP::endianSwap(m_animIDSourceFilenamesTable);
 
   m_animIDSourceTakenamesTable->dislocate();
-  UNFIX_PTR(NMP::OrderedStringTable, m_animIDSourceTakenamesTable);
+  UNFIX_PTR(NMP::IDMappedStringTable, m_animIDSourceTakenamesTable);
   NMP::endianSwap(m_animIDSourceTakenamesTable);
 
   return true;
