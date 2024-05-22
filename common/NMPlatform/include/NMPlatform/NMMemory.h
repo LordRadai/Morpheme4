@@ -355,8 +355,7 @@ struct Format
   Format operator * (const uint32_t n) const;
 
   size_t size;
-  uint32_t alignment;
-  uint32_t unusued;
+  size_t alignment;
 };
 
 /// Structure to describe a block of memory.
