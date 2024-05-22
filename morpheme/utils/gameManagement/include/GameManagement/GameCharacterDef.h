@@ -91,8 +91,6 @@ public:
  
   NM_INLINE MR::NodeID getNodeID(const char* nodeName);
   NM_INLINE MR::MessageID getMessageID(const char* messageName);
-  NM_INLINE MR::StateID getStateID(const char* stateName);
-
 
   uint32_t decRefCount() { NMP_ASSERT(m_refCount > 0); return --m_refCount; }
   void incRefCount() { ++m_refCount; }
@@ -160,15 +158,6 @@ NM_INLINE MR::MessageID CharacterDef::getMessageID(const char* messageName)
   MR::MessageID messageID  = m_netDef->getMessageIDFromMessageName(messageName);
   NMP_ASSERT_MSG(messageID != MR::INVALID_MESSAGE_ID, "The message of name %s does not exist.", messageName);
   return messageID;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE MR::StateID CharacterDef::getStateID(const char* stateName)
-{
-  NMP_ASSERT(m_netDef);
-  MR::StateID stateID = m_netDef->getStateIDFromStateName(stateName);
-  NMP_ASSERT_MSG(stateID != MR::INVALID_STATE_ID, "The state of name %s does not exist.", stateName);
-  return stateID;
 }
 
 } // namespace Game
