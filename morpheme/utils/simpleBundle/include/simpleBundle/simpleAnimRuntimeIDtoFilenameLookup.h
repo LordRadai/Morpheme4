@@ -80,10 +80,10 @@ public:
 
 protected:
 
-  NMP::OrderedStringTable* m_animIDFilenamesTable;
-  NMP::OrderedStringTable* m_animIDAnimFormatTable;
-  NMP::OrderedStringTable* m_animIDSourceFilenamesTable;
-  NMP::OrderedStringTable* m_animIDSourceTakenamesTable;
+  NMP::IDMappedStringTable* m_animIDFilenamesTable;
+  NMP::IDMappedStringTable* m_animIDAnimFormatTable;
+  NMP::IDMappedStringTable* m_animIDSourceFilenamesTable;
+  NMP::IDMappedStringTable* m_animIDSourceTakenamesTable;
   uint32_t*         m_animIDFileCRCTable;
 
 };
