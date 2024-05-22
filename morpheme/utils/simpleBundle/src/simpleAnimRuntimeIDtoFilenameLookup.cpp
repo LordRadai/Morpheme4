@@ -32,10 +32,10 @@ SimpleAnimRuntimeIDtoFilenameLookup* SimpleAnimRuntimeIDtoFilenameLookup::init(
   SimpleAnimRuntimeIDtoFilenameLookup* result = (SimpleAnimRuntimeIDtoFilenameLookup*)resource.ptr;
   resource.increment(sizeof(SimpleAnimRuntimeIDtoFilenameLookup));
 
-  result->m_animIDFilenamesTable = NMP::OrderedStringTable::init(resource, numAnims, fileNames);
-  result->m_animIDAnimFormatTable = NMP::OrderedStringTable::init(resource, numAnims, animFormats);
-  result->m_animIDSourceFilenamesTable = NMP::OrderedStringTable::init(resource, numAnims, sourceFilenames);
-  result->m_animIDSourceTakenamesTable = NMP::OrderedStringTable::init(resource, numAnims, sourceTakenames);
+  result->m_animIDFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, fileNames);
+  result->m_animIDAnimFormatTable = NMP::IDMappedStringTable::init(resource, numAnims, animFormats);
+  result->m_animIDSourceFilenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, sourceFilenames);
+  result->m_animIDSourceTakenamesTable = NMP::IDMappedStringTable::init(resource, numAnims, sourceTakenames);
   result->m_animIDFileCRCTable = (uint32_t*)resource.ptr;
   NMP::Memory::memcpy(result->m_animIDFileCRCTable, animCRCs, numAnims * sizeof(uint32_t));
 

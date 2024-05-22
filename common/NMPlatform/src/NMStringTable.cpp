@@ -50,8 +50,6 @@ IDMappedStringTable* IDMappedStringTable::init(
   NMP::Memory::memcpy((void*)result->m_Offsets, offsets, sizeof(uint32_t) * numEntrys);
   NMP::Memory::memcpy((void*)result->m_Data, data, sizeof(char) * dataLength);
 
-  //result->buildHashTable();
-
   return result;
 }
 
@@ -84,8 +82,6 @@ IDMappedStringTable* IDMappedStringTable::init(
     currentOffset += currLength;
   }
 
-  //result->buildHashTable();
-
   return result;
 }
 
@@ -117,14 +113,6 @@ IDMappedStringTable* IDMappedStringTable::initResourcePointers(
   result->m_Offsets = (uint32_t*) resource.ptr;
   resource.increment(format);
 
-  /*
-  // Hash array.
-  format = NMP::Memory::Format(sizeof(uint32_t) * numEntrys, NMP_NATURAL_TYPE_ALIGNMENT);
-  resource.align(format);
-  result->m_HashTable = (uint32_t*) resource.ptr;
-  resource.increment(format);
-  */
-
   // String data.
   format = NMP::Memory::Format(sizeof(char) * dataLength, NMP_NATURAL_TYPE_ALIGNMENT);
   resource.align(format);
@@ -133,34 +121,6 @@ IDMappedStringTable* IDMappedStringTable::initResourcePointers(
 
   return result;
 }
-
-/*
-void IDMappedStringTable::buildHashTable()
-{
-  for (uint32_t i = 0; i < m_NumEntrys; ++i)
-  {
-    m_HashTable[i] = hashStringCRC32(getEntryString(i));
-  }
-
-  sortByHash();
-}
-
-void IDMappedStringTable::sortByHash()
-{
-  for (uint32_t i = 0; i < m_NumEntrys; ++i)
-  {
-    uint32_t nextMinEntry = i;
-    for (uint32_t j = i+1; j < m_NumEntrys; ++j)
-    {
-      if (m_HashTable[j] < m_HashTable[nextMinEntry])
-      {
-        nextMinEntry = j;
-      }
-    }
-    swapEntry(i, nextMinEntry);
-  }
-}
-*/
 
 void IDMappedStringTable::swapEntry(uint32_t a, uint32_t b)
 {
@@ -179,13 +139,6 @@ void IDMappedStringTable::swapEntry(uint32_t a, uint32_t b)
   temp = m_Offsets[a];
   m_Offsets[a] = m_Offsets[b];
   m_Offsets[b] = temp;
-
-  /*
-  // swap hash
-  temp = m_HashTable[a];
-  m_HashTable[a] = m_HashTable[b];
-  m_HashTable[b] = temp;
-  */
 }
 
 
@@ -246,27 +199,10 @@ const char* IDMappedStringTable::getStringForID(uint32_t id) const
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t IDMappedStringTable::getIDForString(const char* stringName) const
 {
-    /*
-  // hash input
-  uint32_t inputHash = hashStringCRC32(stringName);
-  // binary search hash entries
-  uint32_t* pFoundHash = (uint32_t*)std::bsearch(&inputHash, m_HashTable, m_NumEntrys, sizeof(uint32_t), compareUint32);
-
-  if (pFoundHash == NULL)
-  {
-    return NMP_STRING_NOT_FOUND;
-  }
-
-  uint32_t index = (uint32_t)(pFoundHash - m_HashTable);
-
-  // in case of hash collision rewind to first match
-  while (index != 0 && m_HashTable[index - 1] == inputHash)
-  {
-    --index;
-  }
+  int index = 0;
 
   // verify string match
-  while (index < m_NumEntrys && m_HashTable[index] == inputHash)
+  while (index < m_NumEntrys)
   {
     const char* currString = getEntryString(index);
     if (!NMP_STRCMP(stringName, currString))
@@ -275,7 +211,6 @@ uint32_t IDMappedStringTable::getIDForString(const char* stringName) const
     }
     ++index;
   }
-  */
   return NMP_STRING_NOT_FOUND;
 }
 
