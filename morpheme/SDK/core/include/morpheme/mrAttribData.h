@@ -2912,81 +2912,6 @@ public:
 };
 
 //----------------------------------------------------------------------------------------------------------------------
-/// \class MR::AttribDataBooleanOperation
-/// \brief
-/// \ingroup AttribData
-//----------------------------------------------------------------------------------------------------------------------
-class AttribDataBooleanOperation : public AttribData
-{
-public:
-  /// \enum  MR::AttribDataBooleanOperation::OperationType
-  /// \brief
-  enum OperationType
-  {
-    OPERATION_AND  = 0,
-    OPERATION_OR   = 1,
-    OPERATION_XOR  = 2,  ///< One and only one input is true.
-    OPERATION_FORCEINTSIZE  = 0xFFFFFFFF
-  };
-
-  static NMP::Memory::Format getMemoryRequirements();
-
-  static AttribDataBooleanOperation* init(
-    NMP::Memory::Resource& resource,
-    OperationType          value,        ///< The operation to perform.
-    bool                   invertResult, ///< Whether we should invert the result of the operation or not.
-    uint16_t               refCount = 0);
-    
-  NM_INLINE AttribDataBooleanOperation() { setType(ATTRIB_TYPE_BOOLEAN_OPERATION); setRefCount(0); }
-  NM_INLINE static AttribDataType getDefaultType() { return ATTRIB_TYPE_BOOLEAN_OPERATION; }
-
-  /// For Manager registration.
-  static void locate(AttribData* target);
-  static void dislocate(AttribData* target);
-
-  OperationType m_operation;
-  bool          m_invertResult; ///< Whether we should invert the result of the operation or not.
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-/// \class MR::AttribDataValueCompareOperation
-/// \brief Can be used to describe the comparison of any type.
-/// \ingroup AttribData
-//----------------------------------------------------------------------------------------------------------------------
-class AttribDataValueCompareOperation : public AttribData
-{
-public:
-  /// \enum  MR::AttribDataValueCompareOperation::OperationType
-  /// \brief
-  enum OperationType
-  {
-    OPERATION_GREATER       = 0,
-    OPERATION_LESS          = 1,
-    OPERATION_GREATER_EQUAL = 2,
-    OPERATION_LESS_EQUAL    = 3,
-    OPERATION_EQUAL         = 4,
-    OPERATION_NOT_EQUAL     = 5,
-    OPERATION_FORCEINTSIZE  = 0xFFFFFFFF
-  };
-
-  static NMP::Memory::Format getMemoryRequirements();
-
-  static AttribDataValueCompareOperation* init(
-    NMP::Memory::Resource& resource,
-    OperationType          value,
-    uint16_t               refCount = 0);
-
-  NM_INLINE AttribDataValueCompareOperation() { setType(ATTRIB_TYPE_VALUE_COMPARE_OPERATION); setRefCount(0); }
-  NM_INLINE static AttribDataType getDefaultType() { return ATTRIB_TYPE_VALUE_COMPARE_OPERATION; }
-
-  /// For Manager registration.
-  static void locate(AttribData* target);
-  static void dislocate(AttribData* target);
-
-  OperationType m_operation;
-};
-
-//----------------------------------------------------------------------------------------------------------------------
 /// \class MR::AttribDataSmoothFloatOperation
 /// \brief
 /// \ingroup AttribData
@@ -3267,57 +3192,6 @@ public:
   NMP::Vector3 m_rayStart;
   NMP::Vector3 m_rayDelta;
 #endif
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-/// \class MR::AttribDataPhysicalEffectData
-/// \brief
-/// \ingroup AttribData
-//----------------------------------------------------------------------------------------------------------------------
-class AttribDataPhysicalEffectData : public MR::AttribData
-{
-public:
-  NM_INLINE static MR::AttribDataType getDefaultType() { return ATTRIB_TYPE_PHYSICAL_EFFECT_DATA; }
-
-  static AttribDataPhysicalEffectData* create(
-    NMP::MemoryAllocator* allocator, MR::Network* network, MR::NodeDef* nodeDef, uint16_t refCount = 0);
-
-  static NMP::Memory::Format getMemoryRequirements();
-
-  static AttribDataPhysicalEffectData* init(
-    NMP::Memory::Resource& resource, MR::Network* network, MR::NodeDef* nodeDef, uint16_t refCount = 0);
-
-  NM_INLINE AttribDataPhysicalEffectData() { setType(ATTRIB_TYPE_PHYSICAL_EFFECT_DATA); setRefCount(0); }
-
-  MR::Network* m_network;
-  MR::NodeDef* m_nodeDef; // Performance node definition
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-/// \class MR::AttribDataPhysicsInfoDef
-/// \brief
-/// \ingroup AttribData
-//----------------------------------------------------------------------------------------------------------------------
-class AttribDataPhysicsInfoDef : public AttribData
-{
-public:
-  static AttribDataPhysicsInfoDef* init(
-    NMP::Memory::Resource& resource,
-    int                    partIndex,
-    bool                   outputInWorldSpace,
-    uint16_t               refCount = 0);
-
-  static NMP::Memory::Format getMemoryRequirements();
-
-  NM_INLINE AttribDataPhysicsInfoDef() { setType(ATTRIB_TYPE_PHYSICS_INFO_DEF); setRefCount(0); }
-  NM_INLINE static AttribDataType getDefaultType() { return ATTRIB_TYPE_PHYSICS_INFO_DEF; }
-
-  /// For Manager registration.
-  static void locate(AttribData* target);
-  static void dislocate(AttribData* target);
-
-  int         m_partIndex;
-  bool        m_outputInWorldSpace;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
