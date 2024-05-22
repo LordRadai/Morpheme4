@@ -689,43 +689,6 @@ public:
 };
 
 //----------------------------------------------------------------------------------------------------------------------
-/// \class MR::AttribDataUInt64Array
-/// \brief An array of unsigned 64 bit integer values.
-/// \ingroup AttribData
-//----------------------------------------------------------------------------------------------------------------------
-class AttribDataUInt64Array : public AttribData
-{
-public:
-  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues);
-
-  static AttribDataUInt64Array* init(
-    NMP::Memory::Resource& resource,
-    uint32_t               numValues,
-    uint16_t               refCount = 0);
-
-  static AttribDataHandle create(
-    NMP::MemoryAllocator* allocator,
-    AttribDataCreateDesc* desc);
-
-  static AttribDataHandle create(
-    NMP::MemoryAllocator* allocator,
-    uint32_t              numValues,
-    uint16_t              refCount = 0);
-
-  NM_INLINE AttribDataUInt64Array() { setType(ATTRIB_TYPE_UINT64_ARRAY); setRefCount(0); }
-  NM_INLINE static AttribDataType getDefaultType() { return ATTRIB_TYPE_UINT64_ARRAY; }
-
-  /// For Manager registration.
-  static void locate(AttribData* target);
-  static void dislocate(AttribData* target);
-  static void relocate(AttribData* target, void* location);
-  static void relocate(AttribData* target) { relocate(target, target); }
-
-  uint32_t  m_numValues;
-  uint64_t* m_values;
-};
-
-//----------------------------------------------------------------------------------------------------------------------
 /// \class MR::AttribDataFloatArray
 /// \brief An array of float values.
 /// \ingroup AttribData

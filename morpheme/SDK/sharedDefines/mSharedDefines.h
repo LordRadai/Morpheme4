@@ -377,7 +377,6 @@ enum AttribDataTypeEnum
   ATTRIB_TYPE_BOOL_ARRAY,   ///< An array of bools.
   ATTRIB_TYPE_INT_ARRAY,    ///< An array of signed integers.
   ATTRIB_TYPE_UINT_ARRAY,   ///< An array of unsigned integers.
-  ATTRIB_TYPE_UINT64_ARRAY, ///< An array of unsigned 64 bit integers.
   ATTRIB_TYPE_FLOAT_ARRAY,  ///< An array of floats.
 
   ATTRIB_TYPE_UPDATE_PLAYBACK_POS,              ///< For setting an absolute time position or updating time with a delta value.
@@ -435,22 +434,14 @@ enum AttribDataTypeEnum
   ATTRIB_TYPE_PHYSICS_SETUP_ANIM_SET,     ///< Wraps the params needed for the physics node (anim set specific).
   ATTRIB_TYPE_PHYSICS_STATE,              ///< Stores physics state variables.
   ATTRIB_TYPE_PHYSICS_INITIALISATION,     ///< Physics initialisation
-  ATTRIB_TYPE_PHYSICAL_EFFECT_DATA,       ///< Used to call PhysicalEffect inputs
-  ATTRIB_TYPE_COLLISION_FILTER_MASK,      ///< Wraps physics engine specific collision filter mask info.
 
   ATTRIB_TYPE_PHYSICS_GROUPER_CONFIG,     ///< Stores physics grouper state variables.
-
-  ATTRIB_TYPE_OPERATOR_APPLYIMPULSE_DEF,  ///< Apply impulse operator definition
 
   ATTRIB_TYPE_FLOAT_OPERATION,            ///< A float control parameter operation.
   ATTRIB_TYPE_2_FLOAT_OPERATION,          ///< A two float control parameter operation.
   ATTRIB_TYPE_SMOOTH_FLOAT_OPERATION,     ///< Smooth float operator per instance data
   ATTRIB_TYPE_RATE_OF_CHANGE_OPERATION,   ///< Rate of change operator per instance data
   ATTRIB_TYPE_RANDOM_FLOAT_OPERATION,     ///< Random float RNG and elapsed duration data
-  ATTRIB_TYPE_BOOLEAN_OPERATION,          ///< Describes a boolean operation.
-  ATTRIB_TYPE_VALUE_COMPARE_OPERATION,    ///< Describes a comparison of 2 values that results in a bool value e.g. >, <
-  ATTRIB_TYPE_DISCRETE_EVENT_TRIGGERED,   ///< Describes a discrete event that is to watched for emission from a specified node.
-
   ATTRIB_TYPE_RANDOM_FLOAT_DEF,           ///< Random float operator node definition data.
   ATTRIB_TYPE_NOISE_GEN_DEF,              ///< Noise generation node definition data
   ATTRIB_TYPE_SWITCH_DEF,                 ///< Switch node definition data
