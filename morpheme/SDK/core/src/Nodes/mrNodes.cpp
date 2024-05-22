@@ -64,8 +64,6 @@
 #include "morpheme/Nodes/mrNodeScaleToDuration.h"
 #include "morpheme/Nodes/mrNodeMirrorTransforms.h"
 #include "morpheme/Nodes/mrNodeOperatorFunction.h"
-#include "morpheme/Nodes/mrNodeOperatorBoolean.h"
-#include "morpheme/Nodes/mrNodeOperatorCPCompare.h"
 #include "morpheme/Nodes/mrNodeOperatorArithmetic.h"
 #include "morpheme/Nodes/mrNodeOperatorNoiseGen.h"
 #include "morpheme/Nodes/mrNodeOperatorRandomFloat.h"
@@ -386,11 +384,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3DistanceOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3CrossProductOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3AngleOutputCPUpdate));
-
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorBooleanOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareFloatOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareIntOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareUIntOutputCPUpdateBool));
 
   manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<float, AttribDataFloat, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>, "nodeOperatorTimeLagInputOutputCPUpdateFloat");
   manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<int32_t, AttribDataInt, ATTRIB_TYPE_TIME_LAG_INPUT_INT>, "nodeOperatorTimeLagInputOutputCPUpdateInt");
