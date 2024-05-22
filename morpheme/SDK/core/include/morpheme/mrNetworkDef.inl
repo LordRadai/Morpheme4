@@ -186,11 +186,6 @@ NM_INLINE T* NetworkDef::getAttribData(AttribDataSemantic semantic,
   NMP_ASSERT(T::getDefaultType() == attribDataHandle->m_attribData->getType());
   return static_cast<T*>(attribDataHandle->m_attribData);
 }
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const NMP::IDMappedStringTable* NetworkDef::getStateMachineStateNameToStateIDTable() const
-{
-  return m_stateMachineStateIDStringTable;
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE const NMP::IDMappedStringTable* NetworkDef::getNodeIDNamesTable() const

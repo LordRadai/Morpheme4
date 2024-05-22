@@ -173,9 +173,6 @@ public:
   ///  This remains static even when the network is executing.
   NodeID getRootNodeID() const { return m_childNodeIDs[0]; }
 
-  /// \brief Get the table that maps: state machine state names <--> state id.
-  NM_INLINE const NMP::IDMappedStringTable* getStateMachineStateNameToStateIDTable() const;
-
   /// \brief Find the StateID for the given state name.
   /// \return INVALID_STATE_ID if the name is not recognized nor a state.
   ///
@@ -451,8 +448,6 @@ protected:
                                                         ///<  (is able to emit requests) is entered in this list.
 
   NodeIDsArray*             m_multiplyConnectedNodeIDs; ///< Array of all state machine node IDs
-
-  NMP::IDMappedStringTable* m_stateMachineStateIDStringTable; ///< A string table for each state machine state to it's state id.
 
   NMP::IDMappedStringTable* m_nodeIDNamesTable;         ///< Table to allow the lookup of NodeIDs or names.
 
