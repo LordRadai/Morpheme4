@@ -1,3 +1,7 @@
+RADAI'S NOTE
+============================================
+This runtime distribution is modified. It's tweaked to load and process Dark Souls II morpheme binaries (tested on 64 bits only, but shoudl work for 32 too).
+
 Welcome to the Morpheme Runtime distribution
 ============================================
 
