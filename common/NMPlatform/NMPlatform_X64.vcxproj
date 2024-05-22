@@ -75,18 +75,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>NMPlatform</TargetName>
-    <IntDir>..\..\obj\x64\vs9.0\NMPlatform\release\</IntDir>
-    <OutDir>..\..\lib\x64\vs9.0\</OutDir>
+    <IntDir>..\..\obj\x64\vs$(VisualStudioVersion)\NMPlatform\release\</IntDir>
+    <OutDir>..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Debug|x64'">
     <TargetName>NMPlatform_target_LE64_debug</TargetName>
-    <IntDir>..\..\obj\x64\vs9.0\NMPlatform\target_le64_debug\</IntDir>
-    <OutDir>..\..\lib\x64\vs9.0\</OutDir>
+    <IntDir>..\..\obj\x64\vs$(VisualStudioVersion)\NMPlatform\target_le64_debug\</IntDir>
+    <OutDir>..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Release|x64'">
     <TargetName>NMPlatform_target_LE64</TargetName>
-    <IntDir>..\..\obj\x64\vs9.0\NMPlatform\target_le64_release\</IntDir>
-    <OutDir>..\..\lib\x64\vs9.0\</OutDir>
+    <IntDir>..\..\obj\x64\vs$(VisualStudioVersion)\NMPlatform\target_le64_release\</IntDir>
+    <OutDir>..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
