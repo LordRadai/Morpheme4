@@ -112,8 +112,8 @@ public:
 
 protected:
   static IDMappedStringTable* initResourcePointers(NMP::Memory::Resource& resource, uint32_t numEntrys, uint32_t dataLength);
-  void buildHashTable();
-  void sortByHash();
+  //void buildHashTable();
+  //void sortByHash();
   void swapEntry(uint32_t a, uint32_t b);
 
 private:
@@ -121,7 +121,7 @@ private:
   uint32_t     m_DataLength;
   uint32_t*    m_IDs;
   uint32_t*    m_Offsets;
-  uint32_t*    m_HashTable;
+  //uint32_t*    m_HashTable;
   const char*  m_Data;
 };
 

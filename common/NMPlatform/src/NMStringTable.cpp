@@ -50,7 +50,7 @@ IDMappedStringTable* IDMappedStringTable::init(
   NMP::Memory::memcpy((void*)result->m_Offsets, offsets, sizeof(uint32_t) * numEntrys);
   NMP::Memory::memcpy((void*)result->m_Data, data, sizeof(char) * dataLength);
 
-  result->buildHashTable();
+  //result->buildHashTable();
 
   return result;
 }
@@ -84,7 +84,7 @@ IDMappedStringTable* IDMappedStringTable::init(
     currentOffset += currLength;
   }
 
-  result->buildHashTable();
+  //result->buildHashTable();
 
   return result;
 }
@@ -117,11 +117,13 @@ IDMappedStringTable* IDMappedStringTable::initResourcePointers(
   result->m_Offsets = (uint32_t*) resource.ptr;
   resource.increment(format);
 
+  /*
   // Hash array.
   format = NMP::Memory::Format(sizeof(uint32_t) * numEntrys, NMP_NATURAL_TYPE_ALIGNMENT);
   resource.align(format);
   result->m_HashTable = (uint32_t*) resource.ptr;
   resource.increment(format);
+  */
 
   // String data.
   format = NMP::Memory::Format(sizeof(char) * dataLength, NMP_NATURAL_TYPE_ALIGNMENT);
@@ -132,6 +134,7 @@ IDMappedStringTable* IDMappedStringTable::initResourcePointers(
   return result;
 }
 
+/*
 void IDMappedStringTable::buildHashTable()
 {
   for (uint32_t i = 0; i < m_NumEntrys; ++i)
@@ -157,6 +160,7 @@ void IDMappedStringTable::sortByHash()
     swapEntry(i, nextMinEntry);
   }
 }
+*/
 
 void IDMappedStringTable::swapEntry(uint32_t a, uint32_t b)
 {
@@ -176,10 +180,12 @@ void IDMappedStringTable::swapEntry(uint32_t a, uint32_t b)
   m_Offsets[a] = m_Offsets[b];
   m_Offsets[b] = temp;
 
+  /*
   // swap hash
   temp = m_HashTable[a];
   m_HashTable[a] = m_HashTable[b];
   m_HashTable[b] = temp;
+  */
 }
 
 
@@ -240,6 +246,7 @@ const char* IDMappedStringTable::getStringForID(uint32_t id) const
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t IDMappedStringTable::getIDForString(const char* stringName) const
 {
+    /*
   // hash input
   uint32_t inputHash = hashStringCRC32(stringName);
   // binary search hash entries
@@ -268,6 +275,7 @@ uint32_t IDMappedStringTable::getIDForString(const char* stringName) const
     }
     ++index;
   }
+  */
   return NMP_STRING_NOT_FOUND;
 }
 
@@ -289,6 +297,9 @@ uint32_t IDMappedStringTable::getIDForStringN(const char* stringName, uint32_t n
 uint32_t IDMappedStringTable::findNumEntriesForString(
   const char* stringName) const
 {
+    return 0;
+
+    /*
   // hash input
   uint32_t inputHash = hashStringCRC32(stringName);
   // binary search hash entries
@@ -318,7 +329,9 @@ uint32_t IDMappedStringTable::findNumEntriesForString(
     }
     ++index;
   }
+
   return count;
+  */
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -364,10 +377,12 @@ void IDMappedStringTable::relocate()
   m_Offsets = (uint32_t*) ptr;
   ptr = (void*)(((uint8_t*)ptr) + (sizeof(uint32_t) * m_NumEntrys));
 
+  /*
   // hash array.
   NMP_ASSERT(NMP_IS_ALIGNED(ptr, NMP_NATURAL_TYPE_ALIGNMENT));
   m_HashTable = (uint32_t*) ptr;
   ptr = (void*)(((uint8_t*)ptr) + (sizeof(uint32_t) * m_NumEntrys));
+  */
 
   // String data.
   NMP_ASSERT(NMP_IS_ALIGNED(ptr, NMP_NATURAL_TYPE_ALIGNMENT));
@@ -379,7 +394,7 @@ void IDMappedStringTable::locate()
 {
   REFIX_SWAP_PTR(uint32_t, m_IDs);
   REFIX_SWAP_PTR(uint32_t, m_Offsets);
-  REFIX_SWAP_PTR(uint32_t, m_HashTable);
+  //REFIX_SWAP_PTR(uint32_t, m_HashTable);
   REFIX_SWAP_PTR(const char, m_Data);
 
   NMP::endianSwap(m_NumEntrys);
@@ -388,7 +403,7 @@ void IDMappedStringTable::locate()
   // Endian swap the table entry array
   NMP::endianSwapArray((uint32_t*)m_IDs, m_NumEntrys);
   NMP::endianSwapArray((uint32_t*)m_Offsets, m_NumEntrys);
-  NMP::endianSwapArray((uint32_t*)m_HashTable, m_NumEntrys);
+  //NMP::endianSwapArray((uint32_t*)m_HashTable, m_NumEntrys);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -397,7 +412,7 @@ void IDMappedStringTable::dislocate()
   // Endian swap the table entry array
   NMP::endianSwapArray((uint32_t*)m_IDs, m_NumEntrys);
   NMP::endianSwapArray((uint32_t*)m_Offsets, m_NumEntrys);
-  NMP::endianSwapArray((uint32_t*)m_HashTable, m_NumEntrys);
+  //NMP::endianSwapArray((uint32_t*)m_HashTable, m_NumEntrys);
 
   NMP::endianSwap(m_DataLength);
   NMP::endianSwap(m_NumEntrys);
@@ -405,7 +420,7 @@ void IDMappedStringTable::dislocate()
   UNFIX_SWAP_PTR(const char, m_Data);
   UNFIX_SWAP_PTR(uint32_t, m_IDs);
   UNFIX_SWAP_PTR(uint32_t, m_Offsets);
-  UNFIX_SWAP_PTR(uint32_t, m_HashTable);
+  //UNFIX_SWAP_PTR(uint32_t, m_HashTable);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
