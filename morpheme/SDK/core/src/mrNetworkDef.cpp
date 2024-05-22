@@ -135,6 +135,7 @@ void NetworkDef::locate()
   // Shared task function tables: Need to be located before the individual node definitions
   REFIX_SWAP_PTR(SharedTaskFnTables, m_taskQueuingFnTables);
   m_taskQueuingFnTables->locateTaskQueuingFnTables();
+
   REFIX_SWAP_PTR(SharedTaskFnTables, m_outputCPTaskFnTables);
   m_outputCPTaskFnTables->locateOutputCPTaskFnTables();
 
@@ -196,13 +197,6 @@ void NetworkDef::locate()
     }
   }
 
-  // State machine state to state ID mapping table
-  if (m_stateMachineStateIDStringTable)
-  {
-    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_stateMachineStateIDStringTable);
-    m_stateMachineStateIDStringTable->locate();
-  }
-
   // NodeID to Node name mapping table
   if (m_nodeIDNamesTable)
   {
@@ -213,14 +207,14 @@ void NetworkDef::locate()
   // RequestID to Request name mapping table
   if (m_messageIDNamesTable)
   {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_messageIDNamesTable);
+    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messageIDNamesTable);
     m_messageIDNamesTable->locate();
   }
 
   // Mapping table between event track names and runtime IDs
   if (m_eventTrackIDNamesTable)
   {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_eventTrackIDNamesTable);
+    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_eventTrackIDNamesTable);
     m_eventTrackIDNamesTable->locate();
   }
 
@@ -284,21 +278,14 @@ void NetworkDef::dislocate()
   if (m_eventTrackIDNamesTable)
   {
     m_eventTrackIDNamesTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_eventTrackIDNamesTable);
+    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_eventTrackIDNamesTable);
   }
 
   // RequestID to Request name mapping table
   if (m_messageIDNamesTable)
   {
     m_messageIDNamesTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_messageIDNamesTable);
-  }
-
-  // State machine state to state ID mapping table
-  if (m_stateMachineStateIDStringTable)
-  {
-    m_stateMachineStateIDStringTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_stateMachineStateIDStringTable);
+    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messageIDNamesTable);
   }
 
   // NodeID to Node name mapping table
@@ -393,52 +380,6 @@ NM_ASSERT_COMPILE_TIME((NodeID)NMP_STRING_NOT_FOUND == INVALID_NODE_ID);
 #ifdef NM_COMPILER_MSVC
   #pragma warning (pop)
 #endif
-
-//----------------------------------------------------------------------------------------------------------------------
-StateID NetworkDef::getStateIDFromStateName(const char* stateName) const
-{
-  NMP_ASSERT_MSG(m_stateMachineStateIDStringTable, "m_stateMachineStateIDStringTable doesn't exist.");
-  NMP_ASSERT_MSG(m_stateMachineStateIDStringTable->findNumEntriesForString(stateName) < 2, "More than one instance of state name %s found.", stateName);
-  // Note that casting NMP_STRING_NOT_FOUND into StateID results in INVALID_STATE_ID 
-  // (even though the values are different).
-  return (StateID)m_stateMachineStateIDStringTable->getIDForString(stateName);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NodeID NetworkDef::getNodeIDFromStateName(const char* stateMachineAndStateName) const
-{
-  NMP_ASSERT_MSG(m_stateMachineStateIDStringTable, "m_stateMachineStateIDStringTable doesn't exist.");
-  NMP_ASSERT_MSG(m_stateMachineStateIDStringTable->findNumEntriesForString(stateMachineAndStateName) < 2, "More than one instance of state name %s found.", stateMachineAndStateName);
-
-  // Get the name of the state machine.  
-  // Remember the 'stateMachineAndStateName' will have the state machine name pre-pended.
-  // Hence remove the state name and the '|' before it. 
-  const char * pCh = strchr(stateMachineAndStateName,'|');
-  size_t tokenFoundAtPosition = 0;
-  while (pCh != NULL)
-  {
-    tokenFoundAtPosition = pCh - stateMachineAndStateName;
-    pCh = strchr(pCh+1,'|');
-  }
-  NMP_ASSERT(tokenFoundAtPosition < strlen(stateMachineAndStateName));
-
-  const uint32_t STATE_MACHINE_NAME_SIZE = 1024;
-  char stateMachineName[STATE_MACHINE_NAME_SIZE];
-  NMP_STRNCPY_S(stateMachineName, STATE_MACHINE_NAME_SIZE, stateMachineAndStateName);
-  NMP_ASSERT(tokenFoundAtPosition < STATE_MACHINE_NAME_SIZE);
-  stateMachineName[tokenFoundAtPosition] = 0;
-
-  // Get the state machine nodeID.
-  NodeID smNodeID = (NodeID)m_nodeIDNamesTable->getIDForString(stateMachineName);
-  NMP_ASSERT_MSG(smNodeID != INVALID_NODE_ID,"Could find state machine name");
-
-  // Get the state machine def.
-  MR::AttribDataStateMachineDef* smDef = getAttribData<MR::AttribDataStateMachineDef>(ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF, smNodeID);
-  NMP_ASSERT_MSG(smDef != NULL,"Couldn't find the state machine def");
-
-  // Get the root node of the state machine
-  return smDef->getNodeIDFromStateID(getStateIDFromStateName(stateMachineAndStateName));
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 NodeID NetworkDef::getNodeIDFromNodeName(const char* name) const
@@ -645,10 +586,6 @@ size_t NetworkDef::getStringTableMemoryFootprint() const
 {
   size_t footprint = 0;
 
-  if (m_stateMachineStateIDStringTable)
-  {
-    footprint += m_stateMachineStateIDStringTable->getInstanceMemoryRequirements().size;
-  }
   if (m_nodeIDNamesTable)
   {
     footprint += m_nodeIDNamesTable->getInstanceMemoryRequirements().size;

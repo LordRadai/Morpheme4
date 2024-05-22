@@ -167,12 +167,6 @@ void nodeOperatorRateOfChangeFloatInitInstance(NodeDef* node, Network* net)
   OutputCPPin *outputCPPin = nodeBin->getOutputCPPin(0);
   outputCPPin->m_attribDataHandle = AttribDataFloat::create(net->getPersistentMemoryAllocator(), 0.0f);
   outputCPPin->m_lastUpdateFrame = 0;
-
-  //---------------------------
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    MR::nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -189,12 +183,6 @@ void nodeOperatorRateOfChangeVectorInitInstance(NodeDef* node, Network* net)
   outputCPPin->m_attribDataHandle = AttribDataVector3::create(net->getPersistentMemoryAllocator(), 
     NMP::Vector3::InitTypeZero);
   outputCPPin->m_lastUpdateFrame = 0;
-
-  //---------------------------
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    MR::nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 } // namespace MR

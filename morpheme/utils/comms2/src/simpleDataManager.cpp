@@ -476,7 +476,7 @@ uint32_t SimpleDataManager::getMessageIDs(const GUID& guid, NetworkMessageID* re
 {
   MR::NetworkDef* const networkDef = SIMPLE_DATA_MANAGER_GET_NETWORK_DEF(return 0);
 
-  const NMP::OrderedStringTable* const stringTable = networkDef->getMessageIDNamesTable();
+  const NMP::IDMappedStringTable* const stringTable = networkDef->getMessageIDNamesTable();
   stringTable->getIDs(requestIDs, maxRequestIDs);
   return stringTable->getNumEntries();
 }

@@ -276,12 +276,6 @@ void nodeOperatorSmoothDampFloatInitInstance(NodeDef* node, Network* net)
   // the first frame. Can't use -1 as this is VALID_FOREVER and so we don't
   // update.
   outputCPPin->m_lastUpdateFrame = (FrameCount) -2;
-
-  //---------------------------
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -298,12 +292,6 @@ void nodeOperatorSmoothDampVectorInitInstance(NodeDef* node, Network* net)
   outputCPPin->m_attribDataHandle = AttribDataVector3::create(net->getPersistentMemoryAllocator(), 
     NMP::Vector3::InitTypeZero);
   outputCPPin->m_lastUpdateFrame = (FrameCount) -2;
-
-  //---------------------------
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 } // namespace MR

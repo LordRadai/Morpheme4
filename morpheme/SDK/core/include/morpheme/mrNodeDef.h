@@ -210,19 +210,6 @@ public:
   NM_INLINE const AttribDataHandle* getAttribDataHandles() const { return m_nodeAttribDataHandles; }
   NM_INLINE AttribDataHandle* getAttribDataHandles() { return m_nodeAttribDataHandles; }
 
-  NM_INLINE uint16_t getNumPinAttribDataHandles() const { return m_numPinAttribDataHandles; }
-  NM_INLINE const AttribDataHandle* getPinAttribDataHandles() const { return m_nodePinAttribDataHandles; }
-  NM_INLINE AttribDataHandle* getPinAttribDataHandles() { return m_nodePinAttribDataHandles; }
-
-  NM_INLINE uint16_t getNumReflexiveCPPins() const { return m_numReflexiveCPPins; }
-  NM_INLINE void setNumReflexiveCPPins(uint16_t count) { m_numReflexiveCPPins = count; }
-  NM_INLINE uint32_t getPinAttribIndex(uint32_t index, AnimSetIndex animSetIndex = 0) const;
-  NM_INLINE PinAttribDataInfo* getPinAttribDataInfo(uint32_t index) const;
-  NM_INLINE PinIndex newPinAttribDataInfo(bool perAnimSet, AttribDataSemantic semantic);
-  NM_INLINE void addPinAttribDataAnimSetEntry(uint32_t NMP_USED_FOR_ASSERTS(pin), MR::AnimSetIndex NMP_USED_FOR_ASSERTS(animSetIndex));
-
-  NM_INLINE AttribDataHandle*  getPinAttribDataHandle(uint32_t index, AnimSetIndex animSetIndex) const;
-
   /// AttribData must exist.
   NM_INLINE AttribDataHandle* getAttribDataHandle(
     AttribDataSemantic semantic,
@@ -236,12 +223,6 @@ public:
     AnimSetIndex       animSetIndex) const;
   NM_INLINE AttribData* getAttribData(
     AttribDataSemantic semantic) const;
-
-  /// AttribData must exist.
-  template <class T>
-  NM_INLINE T* getPinAttribData(
-    uint32_t     index,
-    AnimSetIndex animSetIndex) const;
   
   /// More secure templated versions that validate types and do a cast to the template type internally.
   /// AttribData must exist.
@@ -380,18 +361,12 @@ protected:
                                                                   ///<  An AttribData can be stored on each of a nodes output pins at runtime.
                                                                   ///<  This can be accessed by any number of connected nodes.
 
-  uint16_t                        m_numReflexiveCPPins;           ///< The number of reflexive CP pins in this node def.
-  uint16_t                        m_numPinAttribDataHandles;      ///< The number of reflexive CP pin attrib data entries for this node def.
-  uint16_t                        m_lastPinAttribDataOffset;
-  uint16_t                        m_lastPinAttribDataIndex;
   uint16_t                        m_numAttribDataHandles;         ///< The number of attrib data entries for this node def.
   uint16_t                        m_passThroughChildIndex;        ///< In a Filter node, which active child index to pass through.
 
   NetworkDef*                     m_owningNetworkDef;             ///< The network def that this node belongs to.
   NodeID*                         m_childNodeIDs;                 ///< Connected child nodes.
   CPConnection*                   m_inputCPConnections;           ///< Input control param or operator node connections.
-  PinAttribDataInfo*              m_nodePinAttribDataInfo;        ///< Array of all this NodeDefs reflexive CP pin AttribData info structures.
-  AttribDataHandle*               m_nodePinAttribDataHandles;     ///< Array of all this NodeDefs reflexive CP pin AttribData.
   AttribDataHandle*               m_nodeAttribDataHandles;        ///< Array of all this NodeDefs static AttribData.
                                                                   ///<  Fast access is provided through m_semLookupTable.
                                                                   ///<  Note that this array contains data for all AnimSets 

@@ -173,23 +173,6 @@ public:
   ///  This remains static even when the network is executing.
   NodeID getRootNodeID() const { return m_childNodeIDs[0]; }
 
-  /// \brief Get the table that maps: state machine state names <--> state id.
-  NM_INLINE const NMP::IDMappedStringTable* getStateMachineStateNameToStateIDTable() const;
-
-  /// \brief Find the StateID for the given state name.
-  /// \return INVALID_STATE_ID if the name is not recognized nor a state.
-  ///
-  /// Asserts if m_stateMachineStateIDStringTable does not exist, or if more than 1 matching entry.
-  /// Names must fully match.
-  StateID getStateIDFromStateName(const char* stateName) const;
-
-  /// \brief Find the NodeID for the root node for what is contained in the state named.
-  /// \return INVALID_NODE_ID if the name is not recognized nor a state.
-  ///
-  /// Asserts if m_stateMachineStateIDStringTable does not exist, or if more than 1 matching entry.
-  /// Names must fully match.
-  NodeID getNodeIDFromStateName(const char* stateName) const;
-
   /// \brief Get the table that maps: node names <--> node id.
   NM_INLINE const NMP::IDMappedStringTable* getNodeIDNamesTable() const;
 
@@ -327,7 +310,7 @@ public:
   /// \brief get the number of messages.
   uint32_t getNumMessages() const;
 
-  NM_INLINE const NMP::OrderedStringTable* getMessageIDNamesTable() const;
+  NM_INLINE const NMP::IDMappedStringTable* getMessageIDNamesTable() const;
 
   /// \brief get the message id for the given name.
   /// \return  "Unknown" if the name is not recognized or the debug string table is not present.
@@ -375,7 +358,7 @@ public:
   /// \brief return the character controller def used by the specified animation set.
   CharacterControllerDef* getCharacterControllerDef(AnimSetIndex animSetIndex);
 
-  NM_INLINE const NMP::OrderedStringTable* getEventTrackIDNamesTable() const;
+  NM_INLINE const NMP::IDMappedStringTable* getEventTrackIDNamesTable() const;
 
   /// \brief Finds the event track runtime id corresponding to the given name.
   ///
@@ -452,13 +435,11 @@ protected:
 
   NodeIDsArray*             m_multiplyConnectedNodeIDs; ///< Array of all state machine node IDs
 
-  NMP::IDMappedStringTable* m_stateMachineStateIDStringTable; ///< A string table for each state machine state to it's state id.
-
   NMP::IDMappedStringTable* m_nodeIDNamesTable;         ///< Table to allow the lookup of NodeIDs or names.
 
-  NMP::OrderedStringTable*  m_messageIDNamesTable;      ///< Table for lookup of a RequestID via the request name.
+  NMP::IDMappedStringTable*  m_messageIDNamesTable;      ///< Table for lookup of a RequestID via the request name.
 
-  NMP::OrderedStringTable*  m_eventTrackIDNamesTable;   ///< User specified names of event tracks used in this network.
+  NMP::IDMappedStringTable*  m_eventTrackIDNamesTable;   ///< User specified names of event tracks used in this network.
                                                         ///< The index of each name in the table is used as a runtime
                                                         ///< identifier for that event track. Each string in the table is unique.
                                                         ///< Note that separate event track assets may share the same name and

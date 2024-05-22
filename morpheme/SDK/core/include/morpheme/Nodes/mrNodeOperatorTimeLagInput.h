@@ -320,12 +320,6 @@ void nodeOperatorTimeLagInputInitInstance(NodeDef* node, Network* net)
   laggedOutputCPPin->m_attribDataHandle = T_AttribDataType::create(net->getPersistentMemoryAllocator());
   laggedOutputCPPin->m_lastUpdateFrame = 0;
 
-  // Initialise any pins that are using default data.
-  if(node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
-
   // Get node def data.
   AttribDataTimeLagInputDef* nodeStateDef = node->getAttribData<AttribDataTimeLagInputDef>(ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF);
 

@@ -366,12 +366,6 @@
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorArithmetic.h">
       <Filter>include\morpheme\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorBoolean.h">
-      <Filter>include\morpheme\Nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorCPCompare.h">
-      <Filter>include\morpheme\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorFloatsToVector3.h">
       <Filter>include\morpheme\Nodes</Filter>
     </ClInclude>
@@ -925,12 +919,6 @@
       <Filter>src\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\Nodes\mrNodeOperatorArithmetic.cpp">
-      <Filter>src\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Nodes\mrNodeOperatorBoolean.cpp">
-      <Filter>src\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Nodes\mrNodeOperatorCPCompare.cpp">
       <Filter>src\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\Nodes\mrNodeOperatorFloatsToVector3.cpp">

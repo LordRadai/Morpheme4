@@ -45,12 +45,6 @@ void nodeCCOverrideInitInstance(
                         ANIMATION_SET_ANY);
   AttribDataHandle ccOverrideAttribHandle = { ccOverrideAttrib, ccOverrideMemReqs };
   net->addAttribData(attribAddress, ccOverrideAttribHandle, LIFESPAN_FOREVER);
-
-  //---------------------------
-  if (ccOverrideNodeDef->getNumReflexiveCPPins() > 0)
-  {
-    MR::nodeInitPinAttribDataInstance(ccOverrideNodeDef, net);
-  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------

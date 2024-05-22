@@ -64,8 +64,6 @@
 #include "morpheme/Nodes/mrNodeScaleToDuration.h"
 #include "morpheme/Nodes/mrNodeMirrorTransforms.h"
 #include "morpheme/Nodes/mrNodeOperatorFunction.h"
-#include "morpheme/Nodes/mrNodeOperatorBoolean.h"
-#include "morpheme/Nodes/mrNodeOperatorCPCompare.h"
 #include "morpheme/Nodes/mrNodeOperatorArithmetic.h"
 #include "morpheme/Nodes/mrNodeOperatorNoiseGen.h"
 #include "morpheme/Nodes/mrNodeOperatorRandomFloat.h"
@@ -387,11 +385,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3CrossProductOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3AngleOutputCPUpdate));
 
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorBooleanOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareFloatOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareIntOutputCPUpdateBool));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorCPCompareUIntOutputCPUpdateBool));
-
   manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<float, AttribDataFloat, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>, "nodeOperatorTimeLagInputOutputCPUpdateFloat");
   manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<int32_t, AttribDataInt, ATTRIB_TYPE_TIME_LAG_INPUT_INT>, "nodeOperatorTimeLagInputOutputCPUpdateInt");
   manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<NMP::Vector3, AttribDataVector3, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3>, "nodeOperatorTimeLagInputOutputCPUpdateVector3");
@@ -486,7 +479,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateBoolOutputAttributeInitPinAttrib));
 
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeStateMachineInitInstance));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeInitPinAttribDataInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamBoolInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamIntInitInstance));
@@ -782,14 +774,6 @@ void registerCoreAttribDataTypes()
     NULL,
     MR_NULL_NO_OUTPUT_DEBUGGING(AttribDataUIntArray::serializeTx));
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_UINT64_ARRAY),
-    NMP_NULL_ON_SPU(AttribDataUInt64Array::locate),
-    NMP_NULL_ON_SPU(AttribDataUInt64Array::dislocate),
-    NULL,
-    AttribDataUInt64Array::relocate,
-    NULL,
-    NULL);
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_INT_ARRAY),
     NMP_NULL_ON_SPU(AttribDataIntArray::locate),
     NMP_NULL_ON_SPU(AttribDataIntArray::dislocate),
@@ -1077,16 +1061,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataRandomFloatOperation::dislocate));
 
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_BOOLEAN_OPERATION),
-    NMP_NULL_ON_SPU(AttribDataBooleanOperation::locate),
-    NMP_NULL_ON_SPU(AttribDataBooleanOperation::dislocate));
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_VALUE_COMPARE_OPERATION),
-    NMP_NULL_ON_SPU(AttribDataValueCompareOperation::locate),
-    NMP_NULL_ON_SPU(AttribDataValueCompareOperation::dislocate));
-
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT)
 #ifndef NM_HOST_CELL_SPU
     , AttribDataTimeLagInput<float, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>::locate,
@@ -1150,11 +1124,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataRayCastDef::dislocate));
 
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_INFO_DEF),
-    NMP_NULL_ON_SPU(AttribDataPhysicsInfoDef::locate),
-    NMP_NULL_ON_SPU(AttribDataPhysicsInfoDef::dislocate));
-
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_SETUP),
     NMP_NULL_ON_SPU(AttribDataPhysicsSetup::locate),
     NMP_NULL_ON_SPU(AttribDataPhysicsSetup::dislocate));
@@ -1174,10 +1143,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataPhysicsInitialisation::dislocate),
     NULL,
     AttribDataPhysicsInitialisation::relocate);
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICAL_EFFECT_DATA),
-    NMP_NULL_ON_SPU(AttribDataPhysicalEffectData::locate),
-    NMP_NULL_ON_SPU(AttribDataPhysicalEffectData::dislocate));
 
   manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_PHYSICS_GROUPER_CONFIG),

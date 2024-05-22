@@ -106,7 +106,7 @@ void MessageDistributor::locate()
   // string table is not needed for final builds
   if (m_messagePresetIndexNamesTable)
   {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_messagePresetIndexNamesTable);
+    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messagePresetIndexNamesTable);
     m_messagePresetIndexNamesTable->locate();
   }
 }
@@ -119,7 +119,7 @@ void MessageDistributor::dislocate()
   if (m_messagePresetIndexNamesTable)
   {
     m_messagePresetIndexNamesTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_messagePresetIndexNamesTable);
+    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messagePresetIndexNamesTable);
   }
 
   //-------------------------
