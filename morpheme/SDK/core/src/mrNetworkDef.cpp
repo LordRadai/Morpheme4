@@ -214,14 +214,14 @@ void NetworkDef::locate()
   // RequestID to Request name mapping table
   if (m_messageIDNamesTable)
   {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_messageIDNamesTable);
+    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messageIDNamesTable);
     m_messageIDNamesTable->locate();
   }
 
   // Mapping table between event track names and runtime IDs
   if (m_eventTrackIDNamesTable)
   {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_eventTrackIDNamesTable);
+    REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_eventTrackIDNamesTable);
     m_eventTrackIDNamesTable->locate();
   }
 
@@ -285,14 +285,14 @@ void NetworkDef::dislocate()
   if (m_eventTrackIDNamesTable)
   {
     m_eventTrackIDNamesTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_eventTrackIDNamesTable);
+    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_eventTrackIDNamesTable);
   }
 
   // RequestID to Request name mapping table
   if (m_messageIDNamesTable)
   {
     m_messageIDNamesTable->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_messageIDNamesTable);
+    UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_messageIDNamesTable);
   }
 
   // State machine state to state ID mapping table

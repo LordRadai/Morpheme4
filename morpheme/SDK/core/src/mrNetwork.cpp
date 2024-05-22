@@ -862,7 +862,6 @@ AttribData* Network::updateOutputCPAttribute(
     {
       setOutputAnimSetIndex(owningNodeID, animSet);
       // update pinAttribData if animSet changed
-      nodeUpdatePinAttribDataInstance(owningNodeDef, this);
     }
 
 #if defined(MR_OUTPUT_DEBUGGING)
@@ -2342,7 +2341,7 @@ void Network::updateRequestEmitterNodes()
       beginNodeFuncDebugHook(this, owningNodeDef, oldDebugNodeID);
 #endif // MR_OUTPUT_DEBUGGING
 
-      owningNodeDef->updateEmittedMessages(this, owningNodeDef->getNumOutputCPPins() - owningNodeDef->getNumReflexiveCPPins() -1);
+      owningNodeDef->updateEmittedMessages(this, owningNodeDef->getNumOutputCPPins() -1);
 
 #if defined(MR_OUTPUT_DEBUGGING)
       endNodeFuncDebugHook(this, oldDebugNodeID);
@@ -2670,7 +2669,6 @@ NodeID Network::updateNodeInstanceConnections(NodeID nodeID, AnimSetIndex animSe
   {
     setOutputAnimSetIndex(nodeID, animSet);
     // update pinAttribData if animSet changed
-    nodeUpdatePinAttribDataInstance(owningNodeDef, this);
   }
 
 #if defined(MR_OUTPUT_DEBUGGING)

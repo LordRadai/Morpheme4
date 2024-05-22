@@ -1537,11 +1537,6 @@ void nodeClosestAnimInitInstance(NodeDef* node, Network* net)
   net->addPostUpdateAccessAttrib(rootNodeID, ATTRIB_SEMANTIC_TRAJECTORY_DELTA_TRANSFORM, 2);
 
   nodeShareInitInstanceInvalidateAllChildren(node, net);
-
-  if (node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------

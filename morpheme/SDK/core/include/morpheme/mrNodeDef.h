@@ -223,12 +223,6 @@ public:
     AnimSetIndex       animSetIndex) const;
   NM_INLINE AttribData* getAttribData(
     AttribDataSemantic semantic) const;
-
-  /// AttribData must exist.
-  template <class T>
-  NM_INLINE T* getPinAttribData(
-    uint32_t     index,
-    AnimSetIndex animSetIndex) const;
   
   /// More secure templated versions that validate types and do a cast to the template type internally.
   /// AttribData must exist.

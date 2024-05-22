@@ -106,11 +106,6 @@ void nodeOperatorRampFloatInitInstance( NodeDef* node, Network* net )
   // Workaround to get the node to initialise its output to its input on
   // the first frame. Can't use -1 as this is VALID_FOREVER
   outputCPPin->m_lastUpdateFrame = (FrameCount) -2;
-
-  if(node->getNumReflexiveCPPins() > 0)
-  {
-    nodeInitPinAttribDataInstance(node, net);
-  }
 }
 
 } // namespace MR

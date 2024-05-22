@@ -173,18 +173,6 @@ NM_INLINE AttribData* NodeDef::getAttribData(
 
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
-NM_INLINE T* NodeDef::getPinAttribData(
-  uint32_t     index,
-  AnimSetIndex animSetIndex) const
-{
-  AttribDataHandle* handle = getPinAttribDataHandle(index, animSetIndex);
-  NMP_ASSERT(handle && handle->m_attribData);
-  NMP_ASSERT(T::getDefaultType() == handle->m_attribData->getType());
-  return static_cast<T*>(handle->m_attribData);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-template <class T>
 NM_INLINE T* NodeDef::getAttribData(
   AttribDataSemantic semantic,
   AnimSetIndex       animSetIndex) const

@@ -486,7 +486,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateBoolOutputAttributeInitPinAttrib));
 
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeStateMachineInitInstance));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeInitPinAttribDataInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamBoolInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamIntInitInstance));
