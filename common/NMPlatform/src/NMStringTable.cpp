@@ -199,17 +199,14 @@ const char* IDMappedStringTable::getStringForID(uint32_t id) const
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t IDMappedStringTable::getIDForString(const char* stringName) const
 {
-  int index = 0;
-
   // verify string match
-  while (index < m_NumEntrys)
+  for (size_t index = 0; index < m_NumEntrys; index++)
   {
     const char* currString = getEntryString(index);
     if (!NMP_STRCMP(stringName, currString))
     {
       return getEntryID(index);
     }
-    ++index;
   }
   return NMP_STRING_NOT_FOUND;
 }
