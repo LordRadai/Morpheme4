@@ -85,7 +85,7 @@ protected:
                                             ///<  trajectory, when resetting to blend frame. e.g. Hip bone. 
                                             //    MORPH-21343: There could validly be several of these, need to
                                             //    update this to an array.
-  NMP::OrderedStringTable*   m_boneNameMap; ///< Map of bone index to string names for each joint.
+  NMP::IDMappedStringTable*   m_boneNameMap; ///< Map of bone index to string names for each joint.
   AttribDataTransformBuffer* m_bindPose;    ///< Bind-pose orientations/positions.
 };
 

@@ -34,7 +34,7 @@ bool AnimRigDef::locate()
   REFIX_SWAP_PTR(NMP::Hierarchy, m_hierarchy);
   m_hierarchy->locate();
 
-  REFIX_SWAP_PTR(NMP::OrderedStringTable, m_boneNameMap);
+  REFIX_SWAP_PTR(NMP::IDMappedStringTable, m_boneNameMap);
   m_boneNameMap->locate();
 
   REFIX_SWAP_PTR(AttribDataTransformBuffer, m_bindPose);
@@ -59,7 +59,7 @@ bool AnimRigDef::dislocate()
   UNFIX_SWAP_PTR(NMP::Hierarchy, m_hierarchy);
 
   m_boneNameMap->dislocate();
-  UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_boneNameMap);
+  UNFIX_SWAP_PTR(NMP::IDMappedStringTable, m_boneNameMap);
 
   return true;
 }
@@ -81,7 +81,7 @@ void AnimRigDef::relocate()
 
   // Bone name map.
   NMP_ASSERT(NMP_IS_ALIGNED(ptr, NMP_NATURAL_TYPE_ALIGNMENT));
-  m_boneNameMap = (NMP::OrderedStringTable*) ptr;
+  m_boneNameMap = (NMP::IDMappedStringTable*) ptr;
   m_boneNameMap->relocate();
   format = m_boneNameMap->getInstanceMemoryRequirements();
   ptr = (void*)(((size_t)ptr) + format.size);
