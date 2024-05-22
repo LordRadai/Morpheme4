@@ -173,20 +173,6 @@ public:
   ///  This remains static even when the network is executing.
   NodeID getRootNodeID() const { return m_childNodeIDs[0]; }
 
-  /// \brief Find the StateID for the given state name.
-  /// \return INVALID_STATE_ID if the name is not recognized nor a state.
-  ///
-  /// Asserts if m_stateMachineStateIDStringTable does not exist, or if more than 1 matching entry.
-  /// Names must fully match.
-  StateID getStateIDFromStateName(const char* stateName) const;
-
-  /// \brief Find the NodeID for the root node for what is contained in the state named.
-  /// \return INVALID_NODE_ID if the name is not recognized nor a state.
-  ///
-  /// Asserts if m_stateMachineStateIDStringTable does not exist, or if more than 1 matching entry.
-  /// Names must fully match.
-  NodeID getNodeIDFromStateName(const char* stateName) const;
-
   /// \brief Get the table that maps: node names <--> node id.
   NM_INLINE const NMP::IDMappedStringTable* getNodeIDNamesTable() const;
 
