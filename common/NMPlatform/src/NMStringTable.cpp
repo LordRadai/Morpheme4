@@ -229,41 +229,18 @@ uint32_t IDMappedStringTable::getIDForStringN(const char* stringName, uint32_t n
 uint32_t IDMappedStringTable::findNumEntriesForString(
   const char* stringName) const
 {
-    return 0;
-
-    /*
-  // hash input
-  uint32_t inputHash = hashStringCRC32(stringName);
-  // binary search hash entries
-  uint32_t* pFoundHash = (uint32_t*)std::bsearch(&inputHash, m_HashTable, m_NumEntrys, sizeof(uint32_t), compareUint32);
-
-  if (pFoundHash == NULL)
-  {
-    return 0;
-  }
-
-  uint32_t index = (uint32_t)(pFoundHash - m_HashTable);
-
-  // in case of hash collision rewind to first match
-  while (index != 0 && m_HashTable[index - 1] == inputHash)
-  {
-    --index;
-  }
-
   // verify string match
   uint32_t count = 0;
-  while (index < m_NumEntrys && m_HashTable[index] == inputHash)
+  for (size_t index = 0; index < m_NumEntrys; index++)
   {
-    const char* currString = getEntryString(index);
-    if (!NMP_STRCMP(stringName, currString))
-    {
-      ++count;
-    }
-    ++index;
+      const char* currString = getEntryString(index);
+      if (!NMP_STRCMP(stringName, currString))
+      {
+          ++count;
+      }
   }
 
   return count;
-  */
 }
 
 //----------------------------------------------------------------------------------------------------------------------
