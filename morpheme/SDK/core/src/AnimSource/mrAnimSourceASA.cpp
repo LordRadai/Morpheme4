@@ -22,7 +22,6 @@ AnimFunctionTable AnimSourceASA::m_functionTable =
   AnimSourceASA::getDuration,
   AnimSourceASA::getNumChannelSets,
   AnimSourceASA::getTrajectorySourceData,
-  AnimSourceASA::getChannelNameTable
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -269,13 +268,6 @@ void AnimSourceASA::locate()
     m_trajectoryData->locate();
   }
 
-  // Channel name table
-  if (m_channelNames)
-  {
-    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
-    m_channelNames->locate();
-  }
-
   // Initialise the function pointer table.
   m_funcTable = &m_functionTable;
 }
@@ -284,13 +276,6 @@ void AnimSourceASA::locate()
 void AnimSourceASA::dislocate()
 {
   uint32_t i;
-
-  // Channel name table
-  if (m_channelNames)
-  {
-    m_channelNames->dislocate();
-    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
-  }
 
   // Trajectory data.
   if (m_trajectoryData)

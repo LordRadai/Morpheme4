@@ -103,11 +103,6 @@ typedef struct
   const TrajectorySourceBase* (*animGetTrajectorySourceData) (
     const AnimSourceBase* sourceAnimation);
 
-  /// \brief Return the string table which contains the names of the animation channels which this animation contains
-  ///
-  /// Note that this function may return a NULL pointer if no string table exists.
-  const NMP::OrderedStringTable* (*animGetChannelNameTable) (
-    const AnimSourceBase* sourceAnimation);
 } AnimFunctionTable;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -159,11 +154,6 @@ public:
 
   /// \brief
   const TrajectorySourceBase* animGetTrajectorySourceData() const;
-
-  /// \brief Return the string table which contains the names of the animation channels which this animation contains.
-  ///
-  /// Note that this function may return a NULL pointer if no string table exists.
-  const NMP::OrderedStringTable* animGetChannelNameTable() const;
 
   // \brief
   NM_INLINE AnimType getType() { return m_animType; }

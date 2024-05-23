@@ -70,14 +70,6 @@ const TrajectorySourceBase* AnimSourceBase::animGetTrajectorySourceData() const
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-const NMP::OrderedStringTable* AnimSourceBase::animGetChannelNameTable() const
-{
-  NMP_ASSERT(m_funcTable);
-
-  return m_funcTable->animGetChannelNameTable(this);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
 #ifndef NM_HOST_CELL_SPU
 void AnimSourceBase::locate()
 {

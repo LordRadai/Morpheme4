@@ -105,13 +105,6 @@ public:
     const AnimSourceBase* sourceAnimation       ///< Animation to query.
   );
 
-  /// \brief Return the string table which contains the names of the animation channels which this animation contains
-  ///
-  /// Note that this function may return a NULL pointer if no string table exists.
-  static NM_INLINE const NMP::OrderedStringTable* getChannelNameTable(
-    const AnimSourceBase* sourceAnimation       ///< Animation to query.
-  );
-
   /// Accessors.
   float getSampleFrequency() const { return m_sampleFrequency; }
 
@@ -172,10 +165,6 @@ protected:
   //-----------------------
   // Trajectory
   DataRef                         m_trajectoryData;             ///< Holds a set of animation data for handling a trajectory bone (can be NULL) - DMA alignment
-
-  //-----------------------
-  // Channel names table
-  NMP::OrderedStringTable*               m_channelNames;               ///< Optional string table holding the names of each channel set in this anim.
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -202,14 +191,6 @@ NM_INLINE const TrajectorySourceBase* AnimSourceNSA::getTrajectoryChannelData(co
   NMP_ASSERT(sourceAnimation);
   const AnimSourceNSA* compressedSource = static_cast<const AnimSourceNSA*> (sourceAnimation);
   return (const TrajectorySourceBase*) compressedSource->m_trajectoryData.m_data;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const NMP::OrderedStringTable* AnimSourceNSA::getChannelNameTable(const AnimSourceBase* sourceAnimation)
-{
-  NMP_ASSERT(sourceAnimation);
-  const AnimSourceNSA* compressedSource = static_cast<const AnimSourceNSA*> (sourceAnimation);
-  return compressedSource->m_channelNames;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
