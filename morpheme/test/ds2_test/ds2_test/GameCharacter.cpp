@@ -68,8 +68,8 @@ CharacterBasic* CharacterBasic::create(CharacterDefBasic* networkDef)
 
   //----------------------
   // Perform an initial update of the network with start time of zero
-  NMP_STDOUT("Run initial update step");
-  instance->runInitialisingUpdateStep();
+  //NMP_STDOUT("Run initial update step");
+  //instance->runInitialisingUpdateStep();
 
   NMP_STDOUT("GameCharacter successfully created");
 

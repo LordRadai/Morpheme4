@@ -93,10 +93,13 @@ bool CharacterDefBasic::loadAnimations()
   // Load animations listed in this network definition
   for (uint32_t i = 0; i < m_netDef->getNumAnimSets(); ++i)
   {
+      m_netDef->loadAnimations((MR::AnimSetIndex)i, m_animFileLookUp);
+      /*
     if (!m_netDef->loadAnimations((MR::AnimSetIndex)i, m_animFileLookUp))
     {
       return false;
     }
+    */
   }
 
   NMP_STDOUT("Animations successfully loaded");

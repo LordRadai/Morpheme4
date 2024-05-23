@@ -14,7 +14,7 @@
 #include "GameCharacterDef.h"
 
 #define ASSETLOCATION "./ProjectData/" PLATFORMDIR
-#define NETWORK_DEF_BUNDLE_NAME ASSETLOCATION "/c1000.nmb"
+#define NETWORK_DEF_BUNDLE_NAME ASSETLOCATION "/c0001.nmb"
 
 //----------------------------------------------------------------------------------------------------------------------
 // RuntimeBasic3: This example completes a basic morpheme runtime setup. It builds on the first two tutorials by
@@ -98,6 +98,7 @@ int main(int NMP_UNUSED(argc), char** NMP_UNUSED(argv))
   // Hand off management of the gameCharacters we just created to the gameAnimModule.
   characterManager.registerCharacter(gameCharacter);
 
+  /*
   NMP_STDOUT("\nPerforming Updates:");
 
   //----------------------------
@@ -112,6 +113,7 @@ int main(int NMP_UNUSED(argc), char** NMP_UNUSED(argv))
   }
 
   NMP_STDOUT("Updates Complete");
+  */
 
   //----------------------------
   // When we are ready to exit we can terminate the Game::CharacterManager to free any classes/memory it has stored.

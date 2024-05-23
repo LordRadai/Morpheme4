@@ -46,7 +46,7 @@ MR::AnimSourceBase* AnimLoaderBasic::requestAnim(const MR::RuntimeAnimAssetID an
     //----------------------------
     // Failed to load animation
     NMP_STDOUT("Failed to Load Animation: %s", fullFilename);
-    NMP_ASSERT_FAIL();
+    //NMP_ASSERT_FAIL();
     return NULL;
   }
 

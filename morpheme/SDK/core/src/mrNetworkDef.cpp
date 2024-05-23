@@ -450,7 +450,11 @@ bool NetworkDef::loadAnimations(AnimSetIndex animSetIndex, void* userdata)
     AttribDataSourceAnim* sourceAnim = (AttribDataSourceAnim*)attribHandleAnim->m_attribData;
     NMP_ASSERT(sourceAnim);
     MR::AnimSourceBase* animData = manager.requestAnimation(sourceAnim->m_animAssetID, userdata);
-    NMP_ASSERT_MSG(animData != NULL, "Unable to load animation!");
+
+    if (animData == NULL)
+        return false;
+
+    //NMP_ASSERT_MSG(animData != NULL, "Unable to load animation!");
     if (!animData->isLocated())
     {
       AnimType animType = animData->getType();
