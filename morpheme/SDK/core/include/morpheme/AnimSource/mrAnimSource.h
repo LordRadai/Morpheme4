@@ -103,6 +103,11 @@ typedef struct
   const TrajectorySourceBase* (*animGetTrajectorySourceData) (
     const AnimSourceBase* sourceAnimation);
 
+  /// \brief Return the string table which contains the names of the animation channels which this animation contains
+  ///
+  /// Note that this function may return a NULL pointer if no string table exists.
+  const NMP::OrderedStringTable* (*animGetChannelNameTable) (
+    const AnimSourceBase* sourceAnimation);
 } AnimFunctionTable;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -155,6 +160,11 @@ public:
   /// \brief
   const TrajectorySourceBase* animGetTrajectorySourceData() const;
 
+  /// \brief Return the string table which contains the names of the animation channels which this animation contains.
+  ///
+  /// Note that this function may return a NULL pointer if no string table exists.
+  const NMP::OrderedStringTable* animGetChannelNameTable() const;
+
   // \brief
   NM_INLINE AnimType getType() { return m_animType; }
 
@@ -175,9 +185,8 @@ protected:
   uint8_t             m_padding[2];
 #ifdef NM_HOST_64_BIT
   // This padding is required to ensure that llvm and msvc 64-bit compilers pack sub-class members in the same alignment
-  uint32_t            m_padding64;
+  uint32_t            m_padding64[2];
 #endif // NM_HOST_64_BIT
-
 };
 
 //----------------------------------------------------------------------------------------------------------------------

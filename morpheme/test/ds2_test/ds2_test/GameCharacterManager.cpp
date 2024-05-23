@@ -11,33 +11,61 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "GameCharacterManager.h"
 
+#include "GameAssetLoader.h"
 #include "simpleBundle/simpleBundle.h"
 #include "NMPlatform/NMFile.h"
 #include "morpheme/Nodes/mrNodes.h"
+#include "morpheme/Nodes/mrNodeAnimSyncEvents.h"
+
+#include "GameAnimLoader.h"
+
+#include <vector>
 //----------------------------------------------------------------------------------------------------------------------
+
 
 namespace Game
 {
 
 //----------------------------------------------------------------------------------------------------------------------
-// Initialise CharacterManager.
 void CharacterManagerBasic::initMorpheme()
 {
-  NMP_STDOUT("\nInitialising Game::CharacterManagerBasic:");
+  NMP_STDOUT("\nInitialising Game::CharacterManagerBasic");
 
   NMP::Memory::init();
 
   //----------------------------
-  // Initialise morpheme library 
+  // Initialise morpheme library
   NMP_STDOUT("Initialising Morpheme Library");
   MR::Manager::initMorphemeLib();
+  
+  //----------------------------
+  // Dispatcher initialisation
+  MR::Dispatcher* dispatcher = MR::DispatcherBasic::createAndInit();
+  
+  //----------------------------
+  // Finalise semantic and core task registration
+  MR::Manager::getInstance().allocateRegistry();
+  MR::CoreTaskIDs::registerNMCoreTasks(dispatcher);
+
+  MR::Manager::getInstance().finaliseInitMorphemeLib();
+
+  //----------------------------
+  // Tidy up the dispatcher instance since we have finished initialising the static data
+  dispatcher->releaseAndDestroy();
+
+  //----------------------------
+  // Initialise animation file handling functions
+  NMP_STDOUT("Setting animation loading/unloading functions");
+  MR::Manager::getInstance().setAnimFileHandlingFunctions(
+    AnimLoaderBasic::requestAnim,
+    AnimLoaderBasic::releaseAnim);
 
   NMP_STDOUT("Initialisation of Game::CharacterManagerBasic complete");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Unload any data stored in this Game::CharacterManagerBasic, including Game::CharacterDefs that have been loaded and 
-// unload the memory they store.
+// Unload any data stored in this Game::CharacterManager, including Game::CharacterDefs that have been loaded and unload the memory
+// they store.
 //
 // Note that this isn't exactly robust - if we load bundle A and bundle B, and both contain the same rig, the rig will
 // be registered only once (by A), but will be unregistered when B is torn down. If A is not immediately torn down it
@@ -47,6 +75,15 @@ void CharacterManagerBasic::initMorpheme()
 // details.
 void CharacterManagerBasic::termMorpheme()
 {
+  if (m_characterData)
+  {
+    NMP_STDOUT("Releasing gameCharacterDef");
+
+    //----------------------------
+    // Once we've finished with the binary file release it.
+    CharacterBasic::destroy(m_characterData);
+  }
+
   if (m_characterDef->isLoaded())
   {
     NMP_STDOUT("Releasing gameCharacterDef");
@@ -58,6 +95,7 @@ void CharacterManagerBasic::termMorpheme()
 
   //----------------------------
   // Terminate morpheme library
+  MR::DispatcherBasic::term();
   MR::Manager::termMorphemeLib();
   NMP::Memory::shutdown();
 }
@@ -80,19 +118,31 @@ CharacterDefBasic* CharacterManagerBasic::createCharacterDef(const char* filenam
 //----------------------------------------------------------------------------------------------------------------------
 void CharacterManagerBasic::registerCharacterDef(CharacterDefBasic* characterDef)
 {
-  NMP_STDOUT("\nRegistering GameCharacterDef with CharacterManager");
-
-  if (!characterDef)
-  {
-    NMP_DEBUG_MSG("error: Valid character definition expected!");
-    return;
-  }
+  NMP_STDOUT("\nRegistering CharacterDef with Game::CharacterManagerBasic");
 
   //----------------------------
   // store a pointer to the character for use later
   m_characterDef = characterDef;
 }
 
-} // namespace Game
+//----------------------------------------------------------------------------------------------------------------------
+void CharacterManagerBasic::registerCharacter(CharacterBasic* characterData)
+{ 
+  NMP_STDOUT("\nRegistering CharacterData with Game::CharacterManagerBasic");
+
+  //----------------------------
+  // store a pointer to the character for use later
+  m_characterData = characterData;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
+void CharacterManagerBasic::update(float timeDelta)
+{
+  if (m_characterData)
+  {
+    m_characterData->update(timeDelta);
+  }
+}
+
+
+} // namespace Game

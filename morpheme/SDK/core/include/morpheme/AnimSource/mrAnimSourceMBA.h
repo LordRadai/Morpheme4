@@ -109,6 +109,12 @@ public:
   static NM_INLINE const TrajectorySourceBase* getTrajectorySourceData(
     const AnimSourceBase* sourceAnimation);
 
+  /// \brief Return the string table which contains the names of the animation channels which this animation contains
+  ///
+  /// Note that this function may return a NULL pointer if no string table exists.
+  static NM_INLINE const NMP::OrderedStringTable* getChannelNameTable(
+    const AnimSourceBase* sourceAnimation);
+
 #if !defined(NM_HOST_CELL_SPU) && !defined(NM_HOST_CELL_PPU)
   #ifdef NM_DEBUG
   /// \brief Debug only facility for writing out sampled key frame data to file.
@@ -158,7 +164,9 @@ protected:
   ChannelSetMBAInfo*       m_channelSetsInfo; ///< Contains default information about each channel
   TrajectorySourceMBA*     m_trajectoryData;  ///< Holds a set of animation data for handling a trajectory bone.
                                               ///< Can be NULL.
- };
+  NMP::OrderedStringTable*        m_channelNames;    ///< Optional string table holding the names of each channel set in this
+                                              ///< anim.
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 // AnimSourceMBA functions.
@@ -190,6 +198,17 @@ NM_INLINE const TrajectorySourceBase* AnimSourceMBA::getTrajectorySourceData(con
   NMP_ASSERT(sourceAnimation);
   source = static_cast<const AnimSourceMBA*> (sourceAnimation);
   return source->m_trajectoryData;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE const NMP::OrderedStringTable* AnimSourceMBA::getChannelNameTable(const AnimSourceBase* sourceAnimation)
+{
+  const AnimSourceMBA* source;
+
+  NMP_ASSERT(sourceAnimation);
+  source = static_cast<const AnimSourceMBA*> (sourceAnimation);
+
+  return source->m_channelNames;
 }
 
 } // namespace MR

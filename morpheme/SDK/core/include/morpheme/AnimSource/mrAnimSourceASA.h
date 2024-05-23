@@ -107,6 +107,11 @@ public:
   static NM_INLINE const TrajectorySourceBase* getTrajectorySourceData(
     const AnimSourceBase* sourceAnimation);
 
+  /// \brief Return the string table which contains the names of the animation channels which this animation contains
+  /// Note that this function may return a NULL pointer if no string table exists.
+  static NM_INLINE const NMP::OrderedStringTable* getChannelNameTable(
+    const AnimSourceBase* sourceAnimation);
+
   /// Accessors.
   float getSampleFrequency() const { return m_sampleFrequency; }
   uint32_t getNumSections() const  { return m_numSections; }
@@ -134,7 +139,9 @@ protected:
   ChannelSetASAInfo*       m_channelSetsInfo; ///< Contains default information about each channel
   TrajectorySourceASA*     m_trajectoryData;  ///< Holds a set of animation data for handling a trajectory bone.
                                               ///< Can be NULL.
- };
+  NMP::OrderedStringTable*        m_channelNames;    ///< Optional string table holding the names of each channel set in this
+                                              ///< anim.
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 // AnimSourceASA functions.
@@ -166,6 +173,17 @@ NM_INLINE const TrajectorySourceBase* AnimSourceASA::getTrajectorySourceData(con
   NMP_ASSERT(sourceAnimation);
   source = static_cast<const AnimSourceASA*> (sourceAnimation);
   return source->m_trajectoryData;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE const NMP::OrderedStringTable* AnimSourceASA::getChannelNameTable(const AnimSourceBase* sourceAnimation)
+{
+  const AnimSourceASA* source;
+
+  NMP_ASSERT(sourceAnimation);
+  source = static_cast<const AnimSourceASA*> (sourceAnimation);
+
+  return source->m_channelNames;
 }
 
 } // namespace MR

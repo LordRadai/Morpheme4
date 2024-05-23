@@ -10,10 +10,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 #ifdef _MSC_VER
-  #pragma once
+#pragma once
 #endif
 #ifndef GAME_ASSET_LOADER_H
 #define GAME_ASSET_LOADER_H
+
 //----------------------------------------------------------------------------------------------------------------------
 #include "GameCharacterDef.h"
 //----------------------------------------------------------------------------------------------------------------------
@@ -21,45 +22,49 @@
 namespace Game
 {
 
+
 class AssetLoaderBasic
 {
 public:
 
   //----------------------------
-  // A basic implementation of a loading function to load all assets from a NaturalMotion bundle.
-  // For a more detailed implementation see AssetLoaderBasic::loadBundle in the GameManagement library.
-  //
-  // If a NetworkDef exists in the bundle a pointer to it and its guid are returned.
-  // Common use: Loading a network definition and all associated assets from the given bundle.
-  //
-  // All assets in the bundle, provided they do not already exist, are loaded into the asset store and a list of asset
-  // IDs for the registered assets and a list of pointers for the client assets is generated which can be used to
-  // unload the assets later. The bundle memory can be freed after this method has completed.
-  //
-  // The network definition GUID (a 16 byte GUID) which is also returned can be used to identify network definitions to
-  // a morpheme:connect instance connected via COMMS. The animation file lookup is used by GameMorphemeManager to locate
-  // animation files on disk.
-  // 
-  // This functionality would be replaced with your own bundle loader if you do not use the simple bundle file format.
-  //
-  // No animation are loaded yet, this has to be done separately.
-  static bool loadBundle(
-    void*            bundle,
-    size_t           bundleSize,
-    MR::AnimRigDef** rig);
+  // Evaluate the asset requirements for the network stored in a simple bundle. This will allow us to create arrays large
+  // enough to store the assets
+  static void evalBundleRequirements(
+    uint32_t& numRegisteredAssets,
+    uint32_t& numClientAssets,
+    void*     buffer,
+    size_t    bufferSize);
 
   //----------------------------
-  // Unloads a set of assets.
-  // Common use: Unloading a network definition and all associated assets.
+  // This function iterates through the objects in a simple bundle and registers them with the morpheme runtime library.
+  // It passes back a pointer to the (last) networkDefinition found in the bundle. This function is very simple and
+  // simply fixes up the objects in-place, inside the bundle.
   //
-  // This is done by iterating over all registered assets and decreasing their reference count, and if the reference
-  // counts hits zero, the asset is unregistered and its memory freed. Client assets are always freed as they are not
-  // shared between network definitions.
-  static void unLoadBundle(void* bundle, size_t bundleSize);
+  // This would be replaced with your own bundle loader and unloader if you do not use the simple bundle file format.
+  static MR::NetworkDef* loadBundle(
+    void*            bundle,
+    size_t           bundleSize,
+    uint32_t*        registeredAssetIDs,
+    void**           clientAssets,
+    uint32_t         NMP_USED_FOR_ASSERTS(numRegisteredAssets),
+    uint32_t         NMP_USED_FOR_ASSERTS(numClientAssets),
+    MR::UTILS::SimpleAnimRuntimeIDtoFilenameLookup*& animFileLookup);
+
+  //----------------------------
+  // This unloads the objects loaded in the GameAnimModule::loadBundle. We could avoid an iteration over the bundle file
+  // by reusing object count information from the loadBundle() functions but this function has been designed to be
+  // self-contained.
+  static void unLoadBundle(
+    const uint32_t* registeredAssetIDs,
+    uint32_t        numRegisteredAssets,
+    void* const*    clientAssets,
+    uint32_t        numClientAssets);
 
 };
 
-} // namespace Game
+
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 #endif // GAME_ASSET_LOADER_H

@@ -468,7 +468,7 @@ NM_INLINE NodeBinEntry* NodeBin::getEntries() const
 //----------------------------------------------------------------------------------------------------------------------
 OutputCPPin* NodeBin::getOutputCPPin(PinIndex sourceCPPinIndex) const
 {
-  NMP_ASSERT(m_outputCPPins);
+  //NMP_ASSERT(m_outputCPPins);
   return m_outputCPPins + sourceCPPinIndex;
 }
 

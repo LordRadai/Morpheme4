@@ -26,6 +26,7 @@ AnimFunctionTable AnimSourceQSA::m_functionTable =
   AnimSourceQSA::getDuration,
   AnimSourceQSA::getNumChannelSets,
   AnimSourceQSA::getTrajectoryChannelData,
+  AnimSourceQSA::getChannelNameTable
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -611,11 +612,27 @@ void AnimSourceQSA::locate()
     REFIX_SWAP_PTR(TrajectorySourceQSA, m_trajectoryData);
     m_trajectoryData->locate();
   }
+
+  //-----------------------
+  // Channel name table
+  if (m_channelNames)
+  {
+    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
+    m_channelNames->locate();
+  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 void AnimSourceQSA::dislocate()
 {
+  //-----------------------
+  // Channel name table
+  if (m_channelNames)
+  {
+    m_channelNames->dislocate();
+    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
+  }
+
   //-----------------------
   // Trajectory
   if (m_trajectoryData)

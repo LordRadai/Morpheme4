@@ -91,6 +91,12 @@ public:
   static NM_INLINE const TrajectorySourceBase* getTrajectoryChannelData(
     const AnimSourceBase* sourceAnimation);
 
+  /// \brief Return the string table which contains the names of the animation channels which this animation contains
+  ///
+  /// Note that this function may return a NULL pointer if no string table exists.
+  static NM_INLINE const NMP::OrderedStringTable* getChannelNameTable(
+    const AnimSourceBase* sourceAnimation);
+
   static uint32_t knotInterval(
     uint16_t        numKnots,
     const uint16_t* knots,
@@ -184,6 +190,10 @@ protected:
   // Trajectory
   TrajectorySourceQSA*            m_trajectoryData;     ///< Holds a set of animation data for handling a trajectory bone.
                                                         ///< Can be NULL.
+
+  //-----------------------
+  // Channel names table
+  NMP::OrderedStringTable*               m_channelNames;       ///< Optional string table holding the names of each channel set in this anim.
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -216,6 +226,17 @@ NM_INLINE const TrajectorySourceBase* AnimSourceQSA::getTrajectoryChannelData(co
   NMP_ASSERT(sourceAnimation);
   compressedSource = static_cast<const AnimSourceQSA*> (sourceAnimation);
   return compressedSource->m_trajectoryData;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE const NMP::OrderedStringTable* AnimSourceQSA::getChannelNameTable(const AnimSourceBase* sourceAnimation)
+{
+  const AnimSourceQSA* compressedSource;
+
+  NMP_ASSERT(sourceAnimation);
+  compressedSource = static_cast<const AnimSourceQSA*> (sourceAnimation);
+
+  return compressedSource->m_channelNames;
 }
 
 } // namespace MR

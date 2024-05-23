@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameAnimLoader.h" />
+    <ClInclude Include="GameAssetLoader.h" />
+    <ClInclude Include="GameCharacter.h" />
+    <ClInclude Include="GameCharacterController.h" />
+    <ClInclude Include="GameCharacterDef.h" />
+    <ClInclude Include="GameCharacterManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameAnimLoader.cpp" />
+    <ClCompile Include="GameAssetLoader.cpp" />
+    <ClCompile Include="GameCharacter.cpp" />
+    <ClCompile Include="GameCharacterController.cpp" />
+    <ClCompile Include="GameCharacterDef.cpp" />
+    <ClCompile Include="GameCharacterManager.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -133,17 +150,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="GameAssetLoader.cpp" />
-    <ClCompile Include="GameCharacterDef.cpp" />
-    <ClCompile Include="GameCharacterManager.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GameAssetLoader.h" />
-    <ClInclude Include="GameCharacterDef.h" />
-    <ClInclude Include="GameCharacterManager.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

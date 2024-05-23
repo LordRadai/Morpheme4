@@ -34,6 +34,7 @@ AnimFunctionTable AnimSourceNSA::m_functionTable =
   AnimSourceNSA::getDuration,
   AnimSourceNSA::getNumChannelSets,
   AnimSourceNSA::getTrajectoryChannelData,
+  AnimSourceNSA::getChannelNameTable
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -379,12 +380,28 @@ void AnimSourceNSA::locate()
     TrajectorySourceNSA* trajectoryData = (TrajectorySourceNSA*) m_trajectoryData.m_data;
     trajectoryData->locate();
   }
+
+  //-----------------------
+  // Channel name table (DMA alignment)
+  if (m_channelNames)
+  {
+    REFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
+    m_channelNames->locate();
+  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 void AnimSourceNSA::dislocate()
 {
   uint32_t numSectionEntries = m_numFrameSections * m_numChannelSections;
+
+  //-----------------------
+  // Channel name table
+  if (m_channelNames)
+  {
+    m_channelNames->dislocate();
+    UNFIX_SWAP_PTR(NMP::OrderedStringTable, m_channelNames);
+  }
 
   //-----------------------
   // Trajectory (DMA alignment)
