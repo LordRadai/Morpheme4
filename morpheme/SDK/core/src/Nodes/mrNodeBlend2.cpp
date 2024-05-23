@@ -822,6 +822,7 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   const AttribDataBlendFlags* blendFlags = nodeDef->getAttribData<AttribDataBlendFlags>(ATTRIB_SEMANTIC_BLEND_FLAGS);
   if( isAdditive )
   {
+      /*
     // Optimise transforms
     nodeBlend2AdditiveBlendWeightCheck(
       blendFlags->m_alwaysBlendTrajectoryAndTransforms,
@@ -831,6 +832,7 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
+      */
 
     // Optimise sampled events
     nodeBlend2AdditiveBlendWeightCheck(
@@ -844,6 +846,7 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   }
   else
   {
+      /*
     // Optimise transforms
     nodeBlend2BlendWeightCheck(
       blendFlags->m_alwaysBlendTrajectoryAndTransforms,
@@ -853,6 +856,7 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
+      */
 
     // Optimise sampled events
     nodeBlend2BlendWeightCheck(

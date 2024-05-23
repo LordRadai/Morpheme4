@@ -4709,7 +4709,7 @@ void AttribDataSmoothFloatOperation::locate(AttribData* target)
 
   AttribData::locate(target);
   NMP::endianSwap(result->m_floatRateIncreasing);
-  NMP::endianSwap(result->m_floatRateDecreasing);
+  //NMP::endianSwap(result->m_floatRateDecreasing);
   NMP::endianSwap(result->m_initialValueX);
   NMP::endianSwap(result->m_initialValueY);
   NMP::endianSwap(result->m_initialValueZ);
@@ -4724,7 +4724,7 @@ void AttribDataSmoothFloatOperation::dislocate(AttribData* target)
 
   AttribData::dislocate(target);
   NMP::endianSwap(result->m_floatRateIncreasing);
-  NMP::endianSwap(result->m_floatRateDecreasing);
+  //NMP::endianSwap(result->m_floatRateDecreasing);
   NMP::endianSwap(result->m_initialValueX);
   NMP::endianSwap(result->m_initialValueY);
   NMP::endianSwap(result->m_initialValueZ);
@@ -4787,7 +4787,7 @@ AttribDataSmoothFloatOperation* AttribDataSmoothFloatOperation::init(
   result->setType(ATTRIB_TYPE_SMOOTH_FLOAT_OPERATION);
   result->setRefCount(refCount);
   result->m_floatRateIncreasing = rateInc;
-  result->m_floatRateDecreasing = rateDec;
+  //result->m_floatRateDecreasing = rateDec;
   result->m_initialValueX = initialValueX;
   result->m_initialValueY = initialValueY;
   result->m_initialValueZ = initialValueZ;
@@ -8164,7 +8164,7 @@ AttribDataBlendFlags* AttribDataBlendFlags::init(
   result->setRefCount(refCount);
 
   // Blend flags
-  result->m_alwaysBlendTrajectoryAndTransforms = true;
+  //result->m_alwaysBlendTrajectoryAndTransforms = true;
   result->m_alwaysCombineSampledEvents = true;
 
   // Make sure size is a multiple of the alignment requirement.
@@ -8199,7 +8199,7 @@ void AttribDataBlendFlags::locate(AttribData* target)
 
   // Header
   AttribData::locate(target);
-  NMP::endianSwap(result->m_alwaysBlendTrajectoryAndTransforms);
+  //NMP::endianSwap(result->m_alwaysBlendTrajectoryAndTransforms);
   NMP::endianSwap(result->m_alwaysCombineSampledEvents);
 }
 
@@ -8209,7 +8209,7 @@ void AttribDataBlendFlags::dislocate(AttribData* target)
   AttribDataBlendFlags* result = (AttribDataBlendFlags*) target;
 
   // Header  
-  NMP::endianSwap(result->m_alwaysBlendTrajectoryAndTransforms);
+  //NMP::endianSwap(result->m_alwaysBlendTrajectoryAndTransforms);
   NMP::endianSwap(result->m_alwaysCombineSampledEvents);
   AttribData::dislocate(target);
 }

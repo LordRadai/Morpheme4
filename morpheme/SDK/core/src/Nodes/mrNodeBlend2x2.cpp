@@ -469,19 +469,21 @@ void nodeBlend2x2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   //------------------------
   // Optimise transforms
   const AttribDataBlendFlags* blendFlags = nodeDef->getAttribData<AttribDataBlendFlags>(ATTRIB_SEMANTIC_BLEND_FLAGS);
-  nodeBlend2x2BlendWeightsCheck(  blendFlags->m_alwaysBlendTrajectoryAndTransforms,
-                                  blendWeightsAlwaysBlend,
-                                  activeNodeConnections->m_activeChildNodeIDs,
-                                  attribBlendWeights->m_trajectoryAndTransformsNumWeights,
-                                  attribBlendWeights->m_trajectoryAndTransformsWeights,
-                                  activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
-                                  activeNodeConnections->m_trajectoryAndTransformsNodeIDs,
-                                  numInvalidChildNodeIDs,
-                                  invalidChildNodeIDs );
+  nodeBlend2x2BlendWeightsCheck(
+      blendFlags->m_alwaysCombineSampledEvents,
+      blendWeightsAlwaysBlend,
+      activeNodeConnections->m_activeChildNodeIDs,
+      attribBlendWeights->m_sampledEventsNumWeights,
+      attribBlendWeights->m_sampledEventsWeights,
+      activeNodeConnections->m_sampledEventsNumNodeIDs,
+      activeNodeConnections->m_sampledEventsNodeIDs,
+      numInvalidChildNodeIDs,
+      invalidChildNodeIDs);
 
   NMP_ASSERT( numInvalidChildNodeIDs <= 3 );
   NMP_ASSERT( (numInvalidChildNodeIDs + activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs) == 4 );
 
+  /*
   //------------------------
   // Optimise sampled events.
   // as we do not have a separate event weight if the blend flags are 
@@ -523,6 +525,7 @@ void nodeBlend2x2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       NMP_ASSERT( numInvalidChildNodeIDs <= 3 );
       NMP_ASSERT( (numInvalidChildNodeIDs + activeNodeConnections->m_sampledEventsNumNodeIDs) == 4 );
   }
+  */
 
   //------------------------
   // Sync event track and events are always blended

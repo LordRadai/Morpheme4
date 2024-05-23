@@ -34,7 +34,7 @@ void AttribDataDeadBlendDef::locate(AttribData* target)
 
   AttribDataDeadBlendDef* result = (AttribDataDeadBlendDef*)target;
   NMP::endianSwap(result->m_blendToDestinationPhysicsBones);
-  NMP::endianSwap(result->m_deadReckoningAngularVelocityDamping);
+  //NMP::endianSwap(result->m_deadReckoningAngularVelocityDamping);
   NMP::endianSwap(result->m_useDeadReckoningWhenDeadBlending);
 }
 
@@ -43,7 +43,7 @@ void AttribDataDeadBlendDef::dislocate(AttribData* target)
 {
   AttribDataDeadBlendDef* result = (AttribDataDeadBlendDef*)target;
   NMP::endianSwap(result->m_blendToDestinationPhysicsBones);
-  NMP::endianSwap(result->m_deadReckoningAngularVelocityDamping);
+  //NMP::endianSwap(result->m_deadReckoningAngularVelocityDamping);
   NMP::endianSwap(result->m_useDeadReckoningWhenDeadBlending);
 
   AttribData::dislocate(target);
@@ -90,7 +90,7 @@ AttribDataDeadBlendDef* AttribDataDeadBlendDef::init(
   result->setType(ATTRIB_TYPE_DEAD_BLEND_DEF);
   result->setRefCount(refCount);
 
-  result->m_deadReckoningAngularVelocityDamping = 0.0f;
+  //result->m_deadReckoningAngularVelocityDamping = 0.0f;
   result->m_useDeadReckoningWhenDeadBlending = true;
   result->m_blendToDestinationPhysicsBones = false;
 

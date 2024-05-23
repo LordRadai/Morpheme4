@@ -2957,7 +2957,7 @@ public:
 #endif
 
   float        m_floatRateIncreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a larger number.
-  float        m_floatRateDecreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a smaller number.
+  //float        m_floatRateDecreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a smaller number.
   float        m_initialValueX; // The float (or for vectors, X component of) the value the operator will start at when it's initialised.
   float        m_initialValueY; // The Y component of the value the operator will start at when it's initialised.
   float        m_initialValueZ; // The Z component of the value the operator will start at when it's initialised.
@@ -3603,7 +3603,7 @@ public:
   static void locate(AttribData* target);
   static void dislocate(AttribData* target);
 
-  float m_deadReckoningAngularVelocityDamping; ///< Damping of the dead reckoning angular velocity
+  //float m_deadReckoningAngularVelocityDamping; ///< Damping of the dead reckoning angular velocity
   bool m_useDeadReckoningWhenDeadBlending;  ///< If On  - Transition source is replaced with a dead-reckoned animation source.
                                             ///< If Off - Transition source is replaced with its last output transform buffer.
   bool m_blendToDestinationPhysicsBones;    ///< If On  - Do an animation blend to the transforms that have already been affected by the physics.
@@ -3856,7 +3856,7 @@ public:
   static void dislocate(AttribData* target);
 
 public:
-  bool  m_alwaysBlendTrajectoryAndTransforms;
+  //bool  m_alwaysBlendTrajectoryAndTransforms;
   bool  m_alwaysCombineSampledEvents;
 };
 
