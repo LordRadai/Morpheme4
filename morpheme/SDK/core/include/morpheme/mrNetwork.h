@@ -2109,7 +2109,7 @@ NM_INLINE bool Network::sendMessage(NodeID targetNodeID, const Message& message)
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE bool Network::nodeIsActive(NodeID nodeID) const
 {
-    if (!(m_netDef->getNodeDef(nodeID)->getNodeFlags().isSet(NodeDef::NODE_FLAG_IS_OPERATOR_NODE) ||
+    if ((m_netDef->getNodeDef(nodeID)->getNodeFlags().isSet(NodeDef::NODE_FLAG_IS_OPERATOR_NODE) ||
         m_netDef->getNodeDef(nodeID)->getNodeFlags().isSet(NodeDef::NODE_FLAG_IS_CONTROL_PARAM)))
     {
         return operatorCPNodeIsActive(nodeID);
