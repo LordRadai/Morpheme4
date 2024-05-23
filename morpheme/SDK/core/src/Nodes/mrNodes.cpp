@@ -473,7 +473,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamVector3InitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamVector4InitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRayCastInitInstance));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRampFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorSmoothDampFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorSmoothDampVectorInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRateOfChangeFloatInitInstance));
@@ -482,8 +481,8 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRandomFloatInitInstance));
   
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeClosestAnimInitInstance));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeFreezeInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeCCOverrideInitInstance));
+  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeFreezeInitInstance));
 
   //-------------
   // Message Handlers
