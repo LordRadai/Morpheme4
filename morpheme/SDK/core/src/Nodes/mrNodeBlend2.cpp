@@ -749,6 +749,7 @@ NodeID nodeBlend2UpdateConnectionsBase(
   
   // Get the events blend weight
   float blendWeightEvents = blendWeight;
+  /*
   const CPConnection* connection = nodeDef->getInputCPConnection(1);
   if (connection->m_sourceNodeID != INVALID_NODE_ID)
   {
@@ -756,6 +757,7 @@ NodeID nodeBlend2UpdateConnectionsBase(
     AttribDataFloat* inputCPFloat1 = net->updateInputCPConnection<AttribDataFloat>(nodeDef->getInputCPConnection(1), animSet);
     blendWeightEvents = nodeBlend2CalculateBlendWeight(inputCPFloat1->m_value, nodeChildWeights->m_values);
   }
+  */
 
   //------------------------
   // Sets members of attribBlendWeights and activeNodeConnections. Indicating the number of and which nodes are active for 
