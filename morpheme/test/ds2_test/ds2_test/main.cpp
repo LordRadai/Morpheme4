@@ -12,6 +12,7 @@
 #include "GameCharacterManager.h"
 #include "GameCharacter.h"
 #include "GameCharacterDef.h"
+#include "morpheme/mrAnimationSourceHandle.h"
 
 #define ASSETLOCATION "./ProjectData/" PLATFORMDIR
 #define NETWORK_DEF_BUNDLE_NAME ASSETLOCATION "/c0001.nmb"
@@ -97,23 +98,6 @@ int main(int NMP_UNUSED(argc), char** NMP_UNUSED(argv))
   //----------------------------
   // Hand off management of the gameCharacters we just created to the gameAnimModule.
   characterManager.registerCharacter(gameCharacter);
-
-  /*
-  NMP_STDOUT("\nPerforming Updates:");
-
-  //----------------------------
-  // Our time difference between updates
-  static const float timeDelta = 1.0f / 60.0f;
-
-  //----------------------------
-  // Update i number of times to test the network update. Update would normally be called once per game frame.
-  for (int i = 0; i <= 1000; ++i)
-  {
-    characterManager.update(timeDelta);
-  }
-
-  NMP_STDOUT("Updates Complete");
-  */
 
   //----------------------------
   // When we are ready to exit we can terminate the Game::CharacterManager to free any classes/memory it has stored.

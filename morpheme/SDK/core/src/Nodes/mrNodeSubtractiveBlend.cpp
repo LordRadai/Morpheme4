@@ -170,8 +170,10 @@ NodeID nodeSubtractiveBlendUpdateConnections(
   //------------------------
   // This node re-uses the Blend2 Sampled Events Buffers tasks.
   // So we need to set the sampled events blend optimisation info.
-  BlendOptNodeConnections* activeNodeConnections = static_cast<BlendOptNodeConnections*>( net->getActiveNodesConnections(nodeDef->getNodeID()) );
-  activeNodeConnections->setSampledEventsNodeIDs(2,childNodeIDs);
+  //BlendOptNodeConnections* activeNodeConnections = static_cast<BlendOptNodeConnections*>( net->getActiveNodesConnections(nodeDef->getNodeID()) );
+  //activeNodeConnections->setSampledEventsNodeIDs(2,childNodeIDs);
+
+  NodeConnections* activeNodeConnections = net->getActiveNodesConnections(nodeDef->getNodeID());
 
   //------------------------
   // Initialise the playback pos

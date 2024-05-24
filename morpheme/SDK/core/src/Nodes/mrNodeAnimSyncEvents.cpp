@@ -41,33 +41,36 @@ NodeID nodeAnimSyncEventsUpdateConnections(
       AttribDataBool* loopable = node->getAttribData<AttribDataBool>(ATTRIB_SEMANTIC_LOOP);
       AttribDataSourceAnim* sourceAnim = node->getAttribData<AttribDataSourceAnim>(ATTRIB_SEMANTIC_SOURCE_ANIM, activeAnimSetIndex);
 
-      // Find if someone (usually a transition) has stored a start sync event adjustment on us or on a filter node parent.
-      NodeBinEntry* playbackPosInitEntry = net->getAttribDataNodeBinEntryRecurseToParent(ATTRIB_SEMANTIC_PLAYBACK_POS_INIT, thisNodeID, INVALID_NODE_ID, VALID_FOREVER, ANIMATION_SET_ANY);
-      AttribDataPlaybackPosInit* playbackPosInit = playbackPosInitEntry ? (AttribDataPlaybackPosInit*)playbackPosInitEntry->getAttribData() : NULL;
+      if (sourceAnim->m_syncEventTrackIndex != -1)
+      {
+          // Find if someone (usually a transition) has stored a start sync event adjustment on us or on a filter node parent.
+          NodeBinEntry* playbackPosInitEntry = net->getAttribDataNodeBinEntryRecurseToParent(ATTRIB_SEMANTIC_PLAYBACK_POS_INIT, thisNodeID, INVALID_NODE_ID, VALID_FOREVER, ANIMATION_SET_ANY);
+          AttribDataPlaybackPosInit* playbackPosInit = playbackPosInitEntry ? (AttribDataPlaybackPosInit*)playbackPosInitEntry->getAttribData() : NULL;
 
-      AttribDataHandle syncEventTrackHandle = AttribDataSyncEventTrack::create(net->getPersistentMemoryAllocator());
-      syncEventTrack = (AttribDataSyncEventTrack*)syncEventTrackHandle.m_attribData;
+          AttribDataHandle syncEventTrackHandle = AttribDataSyncEventTrack::create(net->getPersistentMemoryAllocator());
+          syncEventTrack = (AttribDataSyncEventTrack*)syncEventTrackHandle.m_attribData;
 
-      // Initialise the synchronisation event track from the appropriate discrete event track.
-      NMP_ASSERT(sourceAnim->m_syncEventTrackIndex < sourceEventTracks->m_numDiscreteEventTracks);
+          // Initialise the synchronisation event track from the appropriate discrete event track.
+          NMP_ASSERT(sourceAnim->m_syncEventTrackIndex < sourceEventTracks->m_numDiscreteEventTracks);
 
-      // Add any adjust start sync event to the start sync event specified in the def.
-      int32_t startSyncEvent = sourceAnim->m_startSyncEventIndex;
-      if (playbackPosInit)
-        startSyncEvent += playbackPosInit->m_adjustStartEventIndex;
+          // Add any adjust start sync event to the start sync event specified in the def.
+          int32_t startSyncEvent = sourceAnim->m_startSyncEventIndex;
+          if (playbackPosInit)
+              startSyncEvent += playbackPosInit->m_adjustStartEventIndex;
 
-      syncEventTrack->m_syncEventTrack.init(
-                                        sourceAnim->m_clipStartFraction,
-                                        (sourceAnim->m_clipEndFraction - sourceAnim->m_clipStartFraction),
-                                        sourceAnim->m_clipStartSyncEventIndex,
-                                        sourceEventTracks->m_sourceDiscreteEventTracks[sourceAnim->m_syncEventTrackIndex],
-                                        loopable->m_value,
-                                        startSyncEvent,
-                                        (sourceAnim->m_sourceAnimDuration * (sourceAnim->m_clipEndFraction - sourceAnim->m_clipStartFraction)),
-                                        sourceAnim->m_playBackwards);
+          syncEventTrack->m_syncEventTrack.init(
+              sourceAnim->m_clipStartFraction,
+              (sourceAnim->m_clipEndFraction - sourceAnim->m_clipStartFraction),
+              sourceAnim->m_clipStartSyncEventIndex,
+              sourceEventTracks->m_sourceDiscreteEventTracks[sourceAnim->m_syncEventTrackIndex],
+              loopable->m_value,
+              startSyncEvent,
+              (sourceAnim->m_sourceAnimDuration * (sourceAnim->m_clipEndFraction - sourceAnim->m_clipStartFraction)),
+              sourceAnim->m_playBackwards);
 
-      AttribAddress syncEventTrackAddress(ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, thisNodeID, INVALID_NODE_ID, VALID_FOREVER, activeAnimSetIndex);
-      net->addAttribData(syncEventTrackAddress, syncEventTrackHandle, LIFESPAN_FOREVER);
+          AttribAddress syncEventTrackAddress(ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, thisNodeID, INVALID_NODE_ID, VALID_FOREVER, activeAnimSetIndex);
+          net->addAttribData(syncEventTrackAddress, syncEventTrackHandle, LIFESPAN_FOREVER);
+      }
     }
     else
     {
