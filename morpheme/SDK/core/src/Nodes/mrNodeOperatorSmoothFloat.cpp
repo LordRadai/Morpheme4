@@ -39,6 +39,7 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampFloat(
                                         nodeID,
                                         INVALID_NODE_ID,
                                         VALID_FRAME_ANY_FRAME);
+
   NMP_ASSERT(stateEntry); // State data must also already exist.
   AttribDataSmoothFloatOperation* stateData = stateEntry->getAttribData<AttribDataSmoothFloatOperation>();
 
@@ -51,7 +52,7 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampFloat(
   AttribDataSmoothFloatOperation* smoothOpDefData = node->getAttribData<AttribDataSmoothFloatOperation>(ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF);
 
   float smoothTimeInc = smoothOpDefData->m_floatRateIncreasing;
-  float smoothTimeDec = smoothOpDefData->m_floatRateDecreasing;
+  float smoothTimeDec = smoothOpDefData->m_floatRateIncreasing;
 
   // If the data we have got is not from the last update frame initialise the cached value directly to the input value.
   FrameCount currFrameNo = net->getCurrentFrameNo();

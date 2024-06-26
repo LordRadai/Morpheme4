@@ -385,12 +385,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3CrossProductOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3AngleOutputCPUpdate));
 
-  manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<float, AttribDataFloat, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>, "nodeOperatorTimeLagInputOutputCPUpdateFloat");
-  manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<int32_t, AttribDataInt, ATTRIB_TYPE_TIME_LAG_INPUT_INT>, "nodeOperatorTimeLagInputOutputCPUpdateInt");
-  manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<NMP::Vector3, AttribDataVector3, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3>, "nodeOperatorTimeLagInputOutputCPUpdateVector3");
-  manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<NMP::Quat, AttribDataVector4, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4>, "nodeOperatorTimeLagInputOutputCPUpdateVector4");
-  manager.registerOutputCPTask(nodeOperatorTimeLagInputOutputCPUpdate<bool, AttribDataBool, ATTRIB_TYPE_TIME_LAG_INPUT_BOOL>, "nodeOperatorTimeLagInputOutputCPUpdateBool");
-    
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeNullEmitMessageOutputCPUpdate));
 
   //-------------
@@ -468,15 +462,8 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   //-------------
   // Register node initialisation functions. This is initialisation that needs to happen at network instantiation.
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceInvalidateAllChildren));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceInvalidateAllChildrenInitPinAttrib));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateFloatOutputAttribute));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateFloatOutputAttributeInitPinAttrib));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateIntOutputAttribute));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateIntOutputAttributeInitPinAttrib));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateVector3OutputAttribute));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateBoolOutputAttribute));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeShareInitInstanceCreateBoolOutputAttributeInitPinAttrib));
 
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeStateMachineInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamBoolInitInstance));
@@ -486,19 +473,12 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamVector3InitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeControlParamVector4InitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRayCastInitInstance));
-  manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRampFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorSmoothDampFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorSmoothDampVectorInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRateOfChangeFloatInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRateOfChangeVectorInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorVector3ToFloatsInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeOperatorRandomFloatInitInstance));
-  
-  manager.registerInitNodeInstanceFn(nodeOperatorTimeLagInputInitInstance<float, AttribDataFloat, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>, "nodeOperatorTimeLagInputInitInstanceFloat");
-  manager.registerInitNodeInstanceFn(nodeOperatorTimeLagInputInitInstance<int32_t, AttribDataInt, ATTRIB_TYPE_TIME_LAG_INPUT_INT>, "nodeOperatorTimeLagInputInitInstanceInt");
-  manager.registerInitNodeInstanceFn(nodeOperatorTimeLagInputInitInstance<NMP::Vector3, AttribDataVector3, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3>, "nodeOperatorTimeLagInputInitInstanceVector3");
-  manager.registerInitNodeInstanceFn(nodeOperatorTimeLagInputInitInstance<NMP::Quat, AttribDataVector4, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4>, "nodeOperatorTimeLagInputInitInstanceVector4");
-  manager.registerInitNodeInstanceFn(nodeOperatorTimeLagInputInitInstance<bool, AttribDataBool, ATTRIB_TYPE_TIME_LAG_INPUT_BOOL>, "nodeOperatorTimeLagInputInitInstanceBool");
   
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeClosestAnimInitInstance));
   manager.registerInitNodeInstanceFn(REG_FUNC_ARGS(nodeCCOverrideInitInstance));

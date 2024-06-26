@@ -15,6 +15,7 @@
     <ProjectGuid>{C4E21FB7-6883-456D-8AAA-3306F29276B1}</ProjectGuid>
     <RootNamespace>gameManagement_NoPhysics</RootNamespace>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -41,13 +42,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>gameManagement_NoPhysics_debug</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\gameManagement_NoPhysics\debug\</IntDir>
-    <OutDir>..\..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
+    <IntDir>$(SolutionDir)\DS2AnimToolset\build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\DS2AnimToolset\lib\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(SolutionDir)DS2AnimToolset\lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>gameManagement_NoPhysics</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\gameManagement_NoPhysics\release\</IntDir>
-    <OutDir>..\..\..\lib\x64\vs$(VisualStudioVersion)\</OutDir>
+    <IntDir>$(SolutionDir)\DS2AnimToolset\build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\DS2AnimToolset\lib\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(SolutionDir)DS2AnimToolset\lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -84,7 +87,7 @@
       <ProgramDatabaseFileName>$(OutDir)gameManagement_NoPhysics.pdb</ProgramDatabaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>

@@ -533,7 +533,7 @@ void TaskAnimDeadBlendTransformBuffs(Dispatcher::TaskParameters* parameters)
   IntegrateTransforms(
     *(deadBlendTransformsState->m_transformBuffer),
     *(deadBlendRates->m_transformBuffer),
-    dt, deadBlendDef->m_deadReckoningAngularVelocityDamping);
+    dt, 0.f);
 
 #if OUTPUT_DEAD_TRANSFORMS
   // nothing to do
@@ -608,7 +608,7 @@ void TaskAnimDeadBlendTrajectoryDeltaAndTransformBuffs(Dispatcher::TaskParameter
   IntegrateTransforms(
     *(deadBlendTransformsState->m_transformBuffer),
     *(deadBlendRates->m_transformBuffer),
-    dt, deadBlendDef->m_deadReckoningAngularVelocityDamping);
+    dt, 0.f);
 
 #if OUTPUT_DEAD_TRANSFORMS
   // nothing to do

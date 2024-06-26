@@ -569,16 +569,16 @@ NodeID nodeScatterBlend2DUpdateConnections(
   triangleGetBlendWeights( result.m_childNodeWeights, blendWeightsAlwaysBlend );
 
   // Optimise trajectory and transforms.
-  triangleBlendWeightCheck( blendFlags->m_alwaysBlendTrajectoryAndTransforms,
-                            result.m_childNodeWeights,
-                            result.m_childNodeIDs,
-                            blendWeightsAlwaysBlend,
-                            numBlendWeightsOpt,
-                            blendWeightsOpt,
-                            numChildNodeIDsOpt,
-                            childNodeIDsOpt,
-                            numInvalidChildNodeIDs,
-                            invalidChildNodeIDs );
+  triangleBlendWeightCheck(blendFlags->m_alwaysCombineSampledEvents,
+      result.m_childNodeWeights,
+      result.m_childNodeIDs,
+      blendWeightsAlwaysBlend,
+      numBlendWeightsOpt,
+      blendWeightsOpt,
+      numChildNodeIDsOpt,
+      childNodeIDsOpt,
+      numInvalidChildNodeIDs,
+      invalidChildNodeIDs);
 
   NMP_ASSERT( numChildNodeIDsOpt >= 1 && numChildNodeIDsOpt <=3 );
   NMP_ASSERT( numInvalidChildNodeIDs <=2 );
@@ -587,6 +587,7 @@ NodeID nodeScatterBlend2DUpdateConnections(
   attribBlendWeights->setTrajectoryAndTransformsWeights(numBlendWeightsOpt, blendWeightsOpt);
   activeNodeConnections->setTrajectoryAndTransformsNodeIDs(numChildNodeIDsOpt, childNodeIDsOpt);
 
+  /*
   //------------------------
   // Optimise sampled events.
   // as we do not have a separate event weight if the blend flags are 
@@ -630,6 +631,7 @@ NodeID nodeScatterBlend2DUpdateConnections(
     attribBlendWeights->setSampledEventsWeights(numBlendWeightsOpt, blendWeightsOpt);
     activeNodeConnections->setSampledEventsNodeIDs(numChildNodeIDsOpt, childNodeIDsOpt);
   }
+  */
 
   // Sync event track and non sampled events are always blended
   attribBlendWeights->setEventsWeights(2, blendWeightsAlwaysBlend);

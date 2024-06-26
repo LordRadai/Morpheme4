@@ -60,7 +60,7 @@ NodeInitDataArrayDef* NodeInitDataArrayDef::init(
 {
   resource.align(NMP::Memory::Format(sizeof(NodeInitDataArrayDef), MR_NODE_INIT_DATA_ALIGNMENT));
   NodeInitDataArrayDef* result = (NodeInitDataArrayDef*)resource.ptr;
-  resource.increment(NMP::Memory::Format(sizeof(NodeInitDataArrayDef), resource.format.alignment));
+  resource.increment(NMP::Memory::Format(sizeof(NodeInitDataArrayDef), resource.format.alignment & 0xFFFFFFFF));
 
   // Init and wipe control param node IDs.
   result->m_nodeInitDataArray = (NodeInitData**)resource.ptr;
@@ -450,24 +450,35 @@ bool NetworkDef::loadAnimations(AnimSetIndex animSetIndex, void* userdata)
     AttribDataSourceAnim* sourceAnim = (AttribDataSourceAnim*)attribHandleAnim->m_attribData;
     NMP_ASSERT(sourceAnim);
     MR::AnimSourceBase* animData = manager.requestAnimation(sourceAnim->m_animAssetID, userdata);
-    NMP_ASSERT_MSG(animData != NULL, "Unable to load animation!");
-    if (!animData->isLocated())
+
+    if (animData == NULL)
     {
-      AnimType animType = animData->getType();
-      NMP::endianSwap(animType);
-      const MR::Manager::AnimationFormatRegistryEntry* animFormatRegistryEntry =
-        MR::Manager::getInstance().getInstance().findAnimationFormatRegistryEntry(animType);
-      NMP_ASSERT_MSG(animFormatRegistryEntry, "Unable to get AnimationFormatRegistryEntry entry for animation type %d!", animType);
-      animFormatRegistryEntry->m_locateAnimFormatFn(animData);
+        NMP_MSG("Unable to load animation!");
+
+        sourceAnim->setAnimation(NULL);
+        sourceAnim->fixupRigToAnimMap();
+        sourceAnim->setTrajectorySource(NULL);
     }
-    sourceAnim->setAnimation(animData);
+    else
+    {
+        if (!animData->isLocated())
+        {
+            AnimType animType = animData->getType();
+            NMP::endianSwap(animType);
+            const MR::Manager::AnimationFormatRegistryEntry* animFormatRegistryEntry =
+                MR::Manager::getInstance().getInstance().findAnimationFormatRegistryEntry(animType);
+            NMP_ASSERT_MSG(animFormatRegistryEntry, "Unable to get AnimationFormatRegistryEntry entry for animation type %d!", animType);
+            animFormatRegistryEntry->m_locateAnimFormatFn(animData);
+        }
+        sourceAnim->setAnimation(animData);
 
-    sourceAnim->fixupRigToAnimMap();
+        sourceAnim->fixupRigToAnimMap();
 
-    //--------------------------
-    // Trajectory channel
-    const TrajectorySourceBase* trajChannelSource = animData->animGetTrajectorySourceData();
-    sourceAnim->setTrajectorySource(trajChannelSource);
+        //--------------------------
+        // Trajectory channel
+        const TrajectorySourceBase* trajChannelSource = animData->animGetTrajectorySourceData();
+        sourceAnim->setTrajectorySource(trajChannelSource);
+    }
   }
 
   return true;
@@ -731,7 +742,7 @@ EmittedControlParamsInfo* EmittedControlParamsInfo::init(
   {
     result->m_emittedControlParamsData = NULL;
   }
-  memRes.align(memReqs.alignment);
+  memRes.align(memReqs.alignment & 0xFFFFFFFF);
 
   return result;
 }
@@ -807,7 +818,7 @@ NodeIDsArray* NodeIDsArray::init(
   {
     result->m_nodeIDs = NULL;
   }
-  memRes.align(memReqs.alignment);
+  memRes.align(memReqs.alignment & 0xFFFFFFFF);
 
   return result;
 }

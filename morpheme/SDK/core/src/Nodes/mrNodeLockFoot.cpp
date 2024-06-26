@@ -27,8 +27,8 @@ NodeID nodeLockFootUpdateConnections(
   NMP_ASSERT(node->getNumInputCPConnections() == 2);
   AnimSetIndex animSetIndex = net->getOutputAnimSetIndex(node->getNodeID());
 
-  net->updateInputCPConnection(node->getInputCPConnection(0), animSetIndex);
-  net->updateInputCPConnection(node->getInputCPConnection(1), animSetIndex);
+  net->updateOptionalInputCPConnection(node->getInputCPConnection(0), animSetIndex);
+  net->updateOptionalInputCPConnection(node->getInputCPConnection(1), animSetIndex);
 
   // Some useful info
   FrameCount currentFrameNo = net->getCurrentFrameNo();

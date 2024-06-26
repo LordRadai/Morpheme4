@@ -263,11 +263,7 @@ MR::AttribDataBlendFlags* initBlendNodeBlendFlags(
     blendFlags,                                           // attribData,  
     MR::AttribDataBlendFlags::getMemoryRequirements());   // attribMemReqs
 
-  //---------------------------
-  // Set the data
-  NMP_USED_FOR_ASSERTS( bool readBoolSuceeded = )
-  nodeDefDataBlock->readBool(blendFlags->m_alwaysBlendTrajectoryAndTransforms, "AlwaysBlendTrajectoryAndTransforms");
-  NMP_ASSERT( readBoolSuceeded );
+  bool readBoolSuceeded;
 
   NMP_USED_FOR_ASSERTS( readBoolSuceeded = )
   nodeDefDataBlock->readBool(blendFlags->m_alwaysCombineSampledEvents, "AlwaysCombineSampledEvents");

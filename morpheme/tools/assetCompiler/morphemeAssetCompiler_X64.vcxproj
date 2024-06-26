@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Target LE64 Debug|x64">
-      <Configuration>Target LE64 Debug</Configuration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Target LE64 Release|x64">
-      <Configuration>Target LE64 Release</Configuration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -15,15 +15,16 @@
     <ProjectGuid>{D5EA6945-C696-4C11-89A4-EB1C8F663912}</ProjectGuid>
     <RootNamespace>morphemeAssetCompiler</RootNamespace>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Target LE64 Debug|x64'">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Target LE64 Release|x64'">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
@@ -32,28 +33,30 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Target LE64 Debug|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Target LE64 Release|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Debug|x64'">
-    <TargetName>morphemeAssetCompiler_target_LE64_debug</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\morphemeAssetCompiler\target_le64_debug\</IntDir>
-    <OutDir>..\..\..\bin\x64\vs$(VisualStudioVersion)\</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>morphemeAssetCompiler_debug</TargetName>
+    <IntDir>$(SolutionDir)DS2AnimToolset\build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)DS2AnimToolset\build\$(Platform)\$(Configuration)\bin\</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LibraryPath>$(SolutionDir)DS2AnimToolset\lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Release|x64'">
-    <TargetName>morphemeAssetCompiler_target_LE64</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\morphemeAssetCompiler\target_le64_release\</IntDir>
-    <OutDir>..\..\..\bin\x64\vs$(VisualStudioVersion)\</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>morphemeAssetCompiler</TargetName>
+    <IntDir>$(SolutionDir)DS2AnimToolset\build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)DS2AnimToolset\build\$(Platform)\$(Configuration)\bin\</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LibraryPath>$(SolutionDir)DS2AnimToolset\lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\utils\simpleBundle\include;Core;Core\include\core;..\..\SDK\assetProcessor\include;..\..\SDK\core\include;..\..\SDK;..\..\..\common\NMRuntimeUtils\include;..\..\SDK\export\include;..\..\..\common\tinyxml;..\..\..\common\NMNumerics\include;..\..\..\common\NMPlatform\include;..\..\..\common\NMPlatform\include\NMPlatform\win32;..\..\..\common\XMD\include;..\..\..\common\NMTL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
@@ -67,7 +70,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeSimpleBundle_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\acCore_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeAssetProcessor_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeCore_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMRuntimeUtils_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeExport_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMTinyXML_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMNumerics_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMPlatform_target_LE64_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\XMD_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMTL_debug.lib";shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"morphemeSimpleBundle_debug.lib";"acCore_debug.lib";"morphemeAssetProcessor_debug.lib";"morphemeCore_debug.lib";"NMRuntimeUtils_debug.lib";"morphemeExport_debug.lib";"NMTinyXML_debug.lib";"NMNumerics_debug.lib";"NMPlatform_debug.lib";"XMD_debug.lib";"NMTL_debug.lib";shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ManifestFile>$(IntDir)intermediate.manifest</ManifestFile>
       <ProgramDatabaseFile>$(OutDir)morphemeAssetCompiler_target_LE64_debug.pdb</ProgramDatabaseFile>
@@ -78,11 +81,11 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>if exist $(ProjectDir)configs\ ( xcopy /I /Y $(ProjectDir)configs\*.cfg $(ProjectDir)$(OutDir) )</Command>
+      <Command>if exist $(ProjectDir)configs\ ( xcopy /I /Y $(ProjectDir)configs\*.cfg $(OutDir) )</Command>
       <Message>Copying configs...</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Target LE64 Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\utils\simpleBundle\include;Core;Core\include\core;..\..\SDK\assetProcessor\include;..\..\SDK\core\include;..\..\SDK;..\..\..\common\NMRuntimeUtils\include;..\..\SDK\export\include;..\..\..\common\tinyxml;..\..\..\common\NMNumerics\include;..\..\..\common\NMPlatform\include;..\..\..\common\NMPlatform\include\NMPlatform\win32;..\..\..\common\XMD\include;..\..\..\common\NMTL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
@@ -98,7 +101,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeSimpleBundle_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\acCore_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeAssetProcessor_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeCore_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMRuntimeUtils_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeExport.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMTinyXML.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMNumerics.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMPlatform_target_LE64.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\XMD.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMTL.lib";shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"morphemeSimpleBundle.lib";"acCore.lib";"morphemeAssetProcessor.lib";"morphemeCore.lib";"NMRuntimeUtils.lib";"morphemeExport.lib";"NMTinyXML.lib";"NMNumerics.lib";"NMPlatform.lib";"XMD.lib";"NMTL.lib";shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ManifestFile>$(IntDir)intermediate.manifest</ManifestFile>
@@ -111,7 +114,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>if exist $(ProjectDir)configs\ ( xcopy /I /Y $(ProjectDir)configs\*.cfg $(ProjectDir)$(OutDir) )</Command>
+      <Command>if exist $(ProjectDir)configs\ ( xcopy /I /Y $(ProjectDir)configs\*.cfg $(OutDir) )</Command>
       <Message>Copying configs...</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
