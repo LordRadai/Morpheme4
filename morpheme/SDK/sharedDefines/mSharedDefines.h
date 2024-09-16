@@ -365,143 +365,153 @@ static const FrameCount NOT_FRAME_UPDATED = 0xFFFFFFFF;
 //----------------------------------------------------------------------------------------------------------------------
 enum AttribDataTypeEnum
 {
-  // The following simple types correspond to ATTRIB_SEMANTIC_CP_BOOL ... ATTRIB_SEMANTIC_CP_BOOL for simple generation
-  ATTRIB_TYPE_BOOL = 0,     ///< Boolean attrib data type.
-  ATTRIB_TYPE_UINT,         ///< Unsigned int attrib data type.
-  ATTRIB_TYPE_INT,          ///< Int attrib data type.
-  ATTRIB_TYPE_FLOAT,        ///< Float attrib data type.
-  ATTRIB_TYPE_VECTOR3,      ///< NMP::Vector3 attrib data type.
-  ATTRIB_TYPE_VECTOR4,      ///< NMP::Vector4 or NMP::Quat attrib data type.
-  // The previous simple types correspond to ATTRIB_SEMANTIC_CP_BOOL ... ATTRIB_SEMANTIC_CP_BOOL for simple generation
+    // The following simple types correspond to ATTRIB_SEMANTIC_CP_BOOL ... ATTRIB_SEMANTIC_CP_BOOL for simple generation
+    ATTRIB_TYPE_BOOL = 0,     ///< Boolean attrib data type.
+    ATTRIB_TYPE_UINT,         ///< Unsigned int attrib data type.
+    ATTRIB_TYPE_INT,          ///< Int attrib data type.
+    ATTRIB_TYPE_FLOAT,        ///< Float attrib data type.
+    ATTRIB_TYPE_VECTOR3,      ///< NMP::Vector3 attrib data type.
+    ATTRIB_TYPE_VECTOR4,      ///< NMP::Vector4 or NMP::Quat attrib data type.
+    // The previous simple types correspond to ATTRIB_SEMANTIC_CP_BOOL ... ATTRIB_SEMANTIC_CP_BOOL for simple generation
 
-  ATTRIB_TYPE_BOOL_ARRAY,   ///< An array of bools.
-  ATTRIB_TYPE_INT_ARRAY,    ///< An array of signed integers.
-  ATTRIB_TYPE_UINT_ARRAY,   ///< An array of unsigned integers.
-  ATTRIB_TYPE_FLOAT_ARRAY,  ///< An array of floats.
+    ATTRIB_TYPE_BOOL_ARRAY,   ///< An array of bools.
+    ATTRIB_TYPE_INT_ARRAY,    ///< An array of signed integers.
+    ATTRIB_TYPE_UINT_ARRAY,   ///< An array of unsigned integers.
+    ATTRIB_TYPE_FLOAT_ARRAY,  ///< An array of floats.
 
-  ATTRIB_TYPE_UPDATE_PLAYBACK_POS,              ///< For setting an absolute time position or updating time with a delta value.
-  ATTRIB_TYPE_PLAYBACK_POS,                     ///< Current and last frame times.
-  ATTRIB_TYPE_UPDATE_SYNC_EVENT_PLAYBACK_POS,   ///< For setting an absolute sync event position or updating with a delta value.
+    ATTRIB_TYPE_UPDATE_PLAYBACK_POS,              ///< For setting an absolute time position or updating time with a delta value.
+    ATTRIB_TYPE_PLAYBACK_POS,                     ///< Current and last frame times.
+    ATTRIB_TYPE_UPDATE_SYNC_EVENT_PLAYBACK_POS,   ///< For setting an absolute sync event position or updating with a delta value.
 
-  ATTRIB_TYPE_TRANSFORM_BUFFER,                 ///< Transform buffer.
-  ATTRIB_TYPE_TRAJECTORY_DELTA_TRANSFORM,       ///< The trajectory channels delta transform for this frame.
-  ATTRIB_TYPE_TRANSFORM,                        ///< The trajectory channel transform.  (Needed between frames)
-  ATTRIB_TYPE_VELOCITY,                         ///< Linear and angular velocity.
-  ATTRIB_TYPE_SYNC_EVENT_TRACK,                 ///< Synchronisation event track.
-  ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,            ///< Buffer of sampled events.
-  ATTRIB_TYPE_DURATION_EVENT_TRACK_SET,         ///< A set of duration event tracks.
+    ATTRIB_TYPE_TRANSFORM_BUFFER,                 ///< Transform buffer.
+    ATTRIB_TYPE_TRAJECTORY_DELTA_TRANSFORM,       ///< The trajectory channels delta transform for this frame.
+    ATTRIB_TYPE_TRANSFORM,                        ///< The trajectory channel transform.  (Needed between frames)
+    ATTRIB_TYPE_VELOCITY,                         ///< Linear and angular velocity.
+    ATTRIB_TYPE_SYNC_EVENT_TRACK,                 ///< Synchronisation event track.
+    ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,            ///< Buffer of sampled events.
+    ATTRIB_TYPE_DURATION_EVENT_TRACK_SET,         ///< A set of duration event tracks.
 
-  ATTRIB_TYPE_RIG,                              ///< Describes hierarchy of bones etc.
-  ATTRIB_TYPE_SOURCE_ANIM,                      ///< A source animation in any format.
+    ATTRIB_TYPE_RIG,                              ///< Describes hierarchy of bones etc.
+    ATTRIB_TYPE_SOURCE_ANIM,                      ///< A source animation in any format.
 
-  ATTRIB_TYPE_RIG_TO_ANIM_MAP,                  ///< Maps rig channels to animation channels.
+    ATTRIB_TYPE_RIG_TO_ANIM_MAP,                  ///< Maps rig channels to animation channels.
 
-  ATTRIB_TYPE_SOURCE_EVENT_TRACKS,              ///< A set of source discrete event tracks.
+    ATTRIB_TYPE_SOURCE_EVENT_TRACKS,              ///< A set of source discrete event tracks.
 
-  ATTRIB_TYPE_HEAD_LOOK_SETUP,            ///< Wraps the params needed to run head look IK solver.
-  ATTRIB_TYPE_HEAD_LOOK_CHAIN,            ///< Describes a head look IK chain.
+    ATTRIB_TYPE_HEAD_LOOK_SETUP,            ///< Wraps the params needed to run head look IK solver.
+    ATTRIB_TYPE_HEAD_LOOK_CHAIN,            ///< Describes a head look IK chain.
 
-  ATTRIB_TYPE_GUN_AIM_SETUP,              ///< Wraps the params needed to run Gun Aim Node.
-  ATTRIB_TYPE_GUN_AIM_IK_CHAIN,           ///< Describes a per anim set gun aim IK chain.
+    ATTRIB_TYPE_GUN_AIM_SETUP,              ///< Wraps the params needed to run Gun Aim Node.
+    ATTRIB_TYPE_GUN_AIM_IK_CHAIN,           ///< Describes a per anim set gun aim IK chain.
 
-  ATTRIB_TYPE_TWO_BONE_IK_SETUP,          ///< Wraps all the params needed to run the two bone IK solver.
-  ATTRIB_TYPE_TWO_BONE_IK_CHAIN,          ///< Describes a standard two bone IK chain with end-middle-root joints
-                                          ///<  indices.
+    ATTRIB_TYPE_TWO_BONE_IK_SETUP,          ///< Wraps all the params needed to run the two bone IK solver.
+    ATTRIB_TYPE_TWO_BONE_IK_CHAIN,          ///< Describes a standard two bone IK chain with end-middle-root joints
+    ///<  indices.
 
-  ATTRIB_TYPE_LOCK_FOOT_SETUP,            ///< Wraps the params needed to run the lock foot IK solver.
-  ATTRIB_TYPE_LOCK_FOOT_CHAIN,            ///< Describes a lock foot ik chain.
-  ATTRIB_TYPE_LOCK_FOOT_STATE,            ///< Stores lock foot state variables.
+    ATTRIB_TYPE_LOCK_FOOT_SETUP,            ///< Wraps the params needed to run the lock foot IK solver.
+    ATTRIB_TYPE_LOCK_FOOT_CHAIN,            ///< Describes a lock foot ik chain.
+    ATTRIB_TYPE_LOCK_FOOT_STATE,            ///< Stores lock foot state variables.
 
-  ATTRIB_TYPE_HIPS_IK_DEF,                ///< Settings for the Hips IK node
-  ATTRIB_TYPE_HIPS_IK_ANIM_SET_DEF,       ///< Geometry of the Hips IK chains
+    ATTRIB_TYPE_HIPS_IK_DEF,                ///< Settings for the Hips IK node
+    ATTRIB_TYPE_HIPS_IK_ANIM_SET_DEF,       ///< Geometry of the Hips IK chains
 
-  ATTRIB_TYPE_CLOSEST_ANIM_DEF,           ///< Setup data for the closest anim node.
-  ATTRIB_TYPE_CLOSEST_ANIM_DEF_ANIM_SET,  ///< Setup data for the closest anim node (anim set specific).
-  ATTRIB_TYPE_CLOSEST_ANIM_STATE,         ///< State data for the closest anim node
+    ATTRIB_TYPE_CLOSEST_ANIM_DEF,           ///< Setup data for the closest anim node.
+    ATTRIB_TYPE_CLOSEST_ANIM_DEF_ANIM_SET,  ///< Setup data for the closest anim node (anim set specific).
+    ATTRIB_TYPE_CLOSEST_ANIM_STATE,         ///< State data for the closest anim node
 
-  ATTRIB_TYPE_STATE_MACHINE_DEF,          ///< Holds the full definition of a state machine.
-  ATTRIB_TYPE_STATE_MACHINE,              ///< Holds the current state of a state machine.
+    ATTRIB_TYPE_STATE_MACHINE_DEF,          ///< Holds the full definition of a state machine.
+    ATTRIB_TYPE_STATE_MACHINE,              ///< Holds the current state of a state machine.
 
-  ATTRIB_TYPE_PHYSICS_RIG,                ///< Holds a pointer to the PhysicsRig
-  ATTRIB_TYPE_PHYSICS_RIG_DEF,            ///< Holds a pointer to the PhysicsRigDef
-  ATTRIB_TYPE_CHARACTER_PROPERTIES,       ///< The current world root transform of the Network/game character and information reflecting
-                                          ///<  the state of the Networks associated character controller if there is one.
-  ATTRIB_TYPE_CHARACTER_CONTROLLER_DEF,   ///< Holds a pointer to the character controller def
-  ATTRIB_TYPE_ANIM_TO_PHYSICS_MAP,        ///< Stores the bone look up table from anim to physics and physics to
-                                          ///<  anim.
+    ATTRIB_TYPE_PHYSICS_RIG,                ///< Holds a pointer to the PhysicsRig
+    ATTRIB_TYPE_PHYSICS_RIG_DEF,            ///< Holds a pointer to the PhysicsRigDef
+    ATTRIB_TYPE_CHARACTER_PROPERTIES,       ///< The current world root transform of the Network/game character and information reflecting
+    ///<  the state of the Networks associated character controller if there is one.
+    ATTRIB_TYPE_CHARACTER_CONTROLLER_DEF,   ///< Holds a pointer to the character controller def
+    ATTRIB_TYPE_ANIM_TO_PHYSICS_MAP,        ///< Stores the bone look up table from anim to physics and physics to
+    ///<  anim.
 
-  ATTRIB_TYPE_PHYSICS_SETUP,              ///< Wraps the params needed for the physics node.
-  ATTRIB_TYPE_PHYSICS_SETUP_ANIM_SET,     ///< Wraps the params needed for the physics node (anim set specific).
-  ATTRIB_TYPE_PHYSICS_STATE,              ///< Stores physics state variables.
-  ATTRIB_TYPE_PHYSICS_INITIALISATION,     ///< Physics initialisation
+    ATTRIB_TYPE_PHYSICS_SETUP,              ///< Wraps the params needed for the physics node.
+    ATTRIB_TYPE_PHYSICS_SETUP_ANIM_SET,     ///< Wraps the params needed for the physics node (anim set specific).
+    ATTRIB_TYPE_PHYSICS_STATE,              ///< Stores physics state variables.
+    ATTRIB_TYPE_PHYSICS_INITIALISATION,     ///< Physics initialisation
 
-  ATTRIB_TYPE_PHYSICS_GROUPER_CONFIG,     ///< Stores physics grouper state variables.
+    ATTRIB_TYPE_PHYSICS_GROUPER_CONFIG,     ///< Stores physics grouper state variables.
 
-  ATTRIB_TYPE_FLOAT_OPERATION,            ///< A float control parameter operation.
-  ATTRIB_TYPE_2_FLOAT_OPERATION,          ///< A two float control parameter operation.
-  ATTRIB_TYPE_SMOOTH_FLOAT_OPERATION,     ///< Smooth float operator per instance data
-  ATTRIB_TYPE_RATE_OF_CHANGE_OPERATION,   ///< Rate of change operator per instance data
-  ATTRIB_TYPE_RANDOM_FLOAT_OPERATION,     ///< Random float RNG and elapsed duration data
-  ATTRIB_TYPE_RANDOM_FLOAT_DEF,           ///< Random float operator node definition data.
-  ATTRIB_TYPE_NOISE_GEN_DEF,              ///< Noise generation node definition data
-  ATTRIB_TYPE_SWITCH_DEF,                 ///< Switch node definition data
-  ATTRIB_TYPE_RAY_CAST_DEF,               ///< Ray cast operator node definition data
+    ATTRIB_TYPE_FLOAT_OPERATION,            ///< A float control parameter operation.
+    ATTRIB_TYPE_2_FLOAT_OPERATION,          ///< A two float control parameter operation.
+    ATTRIB_TYPE_SMOOTH_FLOAT_OPERATION,     ///< Smooth float operator per instance data
+    ATTRIB_TYPE_RATE_OF_CHANGE_OPERATION,   ///< Rate of change operator per instance data
+    ATTRIB_TYPE_RANDOM_FLOAT_OPERATION,     ///< Random float RNG and elapsed duration data
+    ATTRIB_TYPE_RANDOM_FLOAT_DEF,           ///< Random float operator node definition data.
+    ATTRIB_TYPE_NOISE_GEN_DEF,              ///< Noise generation node definition data
+    ATTRIB_TYPE_SWITCH_DEF,                 ///< Switch node definition data
+    ATTRIB_TYPE_RAY_CAST_DEF,               ///< Ray cast operator node definition data
 
-  ATTRIB_TYPE_TRANSIT_DEF,                ///< Transition node definition data.
-  ATTRIB_TYPE_TRANSIT_SYNC_EVENTS_DEF,    ///< Transition sync events definition data.
-  ATTRIB_TYPE_TRANSIT_SYNC_EVENTS,        ///< Transition sync events state data.
+    ATTRIB_TYPE_TRANSIT_DEF,                ///< Transition node definition data.
+    ATTRIB_TYPE_TRANSIT_SYNC_EVENTS_DEF,    ///< Transition sync events definition data.
+    ATTRIB_TYPE_TRANSIT_SYNC_EVENTS,        ///< Transition sync events state data.
 
-  ATTRIB_TYPE_DEAD_BLEND_DEF,             ///< Definition data of a dead blend.
-  ATTRIB_TYPE_DEAD_BLEND_STATE,           ///< Active state data of a dead blend.
+    ATTRIB_TYPE_DEAD_BLEND_DEF,             ///< Definition data of a dead blend.
+    ATTRIB_TYPE_DEAD_BLEND_STATE,           ///< Active state data of a dead blend.
 
-  ATTRIB_TYPE_TRAJECTORY_OVERRIDE_DEF,
+    ATTRIB_TYPE_TRAJECTORY_OVERRIDE_DEF,
 
-  ATTRIB_TYPE_BLEND_NXM_DEF,              ///< Definition data of a blend NxM.
+    ATTRIB_TYPE_BLEND_NXM_DEF,              ///< Definition data of a blend NxM.
 
-  ATTRIB_TYPE_ANIM_MIRRORED_MAPPING,      ///< Mapping info used when mirroring an animation.
+    ATTRIB_TYPE_ANIM_MIRRORED_MAPPING,      ///< Mapping info used when mirroring an animation.
 
-  ATTRIB_TYPE_PLAYBACK_POS_INIT,          ///< Structure used by transitions to pass down playback initialisation
-                                          ///<  information to its destination state.
-  ATTRIB_TYPE_EMITTED_MESSAGE_MAP,        ///< Custom DataBuffer used to hold per node emitted request mappings
+    ATTRIB_TYPE_PLAYBACK_POS_INIT,          ///< Structure used by transitions to pass down playback initialisation
+    ///<  information to its destination state.
+    ATTRIB_TYPE_EMITTED_MESSAGE_MAP,        ///< Custom DataBuffer used to hold per node emitted request mappings
 
-  ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_SETUP,                    ///< Wraps the params needed to run the lock foot IK solver.
-  ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_IK_SETUP,                 ///< IK setup information for the uneven terrain node
-  ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_FOOT_LIFTING_TARGET,      ///< Stores ray cast information from physics step
-  ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_IK_STATE,                 ///< Stores uneven terrain IK state variables.
-  ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_CHAIN,                    ///< Describes an uneven terrain IK chain.
-  ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_IK_PREDICTION_STATE, ///< IK setup information for the predictive uneven terrain node
-  ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_FOOT_LIFTING_STATE,  ///< State information for predictive foot lifting
-  ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_PREDICTION_DEF,      ///< Definition data for the predictive uneven terrain node
+    ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_SETUP,                    ///< Wraps the params needed to run the lock foot IK solver.
+    ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_IK_SETUP,                 ///< IK setup information for the uneven terrain node
+    ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_FOOT_LIFTING_TARGET,      ///< Stores ray cast information from physics step
+    ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_IK_STATE,                 ///< Stores uneven terrain IK state variables.
+    ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_CHAIN,                    ///< Describes an uneven terrain IK chain.
+    ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_IK_PREDICTION_STATE, ///< IK setup information for the predictive uneven terrain node
+    ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_FOOT_LIFTING_STATE,  ///< State information for predictive foot lifting
+    ATTRIB_TYPE_PREDICTIVE_UNEVEN_TERRAIN_PREDICTION_DEF,      ///< Definition data for the predictive uneven terrain node
 
-  ATTRIB_TYPE_SCATTER_BLEND_ANALYSIS_DEF, ///< scatter blend analysis def data
-  ATTRIB_TYPE_SCATTER_BLEND_1D_DEF,       ///< 1D scatter blend def data
-  ATTRIB_TYPE_SCATTER_BLEND_2D_DEF,       ///< 2D scatter blend def data
-  ATTRIB_TYPE_SCATTER_BLEND_2D_STATE,     ///< 2D scatter blend state data
+    ATTRIB_TYPE_SCATTER_BLEND_ANALYSIS_DEF, ///< scatter blend analysis def data
+    ATTRIB_TYPE_SCATTER_BLEND_1D_DEF,       ///< 1D scatter blend def data
+    ATTRIB_TYPE_SCATTER_BLEND_2D_DEF,       ///< 2D scatter blend def data
+    ATTRIB_TYPE_SCATTER_BLEND_2D_STATE,     ///< 2D scatter blend state data
 
-  ATTRIB_TYPE_EMIT_MESSAGE_ON_CP_VALUE,   ///< Def date for NodeOperatorEmitMessageOnCPValue.
+    ATTRIB_TYPE_EMIT_MESSAGE_ON_CP_VALUE,   ///< Def date for NodeOperatorEmitMessageOnCPValue.
 
-  ATTRIB_TYPE_PHYSICS_INFO_DEF,           ///< Physics info operator node definition data
+    ATTRIB_TYPE_PHYSICS_INFO_DEF,           ///< Physics info operator node definition data
 
-  ATTRIB_TYPE_PHYSICS_OBJECT_POINTER,     ///< Pointer to a physics object (whatever physics SDK is being used)
+    ATTRIB_TYPE_PHYSICS_OBJECT_POINTER,     ///< Pointer to a physics object (whatever physics SDK is being used)
 
-  ATTRIB_TYPE_JOINT_LIMITS,               ///< Kinematic joint limits for a rig.
+    ATTRIB_TYPE_JOINT_LIMITS,               ///< Kinematic joint limits for a rig.
 
-  ATTRIB_TYPE_BLEND_FLAGS,
-  ATTRIB_TYPE_BLEND_WEIGHTS,
-  ATTRIB_TYPE_FEATHER_BLEND2_CHANNEL_ALPHAS,
+    ATTRIB_TYPE_BLEND_FLAGS,
+    ATTRIB_TYPE_BLEND_WEIGHTS,
+    ATTRIB_TYPE_FEATHER_BLEND2_CHANNEL_ALPHAS,
 
-  ATTRIB_TYPE_RETARGET_STATE,              ///< Retarget solver and retarget state data.
-  ATTRIB_TYPE_RIG_RETARGET_MAPPING,        ///< Info for retargeting between rigs.
-  ATTRIB_TYPE_SCALECHARACTER_STATE,        ///< Scale character state data.
-  ATTRIB_TYPE_RETARGET_STORAGE_STATS,      ///< Retarget solver memory allocation info for a network (or group of rigs).
+    ATTRIB_TYPE_RETARGET_STATE,              ///< Retarget solver and retarget state data.
+    ATTRIB_TYPE_RIG_RETARGET_MAPPING,        ///< Info for retargeting between rigs.
+    ATTRIB_TYPE_SCALECHARACTER_STATE,        ///< Scale character state data.
+    ATTRIB_TYPE_RETARGET_STORAGE_STATS,      ///< Retarget solver memory allocation info for a network (or group of rigs).
 
-  ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS_DEF, ///< A non anim set specific set of conditions controlling when to apply a bunch of character controller override attributes.
-  ATTRIB_TYPE_C_C_OVERRIDE_PROPERTIES_DEF, ///< Anim set specific set of character controller override attributes.
-  ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS,     ///< Active state data for character controller override node.
+    ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS_DEF, ///< A non anim set specific set of conditions controlling when to apply a bunch of character controller override attributes.
+    ATTRIB_TYPE_C_C_OVERRIDE_PROPERTIES_DEF, ///< Anim set specific set of character controller override attributes.
+    ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS,     ///< Active state data for character controller override node.
 
-  ATTRIB_TYPES_CORE_MAX,
+    ATTRIB_TYPE_MODIFY_JOINT_DEF,            ///< State definition data for the ModifyJoint node.
+    ATTRIB_TYPE_MODIFY_TRAJECTORY_DEF,       ///< State definition data for the ModifyTrajectory node.
 
-  INVALID_ATTRIB_TYPE = 0xFFFF
+    ATTRIB_TYPE_TIME_LAG_DEF,                ///< Def data for the time lag operator node.
+    ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT,        ///< Float state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
+    ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3,      ///< Vector3 state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
+    ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4,      ///< Vector4 state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
+    ATTRIB_TYPE_TIME_LAG_INPUT_INT,          ///< Int state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
+    ATTRIB_TYPE_TIME_LAG_INPUT_BOOL,         ///< Bool state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
+
+    ATTRIB_TYPES_CORE_MAX,
+
+    INVALID_ATTRIB_TYPE = 0xFFFF
 };
 
 //----------------------------------------------------------------------------------------------------------------------
