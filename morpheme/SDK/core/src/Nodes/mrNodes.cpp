@@ -175,9 +175,7 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueBlend2DurationEventTrackSets));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueTimePos));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2QueueSampledEventsBuffers));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2QueueAddSampledEventsBuffers));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueSampledEventsBuffers));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueAddSampledEventsBuffers));
   
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeSubtractiveBlendQueueTransformBuffsSubtractAttSubtractPos));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeSubtractiveBlendQueueTrajectoryDeltaTransformSubtractAttSubtractPos));
@@ -343,12 +341,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
 
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeEmitMessageOnDiscreteEventQueueSampledEventsBuffers));
 
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyJointTransformQueueTransforms));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyJointTransformQueueTrajectoryDeltaAndTransforms));
-
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyTrajectoryTransformQueueTrajectoryDelta));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyTrajectoryTransformQueueTrajectoryDeltaAndTransforms));
-
   //-------------
   // Register outputCP update tasks.
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeControlParamFloatEmittedCPUpdateFloat));
@@ -372,10 +364,7 @@ void registerCoreQueuingFnsAndOutputCPTasks()
 
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorRampFloatOutputCPUpdateFloat));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatsToVector3OutputCPUpdateVector3));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntRoundToNearestOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntFloorOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntCeilingOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorIntToFloatOutputCPUpdateFloat));
+
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorRayCastOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3ToFloatsOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3DotOutputCPUpdate));
