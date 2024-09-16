@@ -317,7 +317,6 @@ static const NodeType INVALID_NODE_TYPE_ID = 0xFFFFFFFF;
 #define TRANSCOND_CONTROL_PARAM_INT_IN_RANGE_ID           GEN_TRANSITCONDIT_TYPE_ID(NM_ID_NAMESPACE, 625)
 #define TRANSCOND_CONTROL_PARAM_UINT_IN_RANGE_ID          GEN_TRANSITCONDIT_TYPE_ID(NM_ID_NAMESPACE, 626)
 #define TRANSCOND_CONTROL_PARAM_FLOAT_IN_RANGE_ID         GEN_TRANSITCONDIT_TYPE_ID(NM_ID_NAMESPACE, 627)
-#define TRANSCOND_CONTROL_PARAM_BOOL_SET_ID               GEN_TRANSITCONDIT_TYPE_ID(NM_ID_NAMESPACE, 628)
 
 //----------------------------------------------------------------------------------------------------------------------
 /// NaturalMotion Transition Dead Blend Type identifiers.
