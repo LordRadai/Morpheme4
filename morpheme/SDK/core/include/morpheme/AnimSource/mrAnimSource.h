@@ -256,7 +256,7 @@ public:
   float                       m_clipEndFraction;            ///< Fractional playback end point. 0.0 - 1.0.
   float                       m_sourceAnimDuration;         ///< Source anim duration in seconds.
 
-  uint32_t                    m_syncEventTrackIndex;        ///< ID of discrete event track to create sync event track from.
+  int32_t                    m_syncEventTrackIndex;        ///< ID of discrete event track to create sync event track from.
 
   bool                        m_playBackwards;              ///< Bool - update this node backwards.
 };

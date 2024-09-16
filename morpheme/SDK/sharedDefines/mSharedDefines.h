@@ -74,7 +74,7 @@ const TaskID TASK_ID_UNSPECIFIED = 0xFFFFFFFF;
 ///
 /// \see NETWORK_NODE_ID
 /// \see INVALID_NODE_ID
-typedef uint16_t NodeID;
+typedef int16_t NodeID;
 static const NodeID INVALID_NODE_ID = 0xFFFF;
 static const NodeID NETWORK_NODE_ID = 0; ///< The network itself is a node. It always has the ID zero.
 
