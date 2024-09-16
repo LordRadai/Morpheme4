@@ -30,9 +30,14 @@ NodeID nodePredictiveUnevenTerrainUpdateConnections(
 
   //---------------------------
   // Update input control parameters
-  net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(0), animSet); // IkHipsWeight
-  net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(1), animSet); // IkFkBlendWeight
-  net->updateInputCPConnection<AttribDataBool>(node->getInputCPConnection(2), animSet); // Prediction Enable
+  if (node->getInputCPConnection(0)->m_sourceNodeID != -1)
+      net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(0), animSet); // IkHipsWeight
+
+  if (node->getInputCPConnection(1)->m_sourceNodeID != -1)
+    net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(1), animSet); // IkFkBlendWeight
+
+  if (node->getInputCPConnection(2)->m_sourceNodeID != -1)
+    net->updateInputCPConnection<AttribDataBool>(node->getInputCPConnection(2), animSet); // Prediction Enable
 
   // Recurse to children.
   NodeID activeChildNodeID = net->getActiveChildNodeID(node->getNodeID(), 0);
