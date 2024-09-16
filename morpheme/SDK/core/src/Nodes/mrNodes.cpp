@@ -175,9 +175,7 @@ void registerCoreQueuingFnsAndOutputCPTasks()
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueBlend2DurationEventTrackSets));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueTimePos));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2QueueSampledEventsBuffers));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2QueueAddSampledEventsBuffers));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueSampledEventsBuffers));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeBlend2SyncEventsQueueAddSampledEventsBuffers));
   
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeSubtractiveBlendQueueTransformBuffsSubtractAttSubtractPos));
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeSubtractiveBlendQueueTrajectoryDeltaTransformSubtractAttSubtractPos));
@@ -343,12 +341,6 @@ void registerCoreQueuingFnsAndOutputCPTasks()
 
   manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeEmitMessageOnDiscreteEventQueueSampledEventsBuffers));
 
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyJointTransformQueueTransforms));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyJointTransformQueueTrajectoryDeltaAndTransforms));
-
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyTrajectoryTransformQueueTrajectoryDelta));
-  manager.registerTaskQueuingFn(REG_FUNC_ARGS(nodeModifyTrajectoryTransformQueueTrajectoryDeltaAndTransforms));
-
   //-------------
   // Register outputCP update tasks.
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeControlParamFloatEmittedCPUpdateFloat));
@@ -372,10 +364,7 @@ void registerCoreQueuingFnsAndOutputCPTasks()
 
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorRampFloatOutputCPUpdateFloat));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatsToVector3OutputCPUpdateVector3));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntRoundToNearestOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntFloorOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorFloatToIntCeilingOutputCPUpdateInt));
-  manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorIntToFloatOutputCPUpdateFloat));
+
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorRayCastOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3ToFloatsOutputCPUpdate));
   manager.registerOutputCPTask(REG_FUNC_ARGS(nodeOperatorVector3DotOutputCPUpdate));
@@ -1041,46 +1030,6 @@ void registerCoreAttribDataTypes()
     NMP_NULL_ON_SPU(AttribDataRandomFloatOperation::dislocate));
 
   manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT)
-#ifndef NM_HOST_CELL_SPU
-    , AttribDataTimeLagInput<float, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>::locate,
-    AttribDataTimeLagInput<float, ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT>::dislocate
-#endif //NM_HOST_CELL_SPU
-    );
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_INT)
-#ifndef NM_HOST_CELL_SPU
-    , AttribDataTimeLagInput<int32_t, ATTRIB_TYPE_TIME_LAG_INPUT_INT>::locate,
-    AttribDataTimeLagInput<int32_t, ATTRIB_TYPE_TIME_LAG_INPUT_INT>::dislocate
-#endif //NM_HOST_CELL_SPU
-    );
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3)
-#ifndef NM_HOST_CELL_SPU
-    , AttribDataTimeLagInput<NMP::Vector3, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3>::locate,
-    AttribDataTimeLagInput<NMP::Vector3, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3>::dislocate
-#endif //NM_HOST_CELL_SPU
-    );
-  
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4)
-#ifndef NM_HOST_CELL_SPU
-    , AttribDataTimeLagInput<NMP::Quat, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4>::locate,
-    AttribDataTimeLagInput<NMP::Quat, ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4>::dislocate
-#endif //NM_HOST_CELL_SPU
-    );
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_INPUT_BOOL)
-#ifndef NM_HOST_CELL_SPU
-    , AttribDataTimeLagInput<bool, ATTRIB_TYPE_TIME_LAG_INPUT_BOOL>::locate,
-    AttribDataTimeLagInput<bool, ATTRIB_TYPE_TIME_LAG_INPUT_BOOL>::dislocate
-#endif //NM_HOST_CELL_SPU
-    );
-
-  manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_RANDOM_FLOAT_DEF),
     NMP_NULL_ON_SPU(AttribDataRandomFloatDef::locate),
     NMP_NULL_ON_SPU(AttribDataRandomFloatDef::dislocate));
@@ -1225,22 +1174,7 @@ void registerCoreAttribDataTypes()
 
   manager.registerAttrDataType(
     REG_FUNC_ARGS(ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS));
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_TIME_LAG_DEF),
-    NMP_NULL_ON_SPU(AttribDataTimeLagInputDef::locate),
-    NMP_NULL_ON_SPU(AttribDataTimeLagInputDef::dislocate));
 #endif // NM_HOST_CELL_SPU
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_MODIFY_JOINT_DEF),
-    NMP_NULL_ON_SPU(AttribDataModifyJointDef::locate),
-    NMP_NULL_ON_SPU(AttribDataModifyJointDef::dislocate));
-
-  manager.registerAttrDataType(
-    REG_FUNC_ARGS(ATTRIB_TYPE_MODIFY_TRAJECTORY_DEF),
-    NMP_NULL_ON_SPU(AttribDataModifyTrajectoryDef::locate),
-    NMP_NULL_ON_SPU(AttribDataModifyTrajectoryDef::dislocate));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

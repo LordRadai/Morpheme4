@@ -499,16 +499,6 @@ enum AttribDataTypeEnum
   ATTRIB_TYPE_C_C_OVERRIDE_PROPERTIES_DEF, ///< Anim set specific set of character controller override attributes.
   ATTRIB_TYPE_C_C_OVERRIDE_CONDITIONS,     ///< Active state data for character controller override node.
 
-  ATTRIB_TYPE_MODIFY_JOINT_DEF,            ///< State definition data for the ModifyJoint node.
-  ATTRIB_TYPE_MODIFY_TRAJECTORY_DEF,       ///< State definition data for the ModifyTrajectory node.
-
-  ATTRIB_TYPE_TIME_LAG_DEF,                ///< Def data for the time lag operator node.
-  ATTRIB_TYPE_TIME_LAG_INPUT_FLOAT,        ///< Float state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
-  ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR3,      ///< Vector3 state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
-  ATTRIB_TYPE_TIME_LAG_INPUT_VECTOR4,      ///< Vector4 state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
-  ATTRIB_TYPE_TIME_LAG_INPUT_INT,          ///< Int state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
-  ATTRIB_TYPE_TIME_LAG_INPUT_BOOL,         ///< Bool state data for a TimeLagInput operator node. (Specialization of AttribDataTimeLagInput).
-
   ATTRIB_TYPES_CORE_MAX,
 
   INVALID_ATTRIB_TYPE = 0xFFFF
