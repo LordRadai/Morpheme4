@@ -28,7 +28,7 @@ namespace MR
 ///
 ///  If you don't need this information then deactivating this define will save memory.
 ///  NOTE: changing this define will require a recompile of the RuntimeTarget and the AssetCompiler.
-//#define MR_INCLUDE_CONNECTIVITY
+#define MR_INCLUDE_CONNECTIVITY
 
 //----------------------------------------------------------------------------------------------------------------------
 // Queuing function declarations
