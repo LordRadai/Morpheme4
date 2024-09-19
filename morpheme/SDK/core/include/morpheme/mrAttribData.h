@@ -2962,7 +2962,6 @@ public:
 #endif
 
   float        m_floatRateIncreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a larger number.
-  //float        m_floatRateDecreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a smaller number.
   float        m_initialValueX; // The float (or for vectors, X component of) the value the operator will start at when it's initialised.
   float        m_initialValueY; // The Y component of the value the operator will start at when it's initialised.
   float        m_initialValueZ; // The Z component of the value the operator will start at when it's initialised.
