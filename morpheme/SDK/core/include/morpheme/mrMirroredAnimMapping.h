@@ -43,8 +43,8 @@ public:
       NMP::Quat rightUp;
       uint32_t  leftIndex;    ///< left index
       uint32_t  rightIndex;   ///< right index
-      uint32_t  leftUnk;    ///< left index
-      uint32_t  rightUnk;   ///< right index
+      uint32_t  leftUnk;
+      uint32_t  rightUnk;
   };
 
   static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numBones);
@@ -104,7 +104,7 @@ public:
   uint32_t         m_numEventIds;     ///< Number of event user data ID's to be re-mapped.
   SimpleMapping*   m_eventIds;        ///< The event user data ID's to be re-mapped.
   uint32_t         m_numBones;        ///< The number of bones in the rig.
-  NMP::Quat*       m_quatOffsets;     ///< The event user data ID's to be re-mapped.
+  NMP::Quat*       m_quatOffsets;     
   uint32_t*        m_unkIndices;
 };
 

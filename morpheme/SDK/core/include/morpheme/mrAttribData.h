@@ -1667,6 +1667,8 @@ public:
   bool         m_lockVerticalMotion; ///< True if locking all motion not just horizontal motion.
   bool         m_assumeSimpleHierarchy; ///< All joints are sequential in the hierarchy (currently must be true).
   bool         m_trackCharacterController; ///< Use CC for world trajectory, rather than accumulating deltas.
+  float        m_fVar4;
+  int          m_iVar5;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1799,6 +1801,7 @@ public:
   NMP::Vector3 m_upAxis;
 
 #ifdef NM_HOST_64_BIT
+  float m_worldFootOrientationWeight;
   float m_swivelOrientationWeight;
 
   bool m_localReferenceFrame;
@@ -2681,6 +2684,7 @@ public:
   static void locate(AttribData* target);
   static void dislocate(AttribData* target);
 
+  float        m_fVar0;
   bool         m_updateTargetByDeltas;
   bool         m_worldSpaceTarget; ///< Target CP is expressed in world space rather than character space.
 };
@@ -2746,6 +2750,7 @@ public:
   // AttribData differs in size on 64 bit builds requiring a different member layout so that vector types are aligned without padding
 #ifdef NM_HOST_64_BIT
   NMP::Vector3 m_worldUpAxis;        ///< Used to apply the 'keep upright' parameter.
+  float        m_fVar1;
   bool         m_keepUpright;        ///< Prevents tilting of the gun.
   bool         m_worldSpaceTarget;   ///< Target CP is expressed in world space rather than character space.
   bool         m_applyJointLimits;   ///< Clamps result to joint limits if they exist.
