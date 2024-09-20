@@ -67,7 +67,7 @@ NMP::Memory::Format AnimRigDefBuilder::getMemoryRequirements(
     boneNames.push_back(newBoneName);
     tableSize += nameLen;
   }
-  result += NMP::OrderedStringTable::getMemoryRequirements(numEntries, tableSize);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numEntries, tableSize);
 
   // m_bindPose.
   result += getBindPoseMemoryRequirements(numEntries);
