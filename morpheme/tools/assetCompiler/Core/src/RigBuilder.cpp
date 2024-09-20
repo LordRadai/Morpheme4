@@ -403,7 +403,7 @@ NMP::Memory::Format AnimRigDefBuilder::getMemoryRequirements(
     uint32_t nameLen = (uint32_t)(strlen(boneNames[i]) + 1);
     tableSize += nameLen;
   }
-  result += NMP::OrderedStringTable::getMemoryRequirements(numEntries, tableSize);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numEntries, tableSize);
 
   // m_bindPose.
   NMP::Memory::Format buffMemReqs;
@@ -542,8 +542,8 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   }
 
   // Create a memory desc to place this table into.
-  format = NMP::OrderedStringTable::getMemoryRequirements(numStrings, tableSize);
-
+  format = NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableSize);
+  
   // initialise the table from the stream.
   resource.align(format);
   rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, idsOffset, stringOffset, debugStrings, tableSize);

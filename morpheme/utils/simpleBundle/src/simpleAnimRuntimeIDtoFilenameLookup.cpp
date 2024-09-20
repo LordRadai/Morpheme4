@@ -63,10 +63,10 @@ NMP::Memory::Format SimpleAnimRuntimeIDtoFilenameLookup::getMemoryRequirements(
   result.size += NMP::Memory::align(sizeof(SimpleAnimRuntimeIDtoFilenameLookup), NMP_NATURAL_TYPE_ALIGNMENT);
 
   // reserve space for each of the string tables
-  result += NMP::OrderedStringTable::getMemoryRequirements(numAnims, fileNames);
-  result += NMP::OrderedStringTable::getMemoryRequirements(numAnims, animFormats);
-  result += NMP::OrderedStringTable::getMemoryRequirements(numAnims, sourceFilenames);
-  result += NMP::OrderedStringTable::getMemoryRequirements(numAnims, sourceTakenames);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numAnims, fileNames);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numAnims, animFormats);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numAnims, sourceFilenames);
+  result += NMP::IDMappedStringTable::getMemoryRequirements(numAnims, sourceTakenames);
   // CRC list
   result.size += sizeof(uint32_t) * numAnims;
 
