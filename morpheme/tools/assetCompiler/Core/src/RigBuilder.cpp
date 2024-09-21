@@ -338,8 +338,8 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
   uint32_t* stringOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
   NMP_ASSERT(stringOffset);
 
-  uint32_t* idsOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
-  NMP_ASSERT(idsOffset);
+  uint32_t* ids = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
+  NMP_ASSERT(ids);
 
   // Now create the table input data
   char* debugStrings = (char*)NMPMemoryAlloc(tableSize);
@@ -350,7 +350,7 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
   {
     const char* boneName = boneNames[i];
 
-    idsOffset[i] = i;
+    ids[i] = i;
     stringOffset[i] = currentOffset;
     memcpy(currentPtr, boneName, strlen(boneName) + 1);
     currentOffset += (uint32_t)(strlen(boneName) + 1);
@@ -362,9 +362,9 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
 
   // initialise the table from the stream.
   resource.align(format);
-  rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, idsOffset, stringOffset, debugStrings, tableSize);
+  rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, ids, stringOffset, debugStrings, tableSize);
 
-  NMP::Memory::memFree(idsOffset);
+  NMP::Memory::memFree(ids);
   NMP::Memory::memFree(stringOffset);
   NMP::Memory::memFree(debugStrings);
 
@@ -519,8 +519,8 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   uint32_t* stringOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
   NMP_ASSERT(stringOffset);
 
-  uint32_t* idsOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
-  NMP_ASSERT(idsOffset);
+  uint32_t* ids = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
+  NMP_ASSERT(ids);
 
   // Now create the table input data
   char* debugStrings = (char*)NMPMemoryAlloc(tableSize);
@@ -531,7 +531,7 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   {
     boneName = rigBoneNames[i];
 
-    idsOffset[i] = i;
+    ids[i] = i;
     stringOffset[i] = currentOffset;
     memcpy(currentPtr, boneName, strlen(boneName) + 1);
     currentOffset += (uint32_t)(strlen(boneName) + 1);
@@ -543,9 +543,9 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   
   // initialise the table from the stream.
   resource.align(format);
-  rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, idsOffset, stringOffset, debugStrings, tableSize);
+  rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, ids, stringOffset, debugStrings, tableSize);
 
-  NMP::Memory::memFree(idsOffset);
+  NMP::Memory::memFree(ids);
   NMP::Memory::memFree(stringOffset);
   NMP::Memory::memFree(debugStrings);
 
