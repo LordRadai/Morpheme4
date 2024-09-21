@@ -341,9 +341,6 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
   uint32_t* idsOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
   NMP_ASSERT(idsOffset);
 
-  for (uint32_t i = 0; i < numStrings; ++i)
-      idsOffset[i] = i;
-
   // Now create the table input data
   char* debugStrings = (char*)NMPMemoryAlloc(tableSize);
   NMP_ASSERT(debugStrings);
@@ -353,6 +350,7 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
   {
     const char* boneName = boneNames[i];
 
+    idsOffset[i] = i;
     stringOffset[i] = currentOffset;
     memcpy(currentPtr, boneName, strlen(boneName) + 1);
     currentOffset += (uint32_t)(strlen(boneName) + 1);
@@ -366,6 +364,7 @@ NMP::Memory::Resource AnimRigDefBuilder::init(
   resource.align(format);
   rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, idsOffset, stringOffset, debugStrings, tableSize);
 
+  NMP::Memory::memFree(idsOffset);
   NMP::Memory::memFree(stringOffset);
   NMP::Memory::memFree(debugStrings);
 
@@ -523,9 +522,6 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   uint32_t* idsOffset = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
   NMP_ASSERT(idsOffset);
 
-  for (uint32_t i = 0; i < numStrings; ++i)
-      idsOffset[i] = i;
-
   // Now create the table input data
   char* debugStrings = (char*)NMPMemoryAlloc(tableSize);
   NMP_ASSERT(debugStrings);
@@ -535,6 +531,7 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   {
     boneName = rigBoneNames[i];
 
+    idsOffset[i] = i;
     stringOffset[i] = currentOffset;
     memcpy(currentPtr, boneName, strlen(boneName) + 1);
     currentOffset += (uint32_t)(strlen(boneName) + 1);
@@ -548,6 +545,7 @@ NMP::Memory::Resource AnimRigDefBuilder::createRigDef(
   resource.align(format);
   rig->m_boneNameMap = NMP::IDMappedStringTable::init(resource, numStrings, idsOffset, stringOffset, debugStrings, tableSize);
 
+  NMP::Memory::memFree(idsOffset);
   NMP::Memory::memFree(stringOffset);
   NMP::Memory::memFree(debugStrings);
 

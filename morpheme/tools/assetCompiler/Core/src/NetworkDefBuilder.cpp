@@ -4865,7 +4865,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(cons
   //-----------------------
   // Free all the temporary memory
   if (ids)
-      NMP::Memory::memFree(ids);
+    NMP::Memory::memFree(ids);
   if (stringOffsets)
     NMP::Memory::memFree(stringOffsets);
   if (stringsBuffer)
