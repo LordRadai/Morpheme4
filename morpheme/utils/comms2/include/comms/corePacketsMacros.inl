@@ -13,6 +13,10 @@
 // the various internal packet types.
 //----------------------------------------------------------------------------------------------------------------------
 
+PACKET(ScatterBlendWeights)
+PACKET(ConnectFrameData)
+PACKET(ConnectScriptCommand)
+
 PACKET(IdentificationCmd)
 PACKET(IdentificationReply)
 
@@ -71,11 +75,8 @@ PACKET(RootStateMachineNodes)
 PACKET(NodeOutputData)
 PACKET(PersistentData)
 PACKET(FrameData)
-PACKET(ScatterBlendWeights)
 
 PACKET(ActiveSceneObjects)
-
-PACKET(ConnectFrameData)
 
 // dispatcher debugging
 PACKET(BeginDispatcherTaskExecute)
@@ -159,8 +160,6 @@ PACKET(FileRequest)
 PACKET(FileSize)
 PACKET(File)
 
-
-PACKET(ConnectScriptCommand)
 PACKET(DownloadFrameDataCmd)
 PACKET(DownloadSceneObjectsCmd)
 PACKET(DownloadGlobalDataCmd)

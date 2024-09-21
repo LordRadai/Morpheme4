@@ -42,7 +42,7 @@ typedef uint32_t  PacketLen;
 enum
 {
   // core packets start here
-  pk_core        = 16,
+  pk_core        = 13,
 
 #define PACKET(pkn)   pk_##pkn,
 #include "comms/corePacketsMacros.inl"
