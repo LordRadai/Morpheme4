@@ -63,7 +63,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>NDEBUG;NM_TARGET_BIGENDIAN=0;WIN32;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NM_TARGET_BIGENDIAN=0;WIN32;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <TreatWarningAsError>false</TreatWarningAsError>
