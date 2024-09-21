@@ -110,7 +110,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   uint32_t tableSize = 0;
 
   // Add the default discrete event track name.
-  trackIDMap["DefaultDiscreteEventTrack"] = (uint32_t)trackIDMap.size();
+  trackIDMap["DefaultDiscreteEventTrack"] = 0;
   tableSize += (uint32_t)(strlen("DefaultDiscreteEventTrack") + 1);
 
   uint32_t numAnimSets = animLibraryExport->getNumAnimationSets();
