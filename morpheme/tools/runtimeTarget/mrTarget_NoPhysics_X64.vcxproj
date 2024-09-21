@@ -15,6 +15,7 @@
     <ProjectGuid>{F06FA5C4-F809-42F7-22AA-634F3A057082}</ProjectGuid>
     <RootNamespace>mrTarget_NoPhysics</RootNamespace>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -41,17 +42,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>mrTarget_NoPhysics_debug</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\mrTarget_NoPhysics\debug\</IntDir>
-    <OutDir>..\..\..\bin\x64\vs$(VisualStudioVersion)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\obj\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\bin\</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LibraryPath>$(SolutionDir)lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>mrTarget_NoPhysics</TargetName>
-    <IntDir>..\..\..\obj\x64\vs$(VisualStudioVersion)\mrTarget_NoPhysics\release\</IntDir>
-    <OutDir>..\..\..\bin\x64\vs$(VisualStudioVersion)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\obj\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\bin\</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LibraryPath>$(SolutionDir)lib\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -67,7 +70,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeComms2_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeSimpleBundle_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeCore_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMRuntimeUtils_debug.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMPlatform_debug.lib";WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"morphemeComms2_debug.lib";"morphemeSimpleBundle_debug.lib";"morphemeCore_debug.lib";"NMRuntimeUtils_debug.lib";"NMPlatform_debug.lib";WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ManifestFile>$(IntDir)intermediate.manifest</ManifestFile>
       <ProgramDatabaseFile>$(OutDir)mrTarget_NoPhysics_debug.pdb</ProgramDatabaseFile>
@@ -94,7 +97,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeComms2.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeSimpleBundle.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\morphemeCore.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMRuntimeUtils.lib";"..\..\..\lib\x64\vs$(VisualStudioVersion)\NMPlatform.lib";WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"morphemeComms2.lib";"morphemeSimpleBundle.lib";"morphemeCore.lib";"NMRuntimeUtils.lib";"NMPlatform.lib";WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ManifestFile>$(IntDir)intermediate.manifest</ManifestFile>

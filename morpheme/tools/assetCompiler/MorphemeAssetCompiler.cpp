@@ -115,8 +115,8 @@ static struct
   NMP::BasicLogger *m_errorLogger; 
   uint32_t m_successCode;
   uint32_t m_failureCode;
-  const char *m_baseDir;
-  const char *m_outputDir;
+  const char *m_basedir;
+  const char *m_outputdir;
   const char *m_outputFilename;
   bool m_copyToAnimBrowserOutFile;
 } g_acGlobals;
@@ -346,7 +346,7 @@ public:
       NMP_VERIFY(animRegistryEntry);
 
       char filepath[MAX_PATH];
-      NMP_SPRINTF(filepath, 256, "%s/%s", g_acGlobals.m_outputDir, filename);
+      NMP_SPRINTF(filepath, 256, "%s/%s", g_acGlobals.m_outputdir, filename);
 
       // Allocate and load the animation file
 #if defined(NMP_ENABLE_ASSERTS) || NM_ENABLE_EXCEPTIONS
@@ -801,11 +801,11 @@ char* generateFullSourceAnimFileName(
   if (locationOfRootDir == fileName)
   {
     // The fileName starts with '$(RootDir)' replace it with stored root directory for asset loading (kCLA_BASE_DIR).
-    stringLength = strlen(g_acGlobals.m_baseDir) + strlen(fileName) + 1;
+    stringLength = strlen(g_acGlobals.m_basedir) + strlen(fileName) + 1;
     fullSourceAnimFileName = (char*) NMPMemoryAlloc(stringLength);
     NMP_ASSERT(fullSourceAnimFileName);
 
-    strcpy(fullSourceAnimFileName, g_acGlobals.m_baseDir);
+    strcpy(fullSourceAnimFileName, g_acGlobals.m_basedir);
     strcat(fullSourceAnimFileName, (fileName + 10));
   }
   else
@@ -1931,10 +1931,10 @@ bool macProcessAnimFunc(
     g_animIDtoFilename->addAnimation(animData->m_animFileName, animData->m_animTakeName,
                                      animData->m_animFormatType, animAssetID, animFileCRC, outputName);
 
-    stringLength = strlen(g_acGlobals.m_outputDir) + strlen(outputName) + 10;
+    stringLength = strlen(g_acGlobals.m_outputdir) + strlen(outputName) + 10;
     char* outputFilePath = (char*) NMPMemoryAlloc(stringLength);
     NMP_ASSERT(outputFilePath);
-    NMP_SPRINTF(outputFilePath, stringLength, "%s\\%s", g_acGlobals.m_outputDir, outputName);
+    NMP_SPRINTF(outputFilePath, stringLength, "%s\\%s", g_acGlobals.m_outputdir, outputName);
 
     // the instance will be recycled later anyway, so we just allocate it here
     NMP::Memory::Resource animCopy = NMPMemoryAllocateFromFormat(animResource.format);
@@ -1979,14 +1979,14 @@ bool macProcessAnimFunc(
   // for preview in the animation browser.
   if (g_acGlobals.m_copyToAnimBrowserOutFile)
   {
-    stringLength = strlen(g_acGlobals.m_outputDir) + strlen(ANIM_BROWSER_ANIM_FILE_NAME) + strlen(animData->m_animFormatType) + 10;
+    stringLength = strlen(g_acGlobals.m_outputdir) + strlen(ANIM_BROWSER_ANIM_FILE_NAME) + strlen(animData->m_animFormatType) + 10;
     char* outputName = (char*) NMPMemoryAlloc(stringLength);
     NMP_ASSERT(outputName);
     NMP_SPRINTF(
       outputName,
       stringLength,
       "%s/%s.%s",
-      g_acGlobals.m_outputDir,
+      g_acGlobals.m_outputdir,
       ANIM_BROWSER_ANIM_FILE_NAME,
       animData->m_animFormatType);
 
@@ -2408,7 +2408,7 @@ void generateOutputBundleFileName(
   ME::AssetExport* primarySourceAsset)
 {
   // The output directory first.
-  strcpy(outputName, g_acGlobals.m_outputDir);
+  strcpy(outputName, g_acGlobals.m_outputdir);
   if (outputName[strlen(outputName)-1] != '/')
     strcat(outputName, "/");
 
@@ -2675,8 +2675,8 @@ int32_t __cdecl main(int argc, char** argv)
     g_acGlobals.m_errorLogger = acOptions.getErrorLogger();
     g_acGlobals.m_successCode = acOptions.getSuccessCode();
     g_acGlobals.m_failureCode = acOptions.getFailureCode();
-    g_acGlobals.m_baseDir = acOptions.getBaseDir();
-    g_acGlobals.m_outputDir = acOptions.getOutputDir();
+    g_acGlobals.m_basedir = acOptions.getBaseDir();
+    g_acGlobals.m_outputdir = acOptions.getOutputDir();
     g_acGlobals.m_outputFilename = acOptions.getOutputFilename();
     g_acGlobals.m_copyToAnimBrowserOutFile = acOptions.getDoPreviewAnimation();
 

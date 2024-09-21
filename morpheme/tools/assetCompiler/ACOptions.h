@@ -44,8 +44,8 @@ public:
   NMP::BasicLogger* getErrorLogger() { return m_errorLogger; }
   uint32_t getSuccessCode() const { return m_successCode; }
   uint32_t getFailureCode() const { return m_failureCode; }
-  const char* getOutputDir() const { return m_outputDir; }
-  const char* getBaseDir() const { return m_baseDir; }
+  const char* getOutputDir() const { return m_outputdir; }
+  const char* getBaseDir() const { return m_basedir; }
   const char* getCacheDir() const { return m_cacheDir; }
   const char* getOutputFilename() const { return m_outputFilename; }
   const char* getAnimInfoToUpdate() const { return m_animInfoToUpdate; }
@@ -80,8 +80,8 @@ protected:
   /// Logger for writing asset compiler info
   NMP::BasicLogger* m_infoLogger;
 
-  const char *m_baseDir;
-  const char *m_outputDir;
+  const char *m_basedir;
+  const char *m_outputdir;
   const char *m_cacheDir;
   const char *m_outputFilename;
   const char *m_animInfoToUpdate;

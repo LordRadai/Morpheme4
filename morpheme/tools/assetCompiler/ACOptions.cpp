@@ -67,8 +67,8 @@ void ACOptions::init(int argc, const char* const* argv)
   m_messageLogger = NULL;
   m_errorLogger = NULL;
 
-  m_baseDir = NULL;
-  m_outputDir = NULL;
+  m_basedir = NULL;
+  m_outputdir = NULL;
   m_cacheDir = NULL;
   m_outputFilename = NULL;
 
@@ -88,9 +88,9 @@ void ACOptions::init(int argc, const char* const* argv)
   m_proc->registerUInt32Option("-successCode");                 // The value returned when we have completed successfully - default = 0.
   m_proc->registerUInt32Option("-failureCode");                 // The value returned when we have not completed successfully - default = 1.
 
-  m_proc->registerStringOption("-baseDir");                 // Where to load assets from.
+  m_proc->registerStringOption("-basedir");                 // Where to load assets from.
   m_proc->registerStringOption("-cacheDir");                // Where cached files and information are stored (mostly animation files).
-  m_proc->registerStringOption("-outputDir");               // Where to store the runtime binary output files.
+  m_proc->registerStringOption("-outputdir");               // Where to store the runtime binary output files.
   m_proc->registerStringOption("-outputFileName");              // Name of a bundled output file which the processed assets will be written to.
                                                             //  If not specified the name of the first input asset will be used.
   m_proc->registerStringOption("-precomputeNode");
@@ -151,8 +151,8 @@ void ACOptions::init(int argc, const char* const* argv)
   m_proc->getOptionValue("-successCode", &m_successCode);
   m_proc->getOptionValue("-failureCode", &m_failureCode);
 
-  m_proc->getOptionValue("-baseDir", &m_baseDir);
-  m_proc->getOptionValue("-outputDir", &m_outputDir);
+  m_proc->getOptionValue("-basedir", &m_basedir);
+  m_proc->getOptionValue("-outputdir", &m_outputdir);
   m_proc->getOptionValue("-cacheDir", &m_cacheDir);
   m_proc->getOptionValue("-outputFileName", &m_outputFilename);
   m_proc->getOptionValue("-updateAnimInfo", &m_animInfoToUpdate);
@@ -236,8 +236,8 @@ bool ACOptions::validate() const
   if (!getAnimInfoToUpdate() && !getDoCleanBuild())
   {
     // These parameters are required if not just updating anim info
-    NMP_VERIFY_MSG(getBaseDir(), "Missing command line argument: %s", "-baseDir");
-    NMP_VERIFY_MSG(getOutputDir(), "Missing command line argument: %s", "-outputDir");
+    NMP_VERIFY_MSG(getBaseDir(), "Missing command line argument: %s", "-basedir");
+    NMP_VERIFY_MSG(getOutputDir(), "Missing command line argument: %s", "-outputdir");
     return false;
   }
   return true;
