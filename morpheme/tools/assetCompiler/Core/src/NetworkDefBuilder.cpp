@@ -59,10 +59,9 @@ MR::EmittedControlParamsInfo*                           NetworkDefBuilder::sm_em
 MR::NodeIDsArray*                                       NetworkDefBuilder::sm_stateMachineNodeIDs = NULL;
 MR::NodeIDsArray*                                       NetworkDefBuilder::sm_messageEmitterNodeIDs = NULL;
 MR::NodeIDsArray*                                       NetworkDefBuilder::sm_multiplyConnectedNodeIDs = NULL;
-NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_stateMachineStateIDStringTable = NULL;
 NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_nodeIDNamesTable = NULL;
-NMP::IDMappedStringTable*                                NetworkDefBuilder::sm_messageIDNamesTable = NULL;
-NMP::IDMappedStringTable*                                NetworkDefBuilder::sm_eventTrackIDNamesTable = NULL;
+NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_messageIDNamesTable = NULL;
+NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_eventTrackIDNamesTable = NULL;
 MR::NodeTagTable*                                       NetworkDefBuilder::sm_nodeTagTable = NULL;
 MR::NetworkDef::NodeEventOnExitMessage*                 NetworkDefBuilder::sm_onExitMessageArray = NULL;
 NMP::Memory::Format                                     NetworkDefBuilder::sm_onExitMessageArrayMemReqs;
@@ -1576,13 +1575,6 @@ void NetworkDefBuilder::tidyNetworkNodeDefCompilationInfo()
     sm_messageIDNamesTable = NULL;
   }
 
-  // Tidy up the state machine state id string table.
-  if (sm_stateMachineStateIDStringTable)
-  {
-    NMP::Memory::memFree(sm_stateMachineStateIDStringTable);
-    sm_stateMachineStateIDStringTable = NULL;
-  }
-
   // Tidy up the node ID names table
   if (sm_nodeIDNamesTable)
   {
@@ -2649,10 +2641,6 @@ void NetworkDefBuilder::buildNetworkDefInfo(
   NMP_VERIFY(!sm_onExitMessageArray);
   sm_onExitMessageArray = buildNodeOnExitMessageArray(netDefExport, &sm_onExitMessageArrayMemReqs);
 
-  // Map of state machine state names to state IDs.
-  NMP_VERIFY(!sm_stateMachineStateIDStringTable)
-  sm_stateMachineStateIDStringTable = buildStateMachineStateIDStringTable(netDefExport);
-
   // NodeID to Node name mapping table
   NMP_VERIFY(!sm_nodeIDNamesTable)
   sm_nodeIDNamesTable = buildNodeIDNameMappingTable(netDefExport);
@@ -3153,15 +3141,6 @@ NMP::Memory::Resource NetworkDefBuilder::buildSubNetworkDef(
   {
     memReqsOnExitMessageArray = sm_onExitMessageArrayMemReqs;
     memReqs += memReqsOnExitMessageArray;
-  }
-
-  //---------------------------
-  // State machine state to state ID.
-  NMP::Memory::Format memReqsStateMachineStateStringTable;
-  if (sm_stateMachineStateIDStringTable)
-  {
-    memReqsStateMachineStateStringTable = sm_stateMachineStateIDStringTable->getInstanceMemoryRequirements();
-    memReqs += memReqsStateMachineStateStringTable;
   }
   
   //---------------------------

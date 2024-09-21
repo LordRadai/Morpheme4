@@ -660,9 +660,6 @@ protected:
   static MR::NetworkDef::NodeEventOnExitMessage*                sm_onExitMessageArray;
   static NMP::Memory::Format                                    sm_onExitMessageArrayMemReqs;
 
-  /// Map of state machine state name to state IDs
-  static NMP::IDMappedStringTable*                              sm_stateMachineStateIDStringTable;
-
   /// NodeID to Node name mapping table
   static NMP::IDMappedStringTable*                              sm_nodeIDNamesTable;
 
