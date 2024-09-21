@@ -61,8 +61,8 @@ MR::NodeIDsArray*                                       NetworkDefBuilder::sm_me
 MR::NodeIDsArray*                                       NetworkDefBuilder::sm_multiplyConnectedNodeIDs = NULL;
 NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_stateMachineStateIDStringTable = NULL;
 NMP::IDMappedStringTable*                               NetworkDefBuilder::sm_nodeIDNamesTable = NULL;
-NMP::OrderedStringTable*                                NetworkDefBuilder::sm_messageIDNamesTable = NULL;
-NMP::OrderedStringTable*                                NetworkDefBuilder::sm_eventTrackIDNamesTable = NULL;
+NMP::IDMappedStringTable*                                NetworkDefBuilder::sm_messageIDNamesTable = NULL;
+NMP::IDMappedStringTable*                                NetworkDefBuilder::sm_eventTrackIDNamesTable = NULL;
 MR::NodeTagTable*                                       NetworkDefBuilder::sm_nodeTagTable = NULL;
 MR::NetworkDef::NodeEventOnExitMessage*                 NetworkDefBuilder::sm_onExitMessageArray = NULL;
 NMP::Memory::Format                                     NetworkDefBuilder::sm_onExitMessageArrayMemReqs;
@@ -96,7 +96,7 @@ bool NetworkDefBuilder::registerBuilderPlugin(NetworkDefBuilderPlugin* plugin)
 
 //----------------------------------------------------------------------------------------------------------------------
 // Build the event track name to runtime id map.
-NMP::OrderedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
+NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   AP::AssetProcessor* processor,
   const ME::NetworkDefExport* netDefExport)
 {
@@ -165,6 +165,7 @@ NMP::OrderedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   for (; iter != trackIDMap.end(); ++iter)
   {
     uint32_t ID = iter->second;
+    trackIDs[ID] = ID;
     stringOffsets[ID] = currentOffset;
     size_t len = iter->first.size() + 1;
     memcpy(currentPtr, iter->first.c_str(), len);
@@ -174,11 +175,12 @@ NMP::OrderedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
 
   //-----------------------
   // Initialise the table from the stream
-  NMP::Memory::Format memReqs = NMP::OrderedStringTable::getMemoryRequirements(numStrings, tableSize);
+  NMP::Memory::Format memReqs = NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableSize);
   NMP::Memory::Resource memRes = NMPMemoryAllocateFromFormat(memReqs);
-  NMP::OrderedStringTable* result = NMP::OrderedStringTable::init(
+  NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(
                                memRes,
                                numStrings,
+                               trackIDs,
                                stringOffsets,
                                strings,
                                tableSize);
@@ -4806,11 +4808,11 @@ NMP::Memory::Format NetworkDefBuilder::getMessageIDNameMappingTableMemReqs(
     tableDataSize += (uint32_t)(NMP_STRLEN(messageName) + 1);
   }
 
-  return NMP::OrderedStringTable::getMemoryRequirements(numStrings, tableDataSize);
+  return NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableDataSize);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-NMP::OrderedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(const ME::NetworkDefExport* netDefExport)
+NMP::IDMappedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(const ME::NetworkDefExport* netDefExport)
 {
   uint32_t numStrings;
   uint32_t tableDataSize;
@@ -4818,10 +4820,14 @@ NMP::OrderedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(const
   NMP::Memory::Resource memRes = NMPMemoryAllocateFromFormat(memReqs);
 
   // Create the arrays of indices.
+  uint32_t* ids = NULL;
   uint32_t* stringOffsets = NULL;
   char* stringsBuffer = NULL;
   if (numStrings)
   {
+    ids = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
+    NMP_ASSERT(ids);
+
     stringOffsets = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
     NMP_ASSERT(stringOffsets);
 
@@ -4841,6 +4847,7 @@ NMP::OrderedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(const
     uint32_t messageID = messageExport->getMessageID();
     NMP_ASSERT(messageID < numStrings);
 
+    ids[messageID] = messageID;
     stringOffsets[messageID] = currentOffset;
     memcpy(currentPtr, messageName, strlen(messageName) + 1);
     currentOffset += (uint32_t)(strlen(messageName) + 1);
@@ -4848,14 +4855,17 @@ NMP::OrderedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(const
   }
 
   // Initialize the table from the stream.
-  NMP::OrderedStringTable* result = NMP::OrderedStringTable::init(
+  NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(
                                memRes,
                                numStrings,
+                               ids,
                                stringOffsets,
                                stringsBuffer,
                                tableDataSize);
   //-----------------------
   // Free all the temporary memory
+  if (ids)
+      NMP::Memory::memFree(ids);
   if (stringOffsets)
     NMP::Memory::memFree(stringOffsets);
   if (stringsBuffer)

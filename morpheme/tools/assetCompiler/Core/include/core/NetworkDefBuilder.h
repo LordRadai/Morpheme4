@@ -425,7 +425,7 @@ protected:
     const ME::AnimationLibraryExport* animLibraryExport);
 
   /// \brief Build the event track name to runtime id map.
-  static NMP::OrderedStringTable* buildEventTrackNameToRuntimeIDMap(
+  static NMP::IDMappedStringTable* buildEventTrackNameToRuntimeIDMap(
     AP::AssetProcessor* processor,
     const ME::NetworkDefExport* netDefExport);
 
@@ -453,7 +453,7 @@ protected:
     uint32_t&                   tableDataSize);
 
   /// \brief Set up the MessageID to Node name mapping table.
-  static NMP::OrderedStringTable* buildMessageIDNameMappingTable(
+  static NMP::IDMappedStringTable* buildMessageIDNameMappingTable(
     const ME::NetworkDefExport* netDefExport);
 
   static NMP::Memory::Format getStateMachineNodeIDsArrayMemReqs(
@@ -667,10 +667,10 @@ protected:
   static NMP::IDMappedStringTable*                              sm_nodeIDNamesTable;
 
   /// MessageID to Message name mapping table
-  static NMP::OrderedStringTable*                               sm_messageIDNamesTable;
+  static NMP::IDMappedStringTable*                               sm_messageIDNamesTable;
 
   /// Event track names table
-  static NMP::OrderedStringTable*                               sm_eventTrackIDNamesTable;
+  static NMP::IDMappedStringTable*                               sm_eventTrackIDNamesTable;
 
   /// Node tag table
   static MR::NodeTagTable*                                      sm_nodeTagTable;

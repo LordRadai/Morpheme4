@@ -147,8 +147,8 @@ NMP::Memory::Format IDMappedStringTable::getMemoryRequirements(uint32_t numEntri
 {
   NMP::Memory::Format result(NMP::Memory::align(sizeof(IDMappedStringTable), NMP_NATURAL_TYPE_ALIGNMENT), NMP_NATURAL_TYPE_ALIGNMENT);
 
-  // reserve space for the ID to index, offset for index, and string hash tables
-  result.size += numEntries * 3 * sizeof(uint32_t);
+  // reserve space for the ID to index and offset for index
+  result.size += numEntries * 2 * sizeof(uint32_t);
 
   // reserve space for the string data itself
   result.size += sizeof(char) * dataLength;
