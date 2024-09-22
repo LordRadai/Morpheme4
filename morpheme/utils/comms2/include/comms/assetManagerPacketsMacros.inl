@@ -30,6 +30,7 @@ PACKET(EndAnimBrowser)
 
 PACKET(AnimBrowserEventDetectionData)
 
+//Unrelated to the assetManager but this is necessary so that the packets have the same IDs morphemeConnect 3.6.2 expects them to have
 PACKET(ScatterBlendWeights)
 PACKET(ConnectFrameData)
 PACKET(ConnectScriptCommand)
