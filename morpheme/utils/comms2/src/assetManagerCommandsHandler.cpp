@@ -67,7 +67,7 @@ bool AssetManagerCommandsHandler::doHandleCommand(CmdPacketBase* cmdPacket)
   NMP::netEndianSwap(debugPacketCopy.hdr.m_length);
   debugPacketCopy.deserialize();
 
-  NMP_MSG("Received packet: (id=%d, len=%d)", debugPacketCopy.hdr.m_id, debugPacketCopy.hdr.m_length);
+  printf_s("Received packet: (id=%d, len=%d)\n", debugPacketCopy.hdr.m_id, debugPacketCopy.hdr.m_length);
 #endif
 
   switch (pktId)

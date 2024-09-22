@@ -208,7 +208,7 @@ bool DefaultAssetMgr::loadNetworkDefinition(
   }
 
   static char filename[128];
-  NMP_SPRINTF(filename, 128, "%s.nmb", networkDefName);
+  NMP_SPRINTF(filename, 128, "%s", networkDefName);
 
   // File size
   uint32_t fileSize = connection->getFileSize(filename);

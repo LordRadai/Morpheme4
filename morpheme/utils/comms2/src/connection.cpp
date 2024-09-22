@@ -317,6 +317,10 @@ bool Connection::sendPacket(NMP::SocketWrapper* socketWrapper, PacketBase& pkt)
   if (!socketWrapper->isValid())
     return false;
 
+#ifdef _DEBUG
+  printf_s("Sending packet: (id=%d, len=%d)\n", pkt.hdr.m_id, pkt.hdr.m_length);
+#endif
+
   PacketLen pktLen = pkt.hdr.m_length;
   pkt.hdr.endianSwap();
 
@@ -345,6 +349,10 @@ bool Connection::sendPacket(NMP::SocketWrapper* socketWrapper, PacketBase& pkt)
 //----------------------------------------------------------------------------------------------------------------------
 bool Connection::sendDataPacket(PacketBase& pkt)
 {
+#ifdef _DEBUG
+    printf_s("Sending packet: (id=%d, len=%d)\n", pkt.hdr.m_id, pkt.hdr.m_length);
+#endif
+
   if (!bufferDataPacket(pkt))
   {
     return false;
