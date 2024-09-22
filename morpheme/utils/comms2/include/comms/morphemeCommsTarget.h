@@ -147,7 +147,7 @@ public:
     const char* animationSourceNodeName,
     const char* retargetingSourceNodeName,
     const char* rescalingSourceNodeName);
-  CmdRequestID loadAnimationBrowserData(const char* compressionType);
+  CmdRequestID loadAnimationBrowserData(MR::AnimType compressionType);
   CmdRequestID setAnimationBrowserTime(float time);
 
   CmdRequestID downloadAnimationBrowserEventDetectionData(float minTime, uint32_t numFrames, float dt);
