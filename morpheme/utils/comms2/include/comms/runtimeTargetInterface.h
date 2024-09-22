@@ -260,7 +260,7 @@ public:
   /// \brief Morpheme calls this to instruct the target to load new animation browser data from a known location
   /// The location and format of animation data is determined by a convention between the assetCompiler and target
   /// implementation.
-  virtual bool loadAnimationBrowserData(const char* compressionType, Connection* connection) = 0;
+  virtual bool loadAnimationBrowserData(MR::AnimType compressionType, Connection* connection) = 0;
 
   /// \brief Set the current time for the animation browser data in preparation for a call to
   /// getAnimationBrowserWorldTransforms(). The actual time the animation will be evaluate at is returned.

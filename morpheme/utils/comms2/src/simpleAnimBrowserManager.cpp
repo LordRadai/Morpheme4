@@ -940,7 +940,7 @@ bool SimpleAnimBrowserManager::setAnimationBrowserNetwork(
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-bool SimpleAnimBrowserManager::loadAnimationBrowserData(const char* compressionTypeString, Connection* connection)
+bool SimpleAnimBrowserManager::loadAnimationBrowserData(MR::AnimType compressionType, Connection* connection)
 {
   ConnectionData* connectionData = findConnectionData(connection);
   if (!connectionData)
@@ -948,7 +948,25 @@ bool SimpleAnimBrowserManager::loadAnimationBrowserData(const char* compressionT
     return false;
   }
 
-  connectionData->freeNetworkDef(); 
+  const char* animFormat;
+
+  switch (compressionType)
+  {
+  case ANIM_TYPE_MBA:
+      animFormat = "mba";
+      break;
+  case ANIM_TYPE_ASA:
+      animFormat = "asa";
+      break;
+  case ANIM_TYPE_QSA:
+      animFormat = "asa";
+      break;
+  default:
+      animFormat = "nsa";
+      break;
+  }
+
+  connectionData->freeNetworkDef();
 
   char temporaryAnimBuffer[256];
   char temporaryNetBuffer[256];
@@ -956,7 +974,7 @@ bool SimpleAnimBrowserManager::loadAnimationBrowserData(const char* compressionT
   NMP_STRNCPY_S(temporaryAnimBuffer, sizeof(temporaryAnimBuffer), connectionData->getAnimBrowserFileServerPath());
   NMP_STRNCAT_S(temporaryAnimBuffer, sizeof(temporaryAnimBuffer), ANIM_BROWSER_ANIM_FILE_NAME);
   NMP_STRNCAT_S(temporaryAnimBuffer, sizeof(temporaryAnimBuffer), ".");
-  NMP_STRNCAT_S(temporaryAnimBuffer, sizeof(temporaryAnimBuffer), compressionTypeString);
+  NMP_STRNCAT_S(temporaryAnimBuffer, sizeof(temporaryAnimBuffer), animFormat);
 
   // Determine animation/bundle sizes.
   const uint32_t animSize = connection->getFileSize(temporaryAnimBuffer);

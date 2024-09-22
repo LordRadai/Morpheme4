@@ -262,7 +262,7 @@ public:
   }
 
   /// Interface is not implemented, return false.
-  virtual bool loadAnimationBrowserData(const char* NMP_UNUSED(compressionType), Connection* NMP_UNUSED(connection)) NM_OVERRIDE
+  virtual bool loadAnimationBrowserData(MR::AnimType NMP_UNUSED(compressionType), Connection* NMP_UNUSED(connection)) NM_OVERRIDE
   {
     return false;
   }

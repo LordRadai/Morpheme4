@@ -69,7 +69,7 @@ public:
     NetworkDescriptor animBrowserNetworkDesc,
     Connection* connection) NM_OVERRIDE;
 
-  virtual bool loadAnimationBrowserData(const char* compressionType, Connection* connection) NM_OVERRIDE;
+  virtual bool loadAnimationBrowserData(MR::AnimType compressionType, Connection* connection) NM_OVERRIDE;
 
   virtual float setAnimationBrowserTime(float time, Connection* connection) NM_OVERRIDE;
   virtual float getAnimationBrowserTime(Connection* connection) NM_OVERRIDE;

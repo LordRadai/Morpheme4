@@ -893,7 +893,7 @@ NM_INLINE DataBuffer* DataBuffer::copyTo(
 {
   NMP_ASSERT(destBuffer);
   NMP_ASSERT(m_memoryReqs.size == destBuffer->m_memoryReqs.size);
-  NMP_ASSERT((m_memoryReqs.alignment) & 0xFFFFFFFF == (destBuffer->m_memoryReqs.alignment) & 0xFFFFFFFF);
+  NMP_ASSERT((m_memoryReqs.alignment & 0xFFFFFFFF) == (destBuffer->m_memoryReqs.alignment & 0xFFFFFFFF));
 
   Memory::memcpy((void*) destBuffer, this, m_memoryReqs.size);
 

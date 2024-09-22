@@ -70,7 +70,8 @@ inline LoadAnimBrowserDataCmdPacket::LoadAnimBrowserDataCmdPacket()
 {
   PK_HEADER_CMD(LoadAnimBrowserDataCmd);
 
-  m_compressionType[0] = '\0';
+  m_animType = ANIM_TYPE_NSA;
+  //m_compressionType[0] = '\0';
 }
 
 //----------------------------------------------------------------------------------------------------------------------

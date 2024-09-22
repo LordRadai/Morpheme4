@@ -29,3 +29,7 @@ PACKET(AnimBrowserSourceData)
 PACKET(EndAnimBrowser)
 
 PACKET(AnimBrowserEventDetectionData)
+
+PACKET(ScatterBlendWeights)
+PACKET(ConnectFrameData)
+PACKET(ConnectScriptCommand)

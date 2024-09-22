@@ -38,10 +38,10 @@ inline void IdentificationReplyPacket::deserialize()
 
 //----------------------------------------------------------------------------------------------------------------------
 inline ReplyPacket::ReplyPacket(uint32_t requestId, uint16_t requestedCmd) :
-  PacketBase(),
-  m_requestId(requestId),
-  m_result(kResultSuccess),
-  m_requestedCmd(requestedCmd)
+    PacketBase(),
+    m_requestId(requestId),
+    m_result(kResultSuccess),
+    m_requestedCmd(requestedCmd)
 {
   PK_HEADER_CMDREPLY(Reply);
 }

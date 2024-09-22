@@ -117,6 +117,20 @@ bool CoreCommandsHandler::doHandleCommand(CmdPacketBase* cmdPacket)
   uint16_t pktId = cmdPacket->hdr.m_id;
   NMP::netEndianSwap(pktId);
 
+#ifdef _DEBUG
+  if (pktId < 111)
+  {
+      CmdPacketBase debugPacketCopy = *cmdPacket;
+      NMP::netEndianSwap(debugPacketCopy.hdr.m_magicA);
+      NMP::netEndianSwap(debugPacketCopy.hdr.m_magicB);
+      NMP::netEndianSwap(debugPacketCopy.hdr.m_id);
+      NMP::netEndianSwap(debugPacketCopy.hdr.m_length);
+      debugPacketCopy.deserialize();
+
+      NMP_MSG("Received packet: (id=%d, len=%d)", debugPacketCopy.hdr.m_id, debugPacketCopy.hdr.m_length);
+  }
+#endif
+
   switch (pktId)
   {
   case pk_IdentificationCmd:

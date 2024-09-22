@@ -61,9 +61,9 @@ struct ReplyPacket : public PacketBase
 
   uint32_t    m_requestId;
   ResultValue m_result;
+  
   uint16_t    m_requestedCmd; ///< Holds the original request type.
-
-  uint8_t m_pad[2];
+  uint16_t    m_pad = 0;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

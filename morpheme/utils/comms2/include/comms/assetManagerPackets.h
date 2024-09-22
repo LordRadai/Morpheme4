@@ -71,7 +71,8 @@ struct LoadAnimBrowserDataCmdPacket : public CmdPacketBase
   inline void deserialize();
   inline void serialize();
 
-  char m_compressionType[32];
+  MR::AnimType m_animType;
+  //char m_compressionType[32];
 };
 
 //----------------------------------------------------------------------------------------------------------------------

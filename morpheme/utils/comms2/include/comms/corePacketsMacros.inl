@@ -13,10 +13,6 @@
 // the various internal packet types.
 //----------------------------------------------------------------------------------------------------------------------
 
-PACKET(ScatterBlendWeights)
-PACKET(ConnectFrameData)
-PACKET(ConnectScriptCommand)
-
 PACKET(IdentificationCmd)
 PACKET(IdentificationReply)
 
