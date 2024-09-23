@@ -226,7 +226,6 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
       }
 
       //morphemeConnect 3.6.2 can't handle this debug data correctly, it will crash if it receives it
-      /*
 #if defined (MR_OUTPUT_DEBUGGING)
       //-----------------------------------------
       // Send a packet for each node output
@@ -280,7 +279,6 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
         }
       }
 #endif // defined (MR_OUTPUT_DEBUGGING)
-*/
     }
 
     tempAllocator->destroyChildAllocator(childAllocator);
@@ -289,7 +287,6 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
   EndInstanceSectionPacket endInstanceData(MCOMMS::kCoreDataSectionType);
   mcommsBufferDataPacket(endInstanceData, connection);
 
-  /*
 #if defined (MR_OUTPUT_DEBUGGING)
   //-----------------------------------------
   // Send a control params debug output section.
@@ -303,7 +300,6 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
   // Send a node profile timings section.
   dataMgr->serializeTxNodeTimings(instanceID, connection);
 #endif // defined (MR_OUTPUT_DEBUGGING)
-*/
 }
 
 //----------------------------------------------------------------------------------------------------------------------

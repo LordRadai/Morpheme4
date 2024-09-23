@@ -251,6 +251,7 @@ inline NodeOutputDataPacket* NodeOutputDataPacket::create(
   pkt->setupHeader(NM_PKT_MAGIC_A, NM_PKT_MAGIC_FD, pk_NodeOutputData, pktLen);
 
   pkt->m_nodeOutputType = NODE_OUTPUT_DATA_TYPE_RUNTIME_TYPE;
+
   pkt->m_dataLength = dataLen;
 
   pkt->m_owningNodeID = owningNodeID;

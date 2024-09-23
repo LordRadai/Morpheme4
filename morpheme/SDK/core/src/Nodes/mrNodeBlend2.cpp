@@ -749,7 +749,7 @@ NodeID nodeBlend2UpdateConnectionsBase(
   
   // Get the events blend weight
   float blendWeightEvents = blendWeight;
-  /*
+
   const CPConnection* connection = nodeDef->getInputCPConnection(1);
   if (connection->m_sourceNodeID != INVALID_NODE_ID)
   {
@@ -757,7 +757,6 @@ NodeID nodeBlend2UpdateConnectionsBase(
     AttribDataFloat* inputCPFloat1 = net->updateInputCPConnection<AttribDataFloat>(nodeDef->getInputCPConnection(1), animSet);
     blendWeightEvents = nodeBlend2CalculateBlendWeight(inputCPFloat1->m_value, nodeChildWeights->m_values);
   }
-  */
 
   //------------------------
   // Sets members of attribBlendWeights and activeNodeConnections. Indicating the number of and which nodes are active for 
@@ -824,17 +823,15 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   const AttribDataBlendFlags* blendFlags = nodeDef->getAttribData<AttribDataBlendFlags>(ATTRIB_SEMANTIC_BLEND_FLAGS);
   if( isAdditive )
   {
-      /*
     // Optimise transforms
     nodeBlend2AdditiveBlendWeightCheck(
-      blendFlags->m_alwaysBlendTrajectoryAndTransforms,
+      true,
       blendWeight,
       activeNodeConnections->m_activeChildNodeIDs,
       attribBlendWeights->m_trajectoryAndTransformsNumWeights,
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
-      */
 
     // Optimise sampled events
     nodeBlend2AdditiveBlendWeightCheck(
@@ -848,17 +845,15 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   }
   else
   {
-      /*
     // Optimise transforms
     nodeBlend2BlendWeightCheck(
-      blendFlags->m_alwaysBlendTrajectoryAndTransforms,
+      true,
       blendWeight,
       activeNodeConnections->m_activeChildNodeIDs,
       attribBlendWeights->m_trajectoryAndTransformsNumWeights,
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
-      */
 
     // Optimise sampled events
     nodeBlend2BlendWeightCheck(
