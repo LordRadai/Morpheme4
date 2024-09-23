@@ -62,7 +62,7 @@ PACKET(NetworkDestroyedReply)
 PACKET(NetworkDefLoadedReply)
 PACKET(NetworkDefDestroyedReply)
 
-PACKET(ID32s)
+//PACKET(ID32s)
 PACKET(ID16s)
 PACKET(ActiveNodes)
 PACKET(NodeEventMessages)
@@ -73,6 +73,7 @@ PACKET(PersistentData)
 PACKET(FrameData)
 
 PACKET(ActiveSceneObjects)
+PACKET(ConnectFrameData)
 
 // dispatcher debugging
 PACKET(BeginDispatcherTaskExecute)
