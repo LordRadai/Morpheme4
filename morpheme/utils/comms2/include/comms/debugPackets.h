@@ -163,6 +163,7 @@ struct NodeOutputDataPacket : public PacketBase
   MR::FrameCount          m_validFrame;         // The frame index for which this data is valid. Usually the frame it was created or VALID_FOREVER.
   MR::PinIndex            m_pinIndex;           // The pin index that this data was attached to, if any or INVALID_PIN_INDEX
 
+  uint32_t                m_pad;
   uint32_t                m_nodeOutputType;     // NODE_OUTPUT_DATA_TYPE_... from RuntimeNodeInspector::convertAttribSemanticToNodeOutputDataType(
   // TODO: Stop using this, and start using MR::AttribDataType, MR::AttribDataSemantic etc
   //       to determine the use and meaning of one of these packets of AttribData.
