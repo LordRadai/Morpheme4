@@ -105,7 +105,7 @@ public:
   SimpleMapping*   m_eventIds;        ///< The event user data ID's to be re-mapped.
   uint32_t         m_numBones;        ///< The number of bones in the rig.
   NMP::Quat*       m_quatOffsets;     
-  uint32_t*        m_unkIndices;
+  uint32_t*        m_unmappedBones;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

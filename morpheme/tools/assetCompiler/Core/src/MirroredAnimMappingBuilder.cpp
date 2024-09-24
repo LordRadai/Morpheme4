@@ -191,6 +191,7 @@ void MirroredAnimMappingBuilder::init(
     {
       // store orient offset for the unmapped quat
       animMapping->m_quatOffsets[unmapped[i]] = NMP::Quat(NMP::Quat::kIdentity);
+      animMapping->m_unmappedBones[i] = unmapped[i];
     }
 
     // Finally clean up after ourselves.

@@ -32,6 +32,9 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   // Add space for the array of rotation offsets
   result += NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
 
+  // Add space for the array of unmapped bones
+  result += NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
+
   // Add space for the array of event id mappings.
   result += NMP::Memory::Format(sizeof(SimpleMapping) * numEvents, NMP_NATURAL_TYPE_ALIGNMENT);
 
@@ -77,7 +80,7 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
 
   format = NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
   resource.align(format);
-  result->m_unkIndices = (uint32_t*)resource.ptr;
+  result->m_unmappedBones = (uint32_t*)resource.ptr;
   resource.increment(format);
 
   // Array of event id mappings.
@@ -115,12 +118,12 @@ void AttribDataMirroredAnimMapping::locate(AttribData* target)
   NMP::endianSwap(result->m_eventIds);
   NMP::endianSwap(result->m_numBones);
   NMP::endianSwap(result->m_quatOffsets);
-  NMP::endianSwap(result->m_unkIndices);
+  NMP::endianSwap(result->m_unmappedBones);
   REFIX_PTR_RELATIVE(AdvancedMapping, result->m_boneMappings, result);
   REFIX_PTR_RELATIVE(SimpleMapping, result->m_eventIds, result);
   REFIX_PTR_RELATIVE(SimpleMapping, result->m_trackIds, result);
   REFIX_PTR_RELATIVE(NMP::Quat, result->m_quatOffsets, result);
-  REFIX_PTR_RELATIVE(uint32_t, result->m_unkIndices, result);
+  REFIX_PTR_RELATIVE(uint32_t, result->m_unmappedBones, result);
 
   // Fixup each of the actual values.
   for (uint32_t i = 0; i < result->m_numBoneMappings; ++i)
@@ -144,6 +147,7 @@ void AttribDataMirroredAnimMapping::locate(AttribData* target)
   for (uint32_t i = 0; i < result->m_numBones; ++i)
   {
     NMP::endianSwap(result->m_quatOffsets[i]);
+    NMP::endianSwap(result->m_unmappedBones[i]);
   }
 }
 
@@ -155,10 +159,10 @@ void AttribDataMirroredAnimMapping::dislocate(AttribData* target)
   for (uint32_t i = 0; i < result->m_numBones; ++i)
   {
     NMP::endianSwap(result->m_quatOffsets[i]);
-    NMP::endianSwap(result->m_unkIndices[i]);
+    NMP::endianSwap(result->m_unmappedBones[i]);
   }
   UNFIX_PTR_RELATIVE(NMP::Quat, result->m_quatOffsets, result);
-  UNFIX_PTR_RELATIVE(uint32_t, result->m_unkIndices, result);
+  UNFIX_PTR_RELATIVE(uint32_t, result->m_unmappedBones, result);
 
   for (uint32_t i = 0; i < result->m_numTrackIds; ++i)
   {
@@ -187,7 +191,7 @@ void AttribDataMirroredAnimMapping::dislocate(AttribData* target)
   NMP::endianSwap(result->m_eventIds);
   NMP::endianSwap(result->m_numBones);
   NMP::endianSwap(result->m_quatOffsets);
-  NMP::endianSwap(result->m_unkIndices);
+  NMP::endianSwap(result->m_unmappedBones);
   AttribData::dislocate(target);
 }
 #endif // NM_HOST_CELL_SPU
@@ -209,7 +213,7 @@ void AttribDataMirroredAnimMapping::relocate(AttribData* target, void* location)
   ptr = (void*)(((size_t)ptr) + (sizeof(NMP::Quat) * result->m_numBones));
 
   ptr = (void*)NMP::Memory::align(ptr, NMP_NATURAL_TYPE_ALIGNMENT);
-  result->m_unkIndices = (uint32_t*)ptr;
+  result->m_unmappedBones = (uint32_t*)ptr;
   ptr = (void*)(((size_t)ptr) + (sizeof(uint32_t) * result->m_numBones));
 
   ptr = (void*) NMP::Memory::align(ptr, NMP_NATURAL_TYPE_ALIGNMENT);
