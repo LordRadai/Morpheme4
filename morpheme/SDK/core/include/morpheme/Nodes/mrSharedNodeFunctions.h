@@ -132,10 +132,12 @@ namespace MR
 		NodeDef* node,
 		Network* net);
 
+	/*
 	/// \brief Creates a float output attribute and sets it to 0.0f. It also initializes any pin attrib data on the node
 	void nodeShareInitInstanceCreateFloatOutputAttributeInitPinAttrib(
 		NodeDef* node,
 		Network* net);
+	*/
 
 	/// \brief Creates a int output attribute and sets it to 0
 	void nodeShareInitInstanceCreateIntOutputAttribute(

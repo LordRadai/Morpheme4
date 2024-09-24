@@ -284,6 +284,7 @@ void nodeShareInitInstanceCreateFloatOutputAttribute(
   outputCPPin->m_lastUpdateFrame = 0;
 }
 
+/*
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceCreateFloatOutputAttributeInitPinAttrib(
   NodeDef* node, 
@@ -295,6 +296,7 @@ void nodeShareInitInstanceCreateFloatOutputAttributeInitPinAttrib(
   outputCPPin->m_attribDataHandle = AttribDataFloat::create(net->getPersistentMemoryAllocator(), 0.0f);
   outputCPPin->m_lastUpdateFrame = 0;
 }
+*/
 
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceCreateIntOutputAttribute(

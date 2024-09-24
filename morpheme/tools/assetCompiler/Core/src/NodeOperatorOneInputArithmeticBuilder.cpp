@@ -159,7 +159,7 @@ void NodeOperatorOneInputArithmeticBuilder::initTaskQueuingFns(
   MR::OutputCPTask* outputCPTaskFns = (MR::OutputCPTask*)MR::SharedTaskFnTables::createSharedTaskFnTable();
 
   nodeDef->setOutputCPTaskFnId(outputCPTaskFns, 0, MR::ATTRIB_SEMANTIC_CP_FLOAT, FN_NAME(nodeOperatorOneInputArithmeticOutputCPUpdateFloat), logger);
-  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateFloatOutputAttributeInitPinAttrib), logger);
+  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateFloatOutputAttribute), logger);
 
   // Register the shared task function tables
   nodeDef->registerEmptyTaskQueuingFns(taskQueuingFnTables);
