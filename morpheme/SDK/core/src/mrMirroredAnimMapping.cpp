@@ -27,7 +27,7 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   NMP::Memory::Format result(sizeof(AttribDataMirroredAnimMapping), MR_ATTRIB_DATA_ALIGNMENT);
 
   // Add space for the array of bone mappings.
-  result += NMP::Memory::Format(sizeof(SimpleMapping) * numValues, NMP_NATURAL_TYPE_ALIGNMENT);
+  result += NMP::Memory::Format(sizeof(AdvancedMapping) * numValues, NMP_VECTOR_ALIGNMENT);
 
   // Add space for the array of rotation offsets
   result += NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
@@ -66,7 +66,7 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
 
   // Array of BoneMappings.
   result->m_numBoneMappings = numValues;
-  format = NMP::Memory::Format(sizeof(SimpleMapping) * numValues, NMP_NATURAL_TYPE_ALIGNMENT);
+  format = NMP::Memory::Format(sizeof(AdvancedMapping) * numValues, NMP_VECTOR_ALIGNMENT);
   resource.align(format);
   result->m_boneMappings = (AdvancedMapping*) resource.ptr;
   resource.increment(format);

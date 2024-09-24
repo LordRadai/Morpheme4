@@ -178,8 +178,12 @@ void MirroredAnimMappingBuilder::init(
       for (; it != leftToRight.end(); ++it, ++i)
       {
         // To get the rotational offset.
+        animMapping->m_boneMappings[i].leftUp = rotations[it->second] * outRotations[it->first];
+        animMapping->m_boneMappings[i].rightUp = rotations[it->first] * outRotations[it->second];
         animMapping->m_boneMappings[i].leftIndex = it->first;
         animMapping->m_boneMappings[i].rightIndex = it->second;
+        animMapping->m_boneMappings[i].leftUnk = 0;
+        animMapping->m_boneMappings[i].rightUnk = 0;
         animMapping->m_quatOffsets[it->first] = rotations[it->second] * outRotations[it->first];
         animMapping->m_quatOffsets[it->second] = rotations[it->first] * outRotations[it->second];
       }
