@@ -161,15 +161,18 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   char* currentPtr = strings;
   uint32_t currentOffset = 0;
   TrackName2UniqueIDMap::const_iterator iter = trackIDMap.begin();
+  int index = 0;
   for (; iter != trackIDMap.end(); ++iter)
   {
     uint32_t ID = iter->second;
-    trackIDs[ID] = ID;
-    stringOffsets[ID] = currentOffset;
+    trackIDs[index] = ID;
+    stringOffsets[index] = currentOffset;
     size_t len = iter->first.size() + 1;
     memcpy(currentPtr, iter->first.c_str(), len);
     currentOffset += (uint32_t)len;
     currentPtr += len;
+
+    index++;
   }
 
   //-----------------------
@@ -4824,10 +4827,9 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildMessageIDNameMappingTable(cons
     const ME::MessageExport* messageExport = netDefExport->getMessage(i);
     const char* messageName = messageExport->getName();
     uint32_t messageID = messageExport->getMessageID();
-    NMP_ASSERT(messageID < numStrings);
 
-    ids[messageID] = messageID;
-    stringOffsets[messageID] = currentOffset;
+    ids[i] = messageID;
+    stringOffsets[i] = currentOffset;
     memcpy(currentPtr, messageName, strlen(messageName) + 1);
     currentOffset += (uint32_t)(strlen(messageName) + 1);
     currentPtr += (uint32_t)(strlen(messageName) + 1);
