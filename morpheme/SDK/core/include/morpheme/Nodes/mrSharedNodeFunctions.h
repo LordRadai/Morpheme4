@@ -121,11 +121,13 @@ namespace MR
 		NodeDef* node,
 		Network* net);
 
+	/*
 	/// \brief Sets all possible active child connections to INVALID_NODE_ID and sets the number of active children to zero.
 	/// It also initializes any pin attrib data on the node
 	void nodeShareInitInstanceInvalidateAllChildrenInitPinAttrib(
 		NodeDef* node,
 		Network* net);
+	*/
 
 	/// \brief Creates a float output attribute and sets it to 0.0f
 	void nodeShareInitInstanceCreateFloatOutputAttribute(

@@ -248,6 +248,7 @@ NodeID nodeShareUpdateConnections1Child2InputCPs(
 // These functions are called only when the network is instantiated.
 //----------------------------------------------------------------------------------------------------------------------
 
+/*
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceInvalidateAllChildrenInitPinAttrib(
   NodeDef* node,
@@ -259,6 +260,7 @@ void nodeShareInitInstanceInvalidateAllChildrenInitPinAttrib(
 
   connections->m_numActiveChildNodes = 0;
 }
+*/
 
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceInvalidateAllChildren(
