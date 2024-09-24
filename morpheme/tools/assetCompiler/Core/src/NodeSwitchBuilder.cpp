@@ -250,7 +250,7 @@ void NodeSwitchBuilder::initTaskQueuingFns(
 
   // Other manager registered functions.
   nodeDef->setDeleteNodeInstanceId(FN_NAME(nodeSequenceAndSwitchDeleteInstance), logger);
-  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceInvalidateAllChildrenInitPinAttrib), logger);
+  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceInvalidateAllChildren), logger);
   nodeDef->setUpdateConnectionsFnId(FN_NAME(nodeSwitchUpdateConnections), logger);
   nodeDef->setFindGeneratingNodeForSemanticFnId(FN_NAME(filterNodeFindGeneratingNodeForSemantic), logger);
 }
