@@ -334,6 +334,7 @@ void nodeShareInitInstanceCreateVector3OutputAttribute(
   outputCPPin->m_lastUpdateFrame = 0;
 }
 
+/*
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib(
   NodeDef* node, 
@@ -345,6 +346,7 @@ void nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib(
   outputCPPin->m_attribDataHandle = AttribDataVector3::create(net->getPersistentMemoryAllocator());
   outputCPPin->m_lastUpdateFrame = 0;
 }
+*/
 
 //----------------------------------------------------------------------------------------------------------------------
 void nodeShareInitInstanceCreateBoolOutputAttribute(

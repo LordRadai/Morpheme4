@@ -155,7 +155,7 @@ void NodeOperatorArithmeticVector3Builder::initTaskQueuingFns(
   MR::OutputCPTask* outputCPTaskFns = (MR::OutputCPTask*)MR::SharedTaskFnTables::createSharedTaskFnTable();
 
   nodeDef->setOutputCPTaskFnId(outputCPTaskFns, 0, MR::ATTRIB_SEMANTIC_CP_VECTOR3, FN_NAME(nodeOperatorArithmeticOutputCPUpdateVector), logger);
-  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib), logger);
+  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateVector3OutputAttribute), logger);
 
   // Register the shared task function tables
   nodeDef->registerEmptyTaskQueuingFns(taskQueuingFnTables);

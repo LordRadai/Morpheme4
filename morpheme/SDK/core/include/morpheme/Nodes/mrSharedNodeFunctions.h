@@ -153,10 +153,12 @@ namespace MR
 		NodeDef* node,
 		Network* net);
 
+	/*
 	/// \brief Creates a float output attribute. It also initializes any pin attrib data on the node
 	void nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib(
 		NodeDef* node,
 		Network* net);
+	*/
 
 	/// \brief Creates a bool output attribute
 	void nodeShareInitInstanceCreateBoolOutputAttribute(

@@ -129,7 +129,7 @@ void NodeOperatorFloatsToVector3Builder::initTaskQueuingFns(
   // Other manager registered functions.
   nodeDef->setDeleteNodeInstanceId(FN_NAME(nodeShareDeleteInstanceNoChildren), logger);
   nodeDef->setUpdateConnectionsFnId(FN_NAME(nodeShareUpdateConnectionsNULL), logger);
-  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateVector3OutputAttributeInitPinAttrib), logger);
+  nodeDef->setInitNodeInstanceFnId(FN_NAME(nodeShareInitInstanceCreateVector3OutputAttribute), logger);
 }
 
 } // namespace AP
