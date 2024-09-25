@@ -244,6 +244,12 @@ inline NodeOutputDataPacket* NodeOutputDataPacket::create(
   MR::FrameCount         validFrame,
   MR::PinIndex           pinIndex)
 {
+  //We need to adjust attrib semantics so that the values are what connect expects
+  if (semantic > 22 && semantic < 24)
+    semantic -= 2;
+  else if (semantic > 24)
+      semantic -= 3;
+
   uint32_t pktLen = sizeof(NodeOutputDataPacket) + dataLen;
 
   NodeOutputDataPacket* pkt = buffer->reserveAlignedMemory<NodeOutputDataPacket*>(pktLen, 16);
@@ -262,6 +268,7 @@ inline NodeOutputDataPacket* NodeOutputDataPacket::create(
   pkt->m_animSetIndex = animSetIndex;
   pkt->m_validFrame = validFrame;
   pkt->m_pinIndex = pinIndex;
+  pkt->m_pad = 0;
 
   return pkt;
 }

@@ -250,6 +250,7 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
                                   attribSemantic,
                                   animSetIndex,
                                   validFrame);
+
           MCOMMS::NodeOutputDataPacket* nodeOutputData = MCOMMS::NodeOutputDataPacket::create(
                 connection->getDataBuffer(),
                 dataLength,
