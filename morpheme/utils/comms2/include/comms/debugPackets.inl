@@ -245,10 +245,10 @@ inline NodeOutputDataPacket* NodeOutputDataPacket::create(
   MR::PinIndex           pinIndex)
 {
   //We need to adjust attrib semantics so that the values are what connect expects
-  if (semantic > 22 && semantic < 24)
+  if (semantic > 22 && semantic < 25)
     semantic -= 2;
-  else if (semantic > 24)
-      semantic -= 3;
+  else if (semantic >= 25)
+    semantic -= 3;
 
   uint32_t pktLen = sizeof(NodeOutputDataPacket) + dataLen;
 
