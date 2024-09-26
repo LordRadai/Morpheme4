@@ -959,7 +959,7 @@ bool SimpleAnimBrowserManager::loadAnimationBrowserData(MR::AnimType compression
       animFormat = "asa";
       break;
   case ANIM_TYPE_QSA:
-      animFormat = "asa";
+      animFormat = "qsa";
       break;
   default:
       animFormat = "nsa";
