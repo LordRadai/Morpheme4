@@ -276,6 +276,7 @@ public:
   virtual bool readIntAttribute(int& data_out, const char* elementDesc, const char* attribDesc) const = 0;  // Reads an int attribute from an element.
   virtual bool readUndefined(const char* desc) const = 0;
   virtual bool readNetworkNodeId(int& data_out, const char* desc) const = 0;
+  virtual bool readAnimationId(int& data_out, const char* desc) const = 0;
   virtual bool readVector3(const NMP::Vector3& data_out, const char* desc) const = 0;
   virtual bool readVector4(const NMP::Quat& data_out, const char* desc) const = 0;
 

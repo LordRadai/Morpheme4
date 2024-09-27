@@ -1659,6 +1659,15 @@ bool DataBlockExportXML::readNetworkNodeId(int& data_out, const char* desc) cons
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+bool DataBlockExportXML::readAnimationId(int& data_out, const char* desc) const
+{
+    size_t numChars = sizeof(data_out);
+    if (!readElementVerifyType((char*)&data_out, numChars, numChars, desc, "AnimationId"))
+        return false;
+    return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 bool DataBlockExportXML::readVector3(const NMP::Vector3& data, const char* desc) const
 {
   size_t bufferSize = 3 * sizeof(float);

@@ -280,6 +280,7 @@ public:
   bool readIntAttribute(int& data_out, const char* elementDesc, const char* attribDesc) const NM_OVERRIDE;  // Reads an int attribute from an element.
   bool readUndefined(const char* desc) const NM_OVERRIDE;
   bool readNetworkNodeId(int& data_out, const char* desc) const NM_OVERRIDE;
+  bool readAnimationId(int& data_out, const char* desc) const NM_OVERRIDE;
   bool readVector3(const NMP::Vector3& data, const char* desc) const NM_OVERRIDE;
   bool readVector4(const NMP::Quat& data, const char* desc) const NM_OVERRIDE;
 
