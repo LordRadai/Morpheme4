@@ -116,10 +116,8 @@ MR::NodeDef* NodeOperatorSmoothFloatBuilder::init(
 
   //---------------------------
   // Smooth time
-  float smoothTimeInc = 0.0f;
-  nodeDefDataBlock->readFloat(smoothTimeInc, "SmoothTime_Increasing");
-  float smoothTimeDec = 0.0f;
-  nodeDefDataBlock->readFloat(smoothTimeDec, "SmoothTime_Decreasing");
+  float smoothTime = 0.0f;
+  nodeDefDataBlock->readFloat(smoothTime, "SmoothTime");
 
   //---------------------------
   // Smooth velocity
@@ -142,7 +140,7 @@ MR::NodeDef* NodeOperatorSmoothFloatBuilder::init(
 
   MR::AttribDataSmoothFloatOperation* smoothTimeAttribData = MR::AttribDataSmoothFloatOperation::init(
     memRes, 
-    smoothTimeInc, smoothTimeDec,
+    smoothTime,
     initValueX, initValueY, initValueZ,
     useInitValOnInit,
     smoothVel,

@@ -51,8 +51,7 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampFloat(
   // Get the node defs.
   AttribDataSmoothFloatOperation* smoothOpDefData = node->getAttribData<AttribDataSmoothFloatOperation>(ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF);
 
-  float smoothTimeInc = smoothOpDefData->m_floatRateIncreasing;
-  float smoothTimeDec = smoothOpDefData->m_floatRateIncreasing;
+  float smoothTime = smoothOpDefData->m_floatRate;
 
   // If the data we have got is not from the last update frame initialise the cached value directly to the input value.
   FrameCount currFrameNo = net->getCurrentFrameNo();
@@ -94,15 +93,9 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampFloat(
   // The current value and what will be updated. The effective return value.
   float& currentVal = outputCPFloat->m_value;
 
-  // Lets the cache the time to use for smoothing dependent on whether 
-  // the target number is greater or smaller than the current value.
-  float smoothTime = smoothTimeInc;
-  if( currentVal > targetVal )// we are decreasing
-    smoothTime = smoothTimeDec;
-
   if (smoothOpDefData->m_smoothVel) // Critically damped spring
   {
-    float& currentRate = stateData->m_floatRateIncreasing;
+    float& currentRate = stateData->m_floatRate;
 
     if (smoothTime > 0.0f)
     {
@@ -136,7 +129,7 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampFloat(
     net->getDispatcher()->getDebugInterface(),
     nodeID,
     "Float damping rate",
-    stateData->m_floatRateIncreasing);
+    stateData->m_floatRate);
 
   return outputCPFloat;
 }
@@ -173,7 +166,7 @@ AttribData* nodeOperatorSmoothFloatCriticallyDampVector(
   //-------------------
   // Get the node defs.
   AttribDataSmoothFloatOperation* smoothOp = node->getAttribData<AttribDataSmoothFloatOperation>(ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF);
-  float smoothTime = smoothOp->m_floatRateIncreasing; // DK (20/2/2013) currently the smoothed vector has no different behaviour 
+  float smoothTime = smoothOp->m_floatRate;           // DK (20/2/2013) currently the smoothed vector has no different behaviour 
                                                       // based on magnitude or direction. Indeed this part of the problem what does 
                                                       // 'increase' precisely mean for a vector.
 

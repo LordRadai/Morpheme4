@@ -4708,8 +4708,7 @@ void AttribDataSmoothFloatOperation::locate(AttribData* target)
   AttribDataSmoothFloatOperation* result = (AttribDataSmoothFloatOperation*)target;
 
   AttribData::locate(target);
-  NMP::endianSwap(result->m_floatRateIncreasing);
-  //NMP::endianSwap(result->m_floatRateDecreasing);
+  NMP::endianSwap(result->m_floatRate);
   NMP::endianSwap(result->m_initialValueX);
   NMP::endianSwap(result->m_initialValueY);
   NMP::endianSwap(result->m_initialValueZ);
@@ -4723,8 +4722,7 @@ void AttribDataSmoothFloatOperation::dislocate(AttribData* target)
   AttribDataSmoothFloatOperation* result = (AttribDataSmoothFloatOperation*)target;
 
   AttribData::dislocate(target);
-  NMP::endianSwap(result->m_floatRateIncreasing);
-  //NMP::endianSwap(result->m_floatRateDecreasing);
+  NMP::endianSwap(result->m_floatRate);
   NMP::endianSwap(result->m_initialValueX);
   NMP::endianSwap(result->m_initialValueY);
   NMP::endianSwap(result->m_initialValueZ);
@@ -4735,8 +4733,7 @@ void AttribDataSmoothFloatOperation::dislocate(AttribData* target)
 //----------------------------------------------------------------------------------------------------------------------
 AttribDataSmoothFloatOperation* AttribDataSmoothFloatOperation::create(
   NMP::MemoryAllocator* allocator,
-  float                 rateInc,
-  float                 rateDec,
+  float                 rate,
   float                 initialValueX,
   float                 initialValueY,
   float                 initialValueZ,
@@ -4750,7 +4747,7 @@ AttribDataSmoothFloatOperation* AttribDataSmoothFloatOperation::create(
   NMP::Memory::Resource resource = NMPAllocatorAllocateFromFormat(allocator, memReqs);
   NMP_ASSERT(resource.ptr);
   result = AttribDataSmoothFloatOperation::init(
-    resource, rateInc, rateDec, initialValueX, initialValueY, initialValueZ, useInitValOnInit, smoothVel, refCount);
+    resource, rate, initialValueX, initialValueY, initialValueZ, useInitValOnInit, smoothVel, refCount);
 
   // Store the allocator so we know where to free this attribData from when we destroy it.
   result->m_allocator = allocator;
@@ -4769,8 +4766,7 @@ NMP::Memory::Format AttribDataSmoothFloatOperation::getMemoryRequirements()
 //----------------------------------------------------------------------------------------------------------------------
 AttribDataSmoothFloatOperation* AttribDataSmoothFloatOperation::init(
   NMP::Memory::Resource& resource,
-  float                  rateInc,
-  float                  rateDec,
+  float                  rate,
   float                  initialValueX,
   float                  initialValueY,
   float                  initialValueZ,
@@ -4786,14 +4782,13 @@ AttribDataSmoothFloatOperation* AttribDataSmoothFloatOperation::init(
 
   result->setType(ATTRIB_TYPE_SMOOTH_FLOAT_OPERATION);
   result->setRefCount(refCount);
-  result->m_floatRateIncreasing = rateInc;
-  //result->m_floatRateDecreasing = rateDec;
+  result->m_floatRate = rate;
   result->m_initialValueX = initialValueX;
   result->m_initialValueY = initialValueY;
   result->m_initialValueZ = initialValueZ;
   result->m_useInitValOnInit = useInitValOnInit;
   result->m_smoothVel = smoothVel;
-  result->m_vectorRate.set(rateInc);
+  result->m_vectorRate.set(rate);
   return result;
 }
 
@@ -4805,7 +4800,7 @@ AttribDataHandle AttribDataSmoothFloatOperation::create(NMP::MemoryAllocator* al
   NMP::Memory::Format memReqs = getMemoryRequirements();
   NMP::Memory::Resource resource = NMPAllocatorAllocateFromFormat(allocator, memReqs);
   NMP_ASSERT(resource.ptr);
-  result.m_attribData = init(resource, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, false, false, 0);
+  result.m_attribData = init(resource, 0.0f, 0.0f, 0.0f, 0.0f, false, false, 0);
   result.m_format = memReqs;
 
   // Store the allocator so we know where to free this attribData from when we destroy it.
