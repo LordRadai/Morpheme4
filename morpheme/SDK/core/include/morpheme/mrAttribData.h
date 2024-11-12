@@ -2926,8 +2926,7 @@ class AttribDataSmoothFloatOperation : public AttribData
 public:
   static AttribDataSmoothFloatOperation* create(
     NMP::MemoryAllocator* allocator,
-    float rateInc,
-    float rateDec,
+    float rate,
     float initialValueX,
     float initialValueY,
     float initialValueZ,
@@ -2936,8 +2935,7 @@ public:
     uint16_t refCount = 0);
   static AttribDataSmoothFloatOperation* init(
     NMP::Memory::Resource& resource,
-    float rateInc,
-    float rateDec,
+    float rate,
     float initialValueX,
     float initialValueY,
     float initialValueZ,
@@ -2961,7 +2959,7 @@ public:
   NMP::Vector3 m_vectorRate; // For vector3 damping.
 #endif
 
-  float        m_floatRateIncreasing;  // For single float damping - use this value for smoothing when we are smoothing towards a larger number.
+  float        m_floatRate;  // For single float damping - use this value for smoothing when we are smoothing towards a larger number.
   float        m_initialValueX; // The float (or for vectors, X component of) the value the operator will start at when it's initialised.
   float        m_initialValueY; // The Y component of the value the operator will start at when it's initialised.
   float        m_initialValueZ; // The Z component of the value the operator will start at when it's initialised.
