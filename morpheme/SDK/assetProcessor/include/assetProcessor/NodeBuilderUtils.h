@@ -295,63 +295,13 @@ NM_INLINE void readCPConnectionDetails(
   {
     // just a node
   }
-  else if (dataBlock->readUndefined(info->m_nodeIDLabel))
-  {
-    // Found nothing, better be optional
-#ifdef NMP_ENABLE_ASSERTS
-    NMP_VERIFY(info->m_optional);
-#else
-    (void)info->m_optional;
-#endif
-  }
   else
   {
-      /*
-    // It's a reflexive pin
-    MR::DataPinInfo* nodeDataPinInfo = netDefCompilationInfo->getNodeDataPinInfo(nodeDefExport->getNodeID());
-    nodeDataPinInfo->m_numPinAttribData += info->m_numAnimSets; 
-    //nodeDataPinInfo->m_reflexiveCPCount += 1;
-    
-    // get memory requirements
-    switch (info->m_semantic)
-    {
-    case MR::ATTRIB_SEMANTIC_CP_BOOL:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataBool::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;
-    case MR::ATTRIB_SEMANTIC_CP_UINT:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataUInt::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;
-    case MR::ATTRIB_SEMANTIC_CP_PHYSICS_OBJECT_POINTER:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataPhysicsObjectPointer::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;
-    case MR::ATTRIB_SEMANTIC_CP_INT:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataInt::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;
-    case MR::ATTRIB_SEMANTIC_CP_FLOAT:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataFloat::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;
-    case MR::ATTRIB_SEMANTIC_CP_VECTOR3:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataVector3::getMemoryRequirements() * info->m_numAnimSets;
-
-      break;  
-    case MR::ATTRIB_SEMANTIC_CP_VECTOR4:
-      nodeDataPinInfo->m_pinAtttribDataMemory += MR::AttribDataVector4::getMemoryRequirements() * info->m_numAnimSets;
-      
-          break;
-        case MR::ATTRIB_SEMANTIC_NA:
-          NMP_ASSERT_FAIL_MSG("Semantic not specified for Pin AttribData.");
-
-          break;
-        default:
-          NMP_ASSERT_FAIL_MSG("Semantic not supported as Pin AttribData.");
-          break;
-    }
-    */
+#ifdef NMP_ENABLE_ASSERTS
+      NMP_VERIFY(info->m_optional);
+#else
+      (void)info->m_optional;
+#endif
   }
 }
 
@@ -379,7 +329,7 @@ NM_INLINE bool processCPConnectionDetails(
 
     return true;
   }
-  else if (nodeDefDataBlock->readUndefined(info->m_nodeIDLabel))
+  else
   {
 #ifdef NMP_ENABLE_ASSERTS
     NMP_VERIFY_MSG(
