@@ -36,6 +36,7 @@ NMP::Memory::Format NodeDef::getMemoryRequirementsExcludeBaseMem(
   // Reserve some space for the attrib data entries
   result += NMP::Memory::Format(sizeof(AttribDataHandle) * numAttribDatas, NMP_NATURAL_TYPE_ALIGNMENT);
 
+  /*
   if (nodeDataPinInfo && nodeDataPinInfo->m_reflexiveCPCount > 0)
   {
     // Reserve some space for the pin attrib data entries
@@ -44,6 +45,7 @@ NMP::Memory::Format NodeDef::getMemoryRequirementsExcludeBaseMem(
     // Reserve some space for the pin attrib data info entries
     result += NMP::Memory::Format(sizeof(PinAttribDataInfo) * nodeDataPinInfo->m_reflexiveCPCount, NMP_NATURAL_TYPE_ALIGNMENT);
   }
+  */
 
   // Reserve space for the event message structures
   result += NMP::Memory::Format(sizeof(NodeEventMessage) * numOnEnterMessages, NMP_NATURAL_TYPE_ALIGNMENT);
@@ -51,11 +53,13 @@ NMP::Memory::Format NodeDef::getMemoryRequirementsExcludeBaseMem(
   // Make sure size is a multiple of the alignment requirement.
   result.size = NMP::Memory::align(result.size, NMP_NATURAL_TYPE_ALIGNMENT);
 
+  /*
   // Include any (precomputed) space for pin attrib data
   if (nodeDataPinInfo && nodeDataPinInfo->m_reflexiveCPCount > 0)
   {
     result += nodeDataPinInfo->m_pinAtttribDataMemory;
   }
+  */
 
   return result;
 }
@@ -111,7 +115,7 @@ void NodeDef::initExcludeBaseMem(
   target->m_maxNumActiveChildNodes = maxNumActiveChildNodes;
   target->m_passThroughChildIndex = 0;
   // total output pins as specified plus reflexive
-  target->m_numOutputCPPins = numOutputCPPins + (uint8_t)nodeDataPinInfo->m_reflexiveCPCount;
+  target->m_numOutputCPPins = numOutputCPPins;
   target->m_numAttribDataHandles = numAttribDatas;
 
   //---------------------------

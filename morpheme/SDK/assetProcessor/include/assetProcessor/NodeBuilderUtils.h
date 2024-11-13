@@ -306,10 +306,11 @@ NM_INLINE void readCPConnectionDetails(
   }
   else
   {
+      /*
     // It's a reflexive pin
     MR::DataPinInfo* nodeDataPinInfo = netDefCompilationInfo->getNodeDataPinInfo(nodeDefExport->getNodeID());
     nodeDataPinInfo->m_numPinAttribData += info->m_numAnimSets; 
-    nodeDataPinInfo->m_reflexiveCPCount += 1;
+    //nodeDataPinInfo->m_reflexiveCPCount += 1;
     
     // get memory requirements
     switch (info->m_semantic)
@@ -350,6 +351,7 @@ NM_INLINE void readCPConnectionDetails(
           NMP_ASSERT_FAIL_MSG("Semantic not supported as Pin AttribData.");
           break;
     }
+    */
   }
 }
 

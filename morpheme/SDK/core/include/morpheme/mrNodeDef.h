@@ -473,12 +473,12 @@ public:
   { 
     m_numPinAttribData = 0;
     m_pinAtttribDataMemory.set(0, MR_ATTRIB_DATA_ALIGNMENT);
-    m_reflexiveCPCount = 0;
+    //m_reflexiveCPCount = 0;
   };
 
   uint32_t m_numPinAttribData;                ///< Total number of attribDatas required by this Node's data pins.
   NMP::Memory::Format m_pinAtttribDataMemory; ///< Total amount of formated memory required by this Node's data pin.
-  uint16_t m_reflexiveCPCount;                ///< Number of the controll parameters that are data pins with attrib
+  //uint16_t m_reflexiveCPCount;                ///< Number of the controll parameters that are data pins with attrib
                                               ///< data attached (in which case they are attached to hidden ouputs
                                               ///< of the same node, hence 'reflexive').
 };
