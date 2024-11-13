@@ -2688,10 +2688,10 @@ int32_t __cdecl main(int argc, char** argv)
   }
 
   // Uncomment this line to output to log file.
-  // NET_LOG_INIT("MorphUpdate.log");
+  NET_LOG_INIT("MorphUpdate.log");
 
   // Uncomment this line to log everything.
-  // NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_MAX_PRIORITY);
+  NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_MAX_PRIORITY);
 
   // Uncomment this line to log queued parameters.
   // NET_LOG_ADD_PRIORITY_RANGE(98, 100);
@@ -2709,7 +2709,7 @@ int32_t __cdecl main(int argc, char** argv)
   // NET_LOG_ADD_PRIORITY_RANGE(108, 108);
 
   // Uncomment this line to list task names against their registered IDs.
-  NET_LOG_ADD_PRIORITY_RANGE(109, 109);
+  // NET_LOG_ADD_PRIORITY_RANGE(109, 109);
 
 #ifdef NMP_MEMORY_LOGGING
   // Requirements for the network instance
