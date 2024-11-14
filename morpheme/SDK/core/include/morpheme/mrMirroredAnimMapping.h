@@ -47,13 +47,13 @@ public:
       uint32_t  rightUnk;
   };
 
-  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numBones);
+  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numUnmappedBones);
   static AttribDataMirroredAnimMapping* init(
     NMP::Memory::Resource& resource,
     uint32_t               numValues,
     uint32_t               numEvents,
     uint32_t               numTracks,
-    uint32_t               numBones,
+    uint32_t               numUnmappedBones,
     uint16_t               refCount = 0);
 
   NM_INLINE AttribDataMirroredAnimMapping() { setType(ATTRIB_TYPE_ANIM_MIRRORED_MAPPING); setRefCount(0); }
@@ -85,7 +85,7 @@ public:
   uint32_t getRightEventIdMapping(const uint32_t index) const;
 
   /// \brief returns the number of bones
-  uint32_t getNumBones() { return m_numBones; }
+  uint32_t getNumBones() { return m_numUnmappedBones; }
 
   /// \brief
   const NMP::Quat* getOffset(uint32_t idx) const;
@@ -103,7 +103,7 @@ public:
   SimpleMapping*   m_trackIds;        ///< The track ID's to be re-mapped.
   uint32_t         m_numEventIds;     ///< Number of event user data ID's to be re-mapped.
   SimpleMapping*   m_eventIds;        ///< The event user data ID's to be re-mapped.
-  uint32_t         m_numBones;        ///< The number of bones in the rig.
+  uint32_t         m_numUnmappedBones;        ///< The number of bones in the rig.
   NMP::Quat*       m_quatOffsets;     
   uint32_t*        m_unmappedBones;
 };

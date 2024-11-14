@@ -22,7 +22,7 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   uint32_t numValues,
   uint32_t numEvents,
   uint32_t numTracks,
-  uint32_t numBones)
+  uint32_t numUnmappedBones)
 {
   NMP::Memory::Format result(sizeof(AttribDataMirroredAnimMapping), MR_ATTRIB_DATA_ALIGNMENT);
 
@@ -30,10 +30,10 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   result += NMP::Memory::Format(sizeof(AdvancedMapping) * numValues, NMP_VECTOR_ALIGNMENT);
 
   // Add space for the array of rotation offsets
-  result += NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
+  result += NMP::Memory::Format(sizeof(NMP::Quat) * numUnmappedBones, NMP_VECTOR_ALIGNMENT);
 
   // Add space for the array of unmapped bones
-  result += NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
+  result += NMP::Memory::Format(sizeof(uint32_t) * numUnmappedBones, NMP_NATURAL_TYPE_ALIGNMENT);
 
   // Add space for the array of event id mappings.
   result += NMP::Memory::Format(sizeof(SimpleMapping) * numEvents, NMP_NATURAL_TYPE_ALIGNMENT);
@@ -53,7 +53,7 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
   uint32_t               numValues,
   uint32_t               numEvents,
   uint32_t               numTracks,
-  uint32_t               numBones,
+  uint32_t               numUnmappedBones,
   uint16_t               refCount)
 {
   NMP::Memory::Format format(sizeof(AttribDataMirroredAnimMapping), MR_ATTRIB_DATA_ALIGNMENT);
@@ -71,14 +71,14 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
   result->m_boneMappings = (AdvancedMapping*) resource.ptr;
   resource.increment(format);
 
-  // Array of rotation offsets for the bones.
-  result->m_numBones = numBones;
-  format = NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
+  // Array of rotation offsets for the unmapped bones.
+  result->m_numUnmappedBones = numUnmappedBones;
+  format = NMP::Memory::Format(sizeof(NMP::Quat) * numUnmappedBones, NMP_VECTOR_ALIGNMENT);
   resource.align(format);
   result->m_quatOffsets = (NMP::Quat*) resource.ptr;
   resource.increment(format);
 
-  format = NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
+  format = NMP::Memory::Format(sizeof(uint32_t) * numUnmappedBones, NMP_NATURAL_TYPE_ALIGNMENT);
   resource.align(format);
   result->m_unmappedBones = (uint32_t*)resource.ptr;
   resource.increment(format);
@@ -116,7 +116,7 @@ void AttribDataMirroredAnimMapping::locate(AttribData* target)
   NMP::endianSwap(result->m_trackIds);
   NMP::endianSwap(result->m_numEventIds);
   NMP::endianSwap(result->m_eventIds);
-  NMP::endianSwap(result->m_numBones);
+  NMP::endianSwap(result->m_numUnmappedBones);
   NMP::endianSwap(result->m_quatOffsets);
   NMP::endianSwap(result->m_unmappedBones);
   REFIX_PTR_RELATIVE(AdvancedMapping, result->m_boneMappings, result);
@@ -144,7 +144,7 @@ void AttribDataMirroredAnimMapping::locate(AttribData* target)
   }
 
   // Fixup each of the actual values.
-  for (uint32_t i = 0; i < result->m_numBones; ++i)
+  for (uint32_t i = 0; i < result->m_numUnmappedBones; ++i)
   {
     NMP::endianSwap(result->m_quatOffsets[i]);
     NMP::endianSwap(result->m_unmappedBones[i]);
@@ -156,7 +156,7 @@ void AttribDataMirroredAnimMapping::dislocate(AttribData* target)
 {
   AttribDataMirroredAnimMapping* result = (AttribDataMirroredAnimMapping*) target;
 
-  for (uint32_t i = 0; i < result->m_numBones; ++i)
+  for (uint32_t i = 0; i < result->m_numUnmappedBones; ++i)
   {
     NMP::endianSwap(result->m_quatOffsets[i]);
     NMP::endianSwap(result->m_unmappedBones[i]);
@@ -189,7 +189,7 @@ void AttribDataMirroredAnimMapping::dislocate(AttribData* target)
   NMP::endianSwap(result->m_trackIds);
   NMP::endianSwap(result->m_numEventIds);
   NMP::endianSwap(result->m_eventIds);
-  NMP::endianSwap(result->m_numBones);
+  NMP::endianSwap(result->m_numUnmappedBones);
   NMP::endianSwap(result->m_quatOffsets);
   NMP::endianSwap(result->m_unmappedBones);
   AttribData::dislocate(target);
@@ -210,11 +210,11 @@ void AttribDataMirroredAnimMapping::relocate(AttribData* target, void* location)
 
   ptr = (void*) NMP::Memory::align(ptr, NMP_VECTOR_ALIGNMENT);
   result->m_quatOffsets = (NMP::Quat*) ptr;
-  ptr = (void*)(((size_t)ptr) + (sizeof(NMP::Quat) * result->m_numBones));
+  ptr = (void*)(((size_t)ptr) + (sizeof(NMP::Quat) * result->m_numUnmappedBones));
 
   ptr = (void*)NMP::Memory::align(ptr, NMP_NATURAL_TYPE_ALIGNMENT);
   result->m_unmappedBones = (uint32_t*)ptr;
-  ptr = (void*)(((size_t)ptr) + (sizeof(uint32_t) * result->m_numBones));
+  ptr = (void*)(((size_t)ptr) + (sizeof(uint32_t) * result->m_numUnmappedBones));
 
   ptr = (void*) NMP::Memory::align(ptr, NMP_NATURAL_TYPE_ALIGNMENT);
   result->m_eventIds = (SimpleMapping*) ptr;

@@ -4107,14 +4107,14 @@ void NetworkDefBuilder::buildMirrorMappingAttribData(
   uint32_t numMirroredBones  = (uint32_t)animRigExport->getMirrorMappingCount();
   uint32_t numMirroredEvents = animSetExport->getNumEventUserDataMirrorMappings();
   uint32_t numMirroredTracks = animSetExport->getNumEventTrackMirrorMappings();
-  uint32_t numBones          = animRigExport->getNumJoints();
+  uint32_t numUnmappedBones  = animRigExport->getNumJoints() - numMirroredBones;
 
   MR::AttribDataMirroredAnimMapping* mirroredAnimMapAttribData = MR::AttribDataMirroredAnimMapping::init(
         memRes,
         numMirroredBones,
         numMirroredEvents,
         numMirroredTracks,
-        numBones,
+        numUnmappedBones,
         MR::IS_DEF_ATTRIB_DATA);
   MirroredAnimMappingBuilder::init(mirroredAnimMapAttribData, animRigExport, animSetExport);
 
@@ -4122,7 +4122,7 @@ void NetworkDefBuilder::buildMirrorMappingAttribData(
         numMirroredBones,
         numMirroredEvents,
         numMirroredTracks,
-        numBones);
+        numUnmappedBones);
   uint32_t lookupIndex = netDefSemanticLookupTable->getLookupIndex(MR::ATTRIB_SEMANTIC_MIRRORED_ANIM_MAPPING, animSetIndex);
   NMP_ASSERT(lookupIndex < netDefAttribDataArraySize);
   netDefAttribDataArray[lookupIndex].set(mirroredAnimMapAttribData, mirroredBoneMapMemReqs);

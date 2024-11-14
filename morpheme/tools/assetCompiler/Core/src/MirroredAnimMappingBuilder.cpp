@@ -172,7 +172,6 @@ void MirroredAnimMappingBuilder::init(
 
     // initialise the mapping data
     {
-      animMapping->m_numBones = rigExport->getNumJoints();
       std::map<uint32_t, uint32_t>::iterator it = leftToRight.begin();
       uint32_t i = 0;
       for (; it != leftToRight.end(); ++it, ++i)
@@ -194,12 +193,12 @@ void MirroredAnimMappingBuilder::init(
     for (uint32_t i = 0; i != nJoints; ++i)
     {
       // store orient offset for the unmapped quat
-      animMapping->m_quatOffsets[unmapped[i]] = NMP::Quat(NMP::Quat::kIdentity);
+      animMapping->m_quatOffsets[i] = NMP::Quat(NMP::Quat::kIdentity);
     }
 
-    for (size_t i = 0; i < rigExport->getNumJoints(); i++)
+    for (size_t i = 0; i < animMapping->m_numUnmappedBones; i++)
     {
-        animMapping->m_unmappedBones[i] = i;
+        animMapping->m_unmappedBones[i] = unmapped[i];
     }
 
     // Finally clean up after ourselves.
