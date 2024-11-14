@@ -183,8 +183,6 @@ void MirroredAnimMappingBuilder::init(
         animMapping->m_boneMappings[i].rightIndex = it->second;
         animMapping->m_boneMappings[i].leftUnk = 0;
         animMapping->m_boneMappings[i].rightUnk = 0;
-        animMapping->m_quatOffsets[it->first] = rotations[it->second] * outRotations[it->first];
-        animMapping->m_quatOffsets[it->second] = rotations[it->first] * outRotations[it->second];
       }
     }
 
@@ -192,13 +190,14 @@ void MirroredAnimMappingBuilder::init(
     uint32_t nJoints = (uint32_t)unmapped.size();
     for (uint32_t i = 0; i != nJoints; ++i)
     {
-      // store orient offset for the unmapped quat
-      animMapping->m_quatOffsets[i] = NMP::Quat(NMP::Quat::kIdentity);
+        // store orient offset for the unmapped quat
+        NMP::Vector3 translation;
+        rigExport->getJointOffsetTransform(i, translation, animMapping->m_unmappedQuatOffsets[i]);
     }
 
-    for (size_t i = 0; i < animMapping->m_numUnmappedBones; i++)
+    for (size_t i = 0; i < unmapped.size(); i++)
     {
-        animMapping->m_unmappedBones[i] = unmapped[i];
+        animMapping->m_unmappedBoneIDs[i] = unmapped[i];
     }
 
     // Finally clean up after ourselves.

@@ -1485,16 +1485,18 @@ void serializePluginList(const PluginManager& pm, AssetProcessor& ap)
   const char** pluginsNameList = (const char**)NMPMemoryAllocateFromFormat(fmt).ptr;
 
   fmt = NMP::Memory::Format(sizeof(uint32_t) * pluginCount, NMP_NATURAL_TYPE_ALIGNMENT);
+  uint32_t* ids = (uint32_t*)NMPMemoryAllocateFromFormat(fmt).ptr;
 
   for (uint32_t i = 0; i < pluginCount; ++i)
   {
     pluginsNameList[i] = pm.getPluginName(i);
+    ids[i] = i;
   }
 
   // Create the string table and dislocate
-  fmt = NMP::OrderedStringTable::getMemoryRequirements(pluginCount, pluginsNameList);
+  fmt = NMP::IDMappedStringTable::getMemoryRequirements(pluginCount, pluginsNameList);
   NMP::Memory::Resource stringTableResource = NMPMemoryAllocateFromFormat(fmt);
-  NMP::OrderedStringTable* stringTable = NMP::OrderedStringTable::init(stringTableResource, pluginCount, pluginsNameList);
+  NMP::IDMappedStringTable* stringTable = NMP::IDMappedStringTable::init(stringTableResource, pluginCount, ids, pluginsNameList);
   stringTable->dislocate();
 
   const char* guid = "00000000-0000-0000-0000-000000000000";
@@ -1504,6 +1506,7 @@ void serializePluginList(const PluginManager& pm, AssetProcessor& ap)
   // Free allocated resources
   NMP::Memory::memFree(stringTable);
   NMP::Memory::memFree(pluginsNameList);
+  NMP::Memory::memFree(ids);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

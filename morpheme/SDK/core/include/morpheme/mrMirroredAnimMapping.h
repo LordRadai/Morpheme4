@@ -47,13 +47,13 @@ public:
       uint32_t  rightUnk;
   };
 
-  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numUnmappedBones);
+  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numBones);
   static AttribDataMirroredAnimMapping* init(
     NMP::Memory::Resource& resource,
     uint32_t               numValues,
     uint32_t               numEvents,
     uint32_t               numTracks,
-    uint32_t               numUnmappedBones,
+    uint32_t               numBones,
     uint16_t               refCount = 0);
 
   NM_INLINE AttribDataMirroredAnimMapping() { setType(ATTRIB_TYPE_ANIM_MIRRORED_MAPPING); setRefCount(0); }
@@ -90,6 +90,9 @@ public:
   /// \brief
   const NMP::Quat* getOffset(uint32_t idx) const;
 
+  /// \brief
+  const uint32_t getBoneID(uint32_t idx) const;
+
   /// \return Found mapped track ID or the input track ID if not found.
   uint32_t findTrackIDMapping(uint32_t trackID) const;
 
@@ -104,8 +107,8 @@ public:
   uint32_t         m_numEventIds;     ///< Number of event user data ID's to be re-mapped.
   SimpleMapping*   m_eventIds;        ///< The event user data ID's to be re-mapped.
   uint32_t         m_numUnmappedBones;        ///< The number of bones in the rig.
-  NMP::Quat*       m_quatOffsets;     
-  uint32_t*        m_unmappedBones;
+  NMP::Quat*       m_unmappedQuatOffsets;     
+  uint32_t*        m_unmappedBoneIDs;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -115,7 +118,13 @@ public:
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE const NMP::Quat* AttribDataMirroredAnimMapping::getOffset(uint32_t idx) const
 {
-  return m_quatOffsets + idx;
+  return m_unmappedQuatOffsets + idx;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE const uint32_t AttribDataMirroredAnimMapping::getBoneID(uint32_t idx) const
+{
+    return m_unmappedBoneIDs[idx];
 }
 
 //----------------------------------------------------------------------------------------------------------------------
