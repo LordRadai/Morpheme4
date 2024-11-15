@@ -68,8 +68,6 @@ void NodeFeatherBlend2Builder::getNodeDefInputConnections(
 
   // The blend weight is optional so check for a valid node id.
   readDataPinChildNodeID(nodeDefDataBlock, "Weight", childNodeIDs, true);
-  readDataPinChildNodeID(nodeDefDataBlock, "EventBlendingWeight", childNodeIDs, true);
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -80,7 +78,6 @@ void NodeFeatherBlend2Builder::preInit(
   AssetProcessor*             NMP_UNUSED(processor))
 {
   declareDataPin(netDefCompilationInfo, nodeDefExport, "Weight", 0, true, MR::ATTRIB_SEMANTIC_CP_FLOAT);
-  declareDataPin(netDefCompilationInfo, nodeDefExport, "EventBlendingWeight", 1, true, MR::ATTRIB_SEMANTIC_CP_FLOAT);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -103,7 +100,7 @@ NMP::Memory::Format NodeFeatherBlend2Builder::getNodeDefMemoryRequirements(
   NMP::Memory::Format result = getCoreNodeDefMemoryRequirements(
     netDefCompilationInfo, 
     2,                      // numChildren
-    2,                      // numInputCPConnections
+    1,                      // numInputCPConnections
     numAnimSets,            // numAnimSetEntries
     nodeDefExport);
 
@@ -168,7 +165,7 @@ MR::NodeDef* NodeFeatherBlend2Builder::init(
     netDefCompilationInfo,   
     2,                      // numChildren
     2,                      // max num active child nodes
-    2,                      // numInputCPConnections
+    1,                      // numInputCPConnections
     0,                      // numOutputCPPins
     numAnimSets,            // numAnimSetEntries                     
     nodeDefExport);
