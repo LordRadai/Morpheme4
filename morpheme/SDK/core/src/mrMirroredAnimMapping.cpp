@@ -22,7 +22,7 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   uint32_t numValues,
   uint32_t numEvents,
   uint32_t numTracks,
-  uint32_t numBones)
+  uint32_t numUnmappedBones)
 {
   NMP::Memory::Format result(sizeof(AttribDataMirroredAnimMapping), MR_ATTRIB_DATA_ALIGNMENT);
 
@@ -30,10 +30,10 @@ NMP::Memory::Format AttribDataMirroredAnimMapping::getMemoryRequirements(
   result += NMP::Memory::Format(sizeof(AdvancedMapping) * numValues, NMP_VECTOR_ALIGNMENT);
 
   // Add space for the array of rotation offsets
-  result += NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
+  result += NMP::Memory::Format(sizeof(NMP::Quat) * numUnmappedBones, NMP_VECTOR_ALIGNMENT);
 
   // Add space for the array of unmapped bones
-  result += NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
+  result += NMP::Memory::Format(sizeof(uint32_t) * numUnmappedBones, NMP_NATURAL_TYPE_ALIGNMENT);
 
   // Add space for the array of event id mappings.
   result += NMP::Memory::Format(sizeof(SimpleMapping) * numEvents, NMP_NATURAL_TYPE_ALIGNMENT);
@@ -53,7 +53,7 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
   uint32_t               numValues,
   uint32_t               numEvents,
   uint32_t               numTracks,
-  uint32_t               numBones,
+  uint32_t               numUnmappedBones,
   uint16_t               refCount)
 {
   NMP::Memory::Format format(sizeof(AttribDataMirroredAnimMapping), MR_ATTRIB_DATA_ALIGNMENT);
@@ -72,13 +72,13 @@ AttribDataMirroredAnimMapping* AttribDataMirroredAnimMapping::init(
   resource.increment(format);
 
   // Array of rotation offsets for the bones.
-  result->m_numUnmappedBones = numBones;
-  format = NMP::Memory::Format(sizeof(NMP::Quat) * numBones, NMP_VECTOR_ALIGNMENT);
+  result->m_numUnmappedBones = numUnmappedBones;
+  format = NMP::Memory::Format(sizeof(NMP::Quat) * numUnmappedBones, NMP_VECTOR_ALIGNMENT);
   resource.align(format);
   result->m_unmappedQuatOffsets = (NMP::Quat*) resource.ptr;
   resource.increment(format);
 
-  format = NMP::Memory::Format(sizeof(uint32_t) * numBones, NMP_NATURAL_TYPE_ALIGNMENT);
+  format = NMP::Memory::Format(sizeof(uint32_t) * numUnmappedBones, NMP_NATURAL_TYPE_ALIGNMENT);
   resource.align(format);
   result->m_unmappedBoneIDs = (uint32_t*)resource.ptr;
   resource.increment(format);

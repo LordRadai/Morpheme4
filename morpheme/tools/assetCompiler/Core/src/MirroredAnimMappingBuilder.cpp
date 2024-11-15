@@ -111,6 +111,7 @@ void MirroredAnimMappingBuilder::init(
   animMapping->m_axis = rigExport->getMirrorPlane();
   std::map<uint32_t, uint32_t> leftToRight;
   std::vector<uint32_t> unmapped;
+  unmapped.reserve(rigExport->getNumJoints());
 
   // start by filling a set of ID's up in the vector
   for (uint32_t i = 0; i != rigExport->getNumJoints(); ++i)
@@ -181,8 +182,6 @@ void MirroredAnimMappingBuilder::init(
         animMapping->m_boneMappings[i].rightUp = rotations[it->first] * outRotations[it->second];
         animMapping->m_boneMappings[i].leftIndex = it->first;
         animMapping->m_boneMappings[i].rightIndex = it->second;
-        animMapping->m_boneMappings[i].leftUnk = 0;
-        animMapping->m_boneMappings[i].rightUnk = 0;
       }
     }
 
@@ -191,8 +190,7 @@ void MirroredAnimMappingBuilder::init(
     for (uint32_t i = 0; i != nJoints; ++i)
     {
         // store orient offset for the unmapped quat
-        NMP::Vector3 translation;
-        rigExport->getJointOffsetTransform(i, translation, animMapping->m_unmappedQuatOffsets[i]);
+        animMapping->m_unmappedQuatOffsets[i] = rotations[i] * outRotations[i];
     }
 
     for (size_t i = 0; i < unmapped.size(); i++)

@@ -43,17 +43,15 @@ public:
       NMP::Quat rightUp;
       uint32_t  leftIndex;    ///< left index
       uint32_t  rightIndex;   ///< right index
-      uint32_t  leftUnk;
-      uint32_t  rightUnk;
   };
 
-  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numBones);
+  static NMP::Memory::Format getMemoryRequirements(uint32_t numValues, uint32_t numEvents, uint32_t numTracks, uint32_t numUnmappedBones);
   static AttribDataMirroredAnimMapping* init(
     NMP::Memory::Resource& resource,
     uint32_t               numValues,
     uint32_t               numEvents,
     uint32_t               numTracks,
-    uint32_t               numBones,
+    uint32_t               numUnmappedBones,
     uint16_t               refCount = 0);
 
   NM_INLINE AttribDataMirroredAnimMapping() { setType(ATTRIB_TYPE_ANIM_MIRRORED_MAPPING); setRefCount(0); }

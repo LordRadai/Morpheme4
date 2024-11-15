@@ -4064,12 +4064,12 @@ NMP::Memory::Format NetworkDefBuilder::getMirrorMappingAttribDataMemReqs(
   uint32_t numMirroredBones = (uint32_t)animRigExport->getMirrorMappingCount();
   uint32_t numMirroredEvents = animSetExport->getNumEventUserDataMirrorMappings();
   uint32_t numMirroredTracks = animSetExport->getNumEventTrackMirrorMappings();
-  uint32_t numBones = animRigExport->getNumJoints();
+  uint32_t numUnmappedBones = animRigExport->getNumJoints() - 2 * numMirroredBones;
   return MR::AttribDataMirroredAnimMapping::getMemoryRequirements(
            numMirroredBones,
            numMirroredEvents,
            numMirroredTracks,
-           numBones);
+           numUnmappedBones);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -4107,30 +4107,7 @@ void NetworkDefBuilder::buildMirrorMappingAttribData(
   uint32_t numMirroredBones  = (uint32_t)animRigExport->getMirrorMappingCount();
   uint32_t numMirroredEvents = animSetExport->getNumEventUserDataMirrorMappings();
   uint32_t numMirroredTracks = animSetExport->getNumEventTrackMirrorMappings();
-
-  std::vector<uint32_t> unmapped;
-  // start by filling a set of ID's up in the vector
-  for (uint32_t i = 0; i != animRigExport->getNumJoints(); ++i)
-  {
-      unmapped.push_back(i);
-  }
-
-  // build the map of left to right bone indices to be swapped when mirroring.
-  unsigned int count = animRigExport->getMirrorMappingCount();
-  for (unsigned int i = 0; i != count; ++i)
-  {
-      unsigned int first, second;
-      animRigExport->getMirrorMapping(i, first, second);
-
-      // remove the 2 bones from the unmapped array
-      unmapped.erase(std::find(unmapped.begin(), unmapped.end(), first));
-      if (first != second)
-      {
-          unmapped.erase(std::find(unmapped.begin(), unmapped.end(), second));
-      }
-  }
-
-  uint32_t numUnmappedBones = unmapped.size();
+  uint32_t numUnmappedBones = animRigExport->getNumJoints() - 2 * numMirroredBones;
 
   MR::AttribDataMirroredAnimMapping* mirroredAnimMapAttribData = MR::AttribDataMirroredAnimMapping::init(
         memRes,
