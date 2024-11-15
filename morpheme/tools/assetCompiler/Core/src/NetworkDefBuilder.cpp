@@ -4418,7 +4418,7 @@ NMP::Memory::Format NetworkDefBuilder::getMultiplyConnectedNodeIDsArrayMemReqs(
     const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
     NodeDefDependency& nodeDep = sm_networkDefCompilationInfo->getNodeDefDependency(i);
 
-    if (nodeDefExport->isDownstreamParentMultiplyConnected() && !nodeDep.m_isControlParamType)
+    if (nodeDefExport->isDownstreamParentMultiplyConnected())
       ++numStateMachineNodes;
   }
 
@@ -4489,7 +4489,7 @@ MR::NodeIDsArray* NetworkDefBuilder::buildMultiplyConnectedNodeIDsArray(const ME
   {
     const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
     NodeDefDependency& nodeDep = sm_networkDefCompilationInfo->getNodeDefDependency(i);
-    if (!evalNodeDefDeps[i] && nodeDefExport->isDownstreamParentMultiplyConnected() && !nodeDep.m_isControlParamType)
+    if (!evalNodeDefDeps[i] && nodeDefExport->isDownstreamParentMultiplyConnected())
     {
       result->setEntry(numMultiplyConnectedNodes, (MR::NodeID) i);
       ++numMultiplyConnectedNodes;
@@ -4741,33 +4741,64 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
 //----------------------------------------------------------------------------------------------------------------------
 NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const ME::NetworkDefExport* netDefExport)
 {
-  std::map<std::string, uint32_t> tempMap;
+    uint32_t numStrings;
+    uint32_t tableDataSize;
+    NMP::Memory::Format memReqs = getNodeIDNameMappingTableMemReqs(netDefExport, numStrings, tableDataSize);
+    NMP::Memory::Resource memRes = NMPMemoryAllocateFromFormat(memReqs);
 
-  // First put in all the names of actual nodes
-  for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
-  {
-    const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
-    tempMap.insert(std::make_pair(std::string(nodeDefExport->getName()), nodeDefExport->getNodeID()));
-  }
+    // Create the arrays of indices.
+    uint32_t* ids = NULL;
+    uint32_t* stringOffsets = NULL;
+    char* stringsBuffer = NULL;
+    if (numStrings)
+    {
+        ids = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
+        NMP_ASSERT(ids);
 
-  std::vector<const char*> stringList;
-  std::vector<uint32_t> IDList;
-  uint32_t tableDataSize = 0;
+        stringOffsets = (uint32_t*)NMPMemoryAlloc(sizeof(uint32_t) * numStrings);
+        NMP_ASSERT(stringOffsets);
 
-  for(std::map<std::string, uint32_t>::iterator it = tempMap.begin(); it != tempMap.end(); ++it)
-  {
-    tableDataSize += (uint32_t)it->first.size() + 1;
-    stringList.push_back(it->first.c_str());
-    IDList.push_back(it->second);
-  }
+        // Create the actual table.
+        stringsBuffer = (char*)NMPMemoryAlloc(tableDataSize);
+        NMP_ASSERT(stringsBuffer);
+    }
 
-  NMP::Memory::Format memReqs =  NMP::IDMappedStringTable::getMemoryRequirements((uint32_t)tempMap.size(), tableDataSize);
-  NMP::Memory::Resource memRes = NMPMemoryAllocateFromFormat(memReqs);
+    char* currentPtr = stringsBuffer;
+    uint32_t currentOffset = 0;
 
-  // Initialize the table from the stream.
-  NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(memRes, (uint32_t)IDList.size(), &IDList[0], &stringList[0]);
+    // First put in all the names of actual nodes
+    for (uint32_t i = 0; i < numStrings; ++i)
+    {
+        const ME::NodeExport* nodeExport = netDefExport->getNode(i);
+        const char* messageName = nodeExport->getName();
+        uint32_t messageID = nodeExport->getNodeID();
 
-  return result;
+        ids[i] = messageID;
+        stringOffsets[i] = currentOffset;
+        memcpy(currentPtr, messageName, strlen(messageName) + 1);
+        currentOffset += (uint32_t)(strlen(messageName) + 1);
+        currentPtr += (uint32_t)(strlen(messageName) + 1);
+    }
+
+    // Initialize the table from the stream.
+    NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(
+        memRes,
+        numStrings,
+        ids,
+        stringOffsets,
+        stringsBuffer,
+        tableDataSize);
+
+    //-----------------------
+    // Free all the temporary memory
+    if (ids)
+        NMP::Memory::memFree(ids);
+    if (stringOffsets)
+        NMP::Memory::memFree(stringOffsets);
+    if (stringsBuffer)
+        NMP::Memory::memFree(stringsBuffer);
+
+    return result;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
