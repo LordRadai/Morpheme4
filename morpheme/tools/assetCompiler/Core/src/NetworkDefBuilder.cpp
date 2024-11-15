@@ -106,11 +106,9 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   //-----------------------
   // Build up an event track name to id map, and set the runtime ids of all the event tracks.
   TrackName2UniqueIDMap trackIDMap;
-  uint32_t tableSize = 0;
 
   // Add the default discrete event track name.
   trackIDMap["DefaultDiscreteEventTrack"] = 0;
-  tableSize += (uint32_t)(strlen("DefaultDiscreteEventTrack") + 1);
 
   uint32_t numAnimSets = animLibraryExport->getNumAnimationSets();
   for (uint32_t animSetIndex = 0; animSetIndex < numAnimSets; ++animSetIndex)
@@ -142,12 +140,21 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
           {
             std::string trackName = eventTrackExport->getName();
             trackIDMap.insert(std::make_pair(trackName, (uint32_t)trackIDMap.size()));
-            tableSize += (uint32_t)(trackName.length() + 1);
             }
           }
         }
       }
     }
+
+  uint32_t tableSize = 0;
+  TrackName2UniqueIDMap::const_iterator iter = trackIDMap.begin();
+
+  for (; iter != trackIDMap.end(); ++iter)
+  {
+      size_t len = iter->first.size() + 1;
+
+      tableSize += (uint32_t)len;
+  }
 
   uint32_t numStrings = (uint32_t)trackIDMap.size();
   //-----------------------
@@ -160,8 +167,8 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildEventTrackNameToRuntimeIDMap(
   NMP_ASSERT(strings);
   char* currentPtr = strings;
   uint32_t currentOffset = 0;
-  TrackName2UniqueIDMap::const_iterator iter = trackIDMap.begin();
   int index = 0;
+  iter = trackIDMap.begin();
   for (; iter != trackIDMap.end(); ++iter)
   {
     uint32_t ID = iter->second;
@@ -4443,7 +4450,7 @@ void NetworkDefBuilder::buildMultiplyConnectedNodeIDsArray(
 
   const ME::NodeExport* nodeDefExport = netDefExport->getNode(nodeID);
   NodeDefDependency& nodeDep = sm_networkDefCompilationInfo->getNodeDefDependency(nodeID);
-  if (nodeDefExport->isDownstreamParentMultiplyConnected() && !nodeDep.m_isControlParamType)
+  if (nodeDefExport->isDownstreamParentMultiplyConnected())
   {
     result->setEntry(numMultiplyConnectedNodes, nodeID);
     ++numMultiplyConnectedNodes;
