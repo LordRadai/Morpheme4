@@ -750,14 +750,6 @@ NodeID nodeBlend2UpdateConnectionsBase(
   // Get the events blend weight
   float blendWeightEvents = blendWeight;
 
-  const CPConnection* connection = nodeDef->getInputCPConnection(1);
-  if (connection->m_sourceNodeID != INVALID_NODE_ID)
-  {
-    NMP_ASSERT( nodeDef->getNumInputCPConnections() == 2 );
-    AttribDataFloat* inputCPFloat1 = net->updateInputCPConnection<AttribDataFloat>(nodeDef->getInputCPConnection(1), animSet);
-    blendWeightEvents = nodeBlend2CalculateBlendWeight(inputCPFloat1->m_value, nodeChildWeights->m_values);
-  }
-
   //------------------------
   // Sets members of attribBlendWeights and activeNodeConnections. Indicating the number of and which nodes are active for 
   // the calculation of trajectory and transform and events. These are used for the optimisation of trajectory/transforms and 
