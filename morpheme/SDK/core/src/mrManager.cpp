@@ -888,7 +888,6 @@ uint32_t Manager::getNumRegisteredAttribSemantics() const
 const char* Manager::getAttributeSemanticName(uint32_t id) const
 {
   NMP_ASSERT(m_attribSemanticNames && (id < getNumRegisteredAttribSemantics()));
-  NMP_ASSERT(m_attribSemanticNames[id]);
   return m_attribSemanticNames[id];
 }
 

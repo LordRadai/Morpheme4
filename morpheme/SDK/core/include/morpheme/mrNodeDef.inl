@@ -148,7 +148,6 @@ NM_INLINE AttribDataHandle* NodeDef::getAttribDataHandle(AttribDataSemantic sema
   NMP_ASSERT(m_semanticLookupTable);
   uint32_t semanticLookupIndex = m_semanticLookupTable->getLookupIndex(semantic, 0);
   NMP_ASSERT(semanticLookupIndex < m_numAttribDataHandles);
-  NMP_ASSERT(m_nodeAttribDataHandles[semanticLookupIndex].m_attribData);
   return &(m_nodeAttribDataHandles[semanticLookupIndex]);
 }
 
@@ -167,7 +166,7 @@ NM_INLINE AttribData* NodeDef::getAttribData(
   AttribDataSemantic semantic) const
 {
   AttribDataHandle* handle = getAttribDataHandle(semantic);
-  NMP_ASSERT(handle && handle->m_attribData);
+  NMP_ASSERT(handle);
   return handle->m_attribData;
 }
 

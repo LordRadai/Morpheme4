@@ -437,6 +437,7 @@ AttribDataHipsIKDef* AttribDataHipsIKDef::init(
   result->setRefCount(refCount);
 
   result->m_upAxis.set(0.0f, 1.0f, 0.0f);
+  result->m_worldFootOrientationWeight = 1.f;
   result->m_swivelOrientationWeight = 0.5f;
   result->m_localReferenceFrame = false;
   result->m_keepWorldFootOrientation = true;
