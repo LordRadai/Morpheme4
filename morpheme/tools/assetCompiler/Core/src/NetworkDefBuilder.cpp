@@ -2783,7 +2783,7 @@ void NetworkDefBuilder::buildNodeDef(
   NMP_VERIFY(!sm_networkDefCompilationInfo->isNodeDefCompiled(nodeID));
   const ME::NodeExport* nodeDefExport = netDefExport->getNode(nodeID);
 
-  printf_s("Building node %d\n", nodeID);
+  NMP_DEBUG_MSG("Building node %d\n", nodeID);
 
   // Get the node builder
   MR::NodeType nodeType = nodeDefExport->getTypeID();
