@@ -382,6 +382,7 @@ AttribDataHeadLookSetup* AttribDataHeadLookSetup::init(
   result->setType(ATTRIB_TYPE_HEAD_LOOK_SETUP);
   result->setRefCount(refCount);
 
+  result->m_fVar0 = 1.f;
   result->m_updateTargetByDeltas = false;
   result->m_worldSpaceTarget = false;
 
