@@ -2824,7 +2824,7 @@ void NetworkDefBuilder::buildNodeDef(
   NMP_VERIFY(nodeDef);
 
   // Set optimisation flags to speed up runtime execution, as appropriate.
-  setNodeOptimisationFlags(nodeDef);
+  //setNodeOptimisationFlags(nodeDef);
 
   // The parent node ID should always be in the valid node range or the invalid ID.
   NMP_VERIFY_MSG(

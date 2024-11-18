@@ -137,7 +137,7 @@ MR::NodeDef* NodeSubtractiveBlendBuilder::init(
   // This node re-uses the Blend2 Sampled Events Buffers tasks.
   // Although it currently doesn't have sampled event blend optimisation 
   // implemented it would a simple task if required.
-  nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_BLEND_OPT_NODE);
+  //nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_BLEND_OPT_NODE);
 
   //---------------------------
   // Set child node IDs.

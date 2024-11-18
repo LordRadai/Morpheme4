@@ -147,10 +147,11 @@ MR::NodeDef* NodeTransitBaseBuilder::initNodeTransit(
 
   nodeDefDataBlock->readFloat(transitDuration, "DurationInTime");
 
-  if (transitDuration == 0.f)
-  {
-    nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_TRANSITION_ZERO);
-  }
+  //if (transitDuration == 0.f)
+  //{
+    //nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_TRANSITION_ZERO);
+  //}
+
   nodeDefDataBlock->readFloat(destStartFraction, "DestinationStartFraction");
   nodeDefDataBlock->readFloat(destStartSyncEvent, "DestinationStartSyncEvent");
 
@@ -408,10 +409,12 @@ MR::NodeDef* NodeTransitBaseBuilder::initNodeTransitSyncEvents(
     nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_TRANSITION_CAN_DEAD_BLEND);
   }
 
+  /*
   if (transitDurationInEvents == 0.0f)
   {
     nodeDef->setNodeFlags(MR::NodeDef::NODE_FLAG_IS_TRANSITION_ZERO);
   }
+  */
 
   MR::AttribDataTransitSyncEventsDef* transitAttribData = MR::AttribDataTransitSyncEventsDef::init(
     memRes,
