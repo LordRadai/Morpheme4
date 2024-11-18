@@ -844,6 +844,8 @@ AttribDataLockFootSetup* AttribDataLockFootSetup::init(
   result->m_lockVerticalMotion = false;
   result->m_assumeSimpleHierarchy = false;
   result->m_trackCharacterController = false;
+  result->m_fVar4 = 1.f;
+  result->m_iVar5 = 0;
 
   // Multiple of the attrib data alignment
   resource.align(MR_ATTRIB_DATA_ALIGNMENT);
