@@ -1702,6 +1702,8 @@ bool macProcessAnimFunc(
                                                                   ///< anim to each rig.
 )
 {
+  NMP_DEBUG_MSG("Processing animation \"%s\"", animData->m_animFileName);
+
   // is there global meta data available? if yes, use this instead of the AssetProcessor input
   if (g_animMetaData != NULL)
   {
