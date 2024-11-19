@@ -111,7 +111,7 @@ typedef uint32_t RuntimeAnimAssetID;
 
 /// Sets the max number of objects in the registry.
 // MORPH-21340: Artificial limit due to fixed array size, needs removing.
-#define MAX_NUM_REGISTERED_OBJECTS  (16384)
+#define MAX_NUM_REGISTERED_OBJECTS  (8192)
 
 /// For registering animation compression formats
 #define MAX_NUM_ANIMATION_FORMAT_TYPES  (16)
