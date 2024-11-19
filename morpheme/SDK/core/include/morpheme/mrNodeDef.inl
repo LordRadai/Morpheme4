@@ -157,7 +157,7 @@ NM_INLINE AttribData* NodeDef::getAttribData(
   AnimSetIndex       animSetIndex) const
 {
   AttribDataHandle* handle = getAttribDataHandle(semantic, animSetIndex);
-  NMP_ASSERT(handle && handle->m_attribData);
+  NMP_ASSERT(handle);
   return handle->m_attribData;
 }
 
