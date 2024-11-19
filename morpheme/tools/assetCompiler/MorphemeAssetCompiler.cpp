@@ -1741,8 +1741,7 @@ bool macProcessAnimFunc(
   NMP_SPRINTF(animationScaleStr, MAX_PATH, "%f", animationScale);
 
   char* fullAnimFileName = generateFullSourceAnimFileName(animData->m_animFileName);
-  NMP_DEBUG_MSG("Processing animation \"%s\"\n", fullAnimFileName);
-  //NMP_VERIFY(NMP::NMFile::getExists(fullAnimFileName));
+  NMP_VERIFY(NMP::NMFile::getExists(fullAnimFileName));
 
   char maxAnimSectionSizeStr[MAX_PATH];
   NMP_SPRINTF(maxAnimSectionSizeStr, MAX_PATH, "%d",  MR::getMaxAnimSectionSize());
