@@ -135,9 +135,11 @@ NM_INLINE AttribDataHandle* NodeDef::getAttribDataHandle(
   NMP_ASSERT(animSetIndex != ANIMATION_SET_ANY); // ANIMATION_SET_ANY AttribData is stored in the array for AnimSet 0.
   NMP_ASSERT(m_semanticLookupTable);
   uint32_t semanticLookupIndex = m_semanticLookupTable->getLookupIndex(semantic, animSetIndex);
-  NMP_ASSERT(semanticLookupIndex < m_numAttribDataHandles);
-  NMP_ASSERT(m_nodeAttribDataHandles[semanticLookupIndex].m_attribData);
-  return &(m_nodeAttribDataHandles[semanticLookupIndex]);
+
+  if (semanticLookupIndex < m_numAttribDataHandles)
+      return &(m_nodeAttribDataHandles[semanticLookupIndex]);
+
+  return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -147,8 +149,11 @@ NM_INLINE AttribDataHandle* NodeDef::getAttribDataHandle(AttribDataSemantic sema
 {
   NMP_ASSERT(m_semanticLookupTable);
   uint32_t semanticLookupIndex = m_semanticLookupTable->getLookupIndex(semantic, 0);
-  NMP_ASSERT(semanticLookupIndex < m_numAttribDataHandles);
-  return &(m_nodeAttribDataHandles[semanticLookupIndex]);
+
+  if (semanticLookupIndex < m_numAttribDataHandles)
+      return &(m_nodeAttribDataHandles[semanticLookupIndex]);
+
+  return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -157,8 +162,11 @@ NM_INLINE AttribData* NodeDef::getAttribData(
   AnimSetIndex       animSetIndex) const
 {
   AttribDataHandle* handle = getAttribDataHandle(semantic, animSetIndex);
-  NMP_ASSERT(handle);
-  return handle->m_attribData;
+
+  if (handle)
+      return handle->m_attribData;
+
+  return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -166,8 +174,11 @@ NM_INLINE AttribData* NodeDef::getAttribData(
   AttribDataSemantic semantic) const
 {
   AttribDataHandle* handle = getAttribDataHandle(semantic);
-  NMP_ASSERT(handle);
-  return handle->m_attribData;
+
+  if (handle)
+      return handle->m_attribData;
+
+  return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
