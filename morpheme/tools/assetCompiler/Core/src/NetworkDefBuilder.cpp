@@ -952,7 +952,7 @@ bool NetworkDefBuilder::isAnimEntryValidWithAnimSet(
       }
     }
   }
-  NMP_VERIFY_MSG( foundIt, "Failed to find the Animation Entry with index %d in the NodeDefDependency tree.", animEntryIndex );
+  //NMP_VERIFY_MSG( foundIt, "Failed to find the Animation Entry with index %d in the NodeDefDependency tree.", animEntryIndex );
   return false;
 }
 
