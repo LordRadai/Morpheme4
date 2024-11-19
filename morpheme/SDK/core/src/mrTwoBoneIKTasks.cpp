@@ -435,6 +435,8 @@ AttribDataTwoBoneIKSetup* AttribDataTwoBoneIKSetup ::init(
   result->setType(ATTRIB_TYPE_TWO_BONE_IK_SETUP);
   result->setRefCount(refCount);
 
+  result->m_fVar1 = 0.f;
+  result->m_fVar2 = 1.f;
   result->m_userControlledOrientation = false;
   result->m_keepEndEffOrientation = true;
   result->m_assumeSimpleHierarchy = true;
@@ -442,6 +444,7 @@ AttribDataTwoBoneIKSetup* AttribDataTwoBoneIKSetup ::init(
   result->m_worldSpaceTarget = false;
   result->m_useSpecifiedJointAsTarget = false;
   result->m_useSpecifiedJointOrientation = false;
+  result->m_iVar3 = 0;
 
   result->m_defaultTargetOrientation.identity();
 

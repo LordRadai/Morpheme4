@@ -1584,7 +1584,8 @@ public:
 
   /// Defaults used if control params not used.
   NMP::Quat     m_defaultTargetOrientation;
-
+  float         m_fVar1;
+  float         m_fVar2;
   bool          m_assumeSimpleHierarchy;
   bool          m_keepEndEffOrientation;
   bool          m_userControlledOrientation;
@@ -1593,6 +1594,7 @@ public:
   bool          m_worldSpaceTarget;
   bool          m_useSpecifiedJointAsTarget;
   bool          m_useSpecifiedJointOrientation;
+  int           m_iVar3;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
