@@ -709,6 +709,7 @@ AttribDataGunAimSetup* AttribDataGunAimSetup::init(
   result->setRefCount(refCount);
 
   result->m_worldUpAxis.set(NMP::Vector3YAxis());
+  result->m_fVar1 = 1.f;
   result->m_keepUpright = false;
   result->m_worldSpaceTarget = false;
   result->m_applyJointLimits = false;
