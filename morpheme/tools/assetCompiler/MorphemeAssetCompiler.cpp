@@ -2722,7 +2722,7 @@ int32_t __cdecl main(int argc, char** argv)
 #endif
 
   // Logging from live link and the simple bundler.
-  NM_LOG_ADD_PRIORITY_RANGE(MR::UTILS::g_SBLogger, MR::UTILS::SB_MESSAGE_PRIORITY, MR::UTILS::SB_MESSAGE_PRIORITY);
+  // NM_LOG_ADD_PRIORITY_RANGE(MR::UTILS::g_SBLogger, MR::UTILS::SB_MESSAGE_PRIORITY, MR::UTILS::SB_MESSAGE_PRIORITY);
 
   // The PluginManager must be declared outside the try catch block so that it will not be destroyed if any exceptions
   // are thrown.  If it was then plug-ins would be unloaded and any memory referenced in the exception that belonged
