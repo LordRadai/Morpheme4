@@ -224,7 +224,7 @@ void NodeSmoothTransformsBuilder::initTaskQueuingFns(
   //------------------------------------
   // Other manager registered functions.
   nodeDef->setDeleteNodeInstanceId(FN_NAME(nodeShareDeleteInstanceWithChildren), logger);
-  nodeDef->setUpdateConnectionsFnId(FN_NAME(nodeShareUpdateConnections1Child1InputCP), logger);
+  nodeDef->setUpdateConnectionsFnId(FN_NAME(nodeShareUpdateConnections1Child1OptionalInputCP), logger);
   nodeDef->setFindGeneratingNodeForSemanticFnId(FN_NAME(filterNodeFindGeneratingNodeForSemantic), logger);
 }
 
