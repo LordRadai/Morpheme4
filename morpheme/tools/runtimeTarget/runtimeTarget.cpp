@@ -437,7 +437,7 @@ int main(
   //PROFILING_LOG_INIT("MorphProfiling.log")
 
   // Uncomment this line to log everything.
-  NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_PRIORITY_ALWAYS);
+  // NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_PRIORITY_ALWAYS);
 
   // Uncomment this line to log queued parameters.
   // NET_LOG_ADD_PRIORITY_RANGE(98, 100);
