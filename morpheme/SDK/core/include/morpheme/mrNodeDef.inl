@@ -332,7 +332,8 @@ NM_FORCEINLINE uint32_t SemanticLookupTable::getLookupIndex(
   AnimSetIndex       animSetIndex) const
 {
   NMP_ASSERT(semantic < m_numSemantics);
-  NMP_ASSERT(m_semanticLookup[semantic] != INVALID_LOOKUP_INDEX);
+  if (m_semanticLookup[semantic] == INVALID_LOOKUP_INDEX)
+      return INVALID_LOOKUP_INDEX;
   return ((uint32_t)animSetIndex * m_numAttribsPerAnimSet) + m_semanticLookup[semantic];
 }
 
