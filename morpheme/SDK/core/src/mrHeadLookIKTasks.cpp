@@ -75,8 +75,11 @@ void subTaskHeadLookTransforms(
   const NMP::Vector3& endEffectorOffset = headLookChainAttrib->m_endEffectorOffset;
   NMP::Vector3 targetPos = targetPosAttrib->m_value;
 
+  float blendWeight = headLookSetupAttrib->m_defaultBlendWeight;
+
   // Connected control param providing blend weight.
-  float blendWeight = NMP::clampValue(blendWeightAttrib->m_value, 0.0f, 1.0f);
+  if (blendWeightAttrib)
+      blendWeight = NMP::clampValue(blendWeightAttrib->m_value, 0.0f, 1.0f);
 
   //--------------------------------------------
 
@@ -382,7 +385,7 @@ AttribDataHeadLookSetup* AttribDataHeadLookSetup::init(
   result->setType(ATTRIB_TYPE_HEAD_LOOK_SETUP);
   result->setRefCount(refCount);
 
-  result->m_fVar0 = 1.f;
+  result->m_defaultBlendWeight = 1.f;
   result->m_updateTargetByDeltas = false;
   result->m_worldSpaceTarget = false;
 

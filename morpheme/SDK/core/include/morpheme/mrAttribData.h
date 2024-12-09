@@ -2686,7 +2686,7 @@ public:
   static void locate(AttribData* target);
   static void dislocate(AttribData* target);
 
-  float        m_fVar0;
+  float        m_defaultBlendWeight;
   bool         m_updateTargetByDeltas;
   bool         m_worldSpaceTarget; ///< Target CP is expressed in world space rather than character space.
 };
