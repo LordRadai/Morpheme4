@@ -56,7 +56,11 @@ void subTaskLockFootTransforms(
   NMP_USED_FOR_ASSERTS(const uint32_t numRigJoints = rig->getNumBones());
 
   // Get the blend weight control parameter
-  float ikFkBlendWeight = NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f);
+
+  float ikFkBlendWeight = lockFootSetupAttrib->m_defaultFkIkWeight;;
+
+  if (ikFkBlendWeightAttrib)
+      ikFkBlendWeight = NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f);
 
   // Get the swivel orientation control parameter, or a default if none is connected
   float swivelContributionToOrientation = lockFootSetupAttrib->m_defaultSwivelContributionToOrientation;
@@ -847,8 +851,8 @@ AttribDataLockFootSetup* AttribDataLockFootSetup::init(
   result->m_lockVerticalMotion = false;
   result->m_assumeSimpleHierarchy = false;
   result->m_trackCharacterController = false;
-  result->m_fVar4 = 1.f;
-  result->m_defaultSwivelContributionToOrientation = 0;
+  result->m_defaultFkIkWeight = 1.f;
+  result->m_defaultSwivelContributionToOrientation = 0.f;
 
   // Multiple of the attrib data alignment
   resource.align(MR_ATTRIB_DATA_ALIGNMENT);
