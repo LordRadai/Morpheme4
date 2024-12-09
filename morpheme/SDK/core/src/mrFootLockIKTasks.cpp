@@ -57,7 +57,7 @@ void subTaskLockFootTransforms(
 
   // Get the blend weight control parameter
 
-  float ikFkBlendWeight = lockFootSetupAttrib->m_defaultFkIkWeight;;
+  float ikFkBlendWeight = lockFootSetupAttrib->m_defaultFkIkWeight;
 
   if (ikFkBlendWeightAttrib)
       ikFkBlendWeight = NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f);
