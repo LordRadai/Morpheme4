@@ -240,7 +240,7 @@ void TaskHeadLookTransforms(Dispatcher::TaskParameters* parameters)
     parameters->getInputAttrib<AttribDataTrajectoryDeltaTransform>(1, ATTRIB_SEMANTIC_TRAJECTORY_DELTA_TRANSFORM);
 
   // FK/IK blend weight control parameter
-  AttribDataFloat* blendWeightAttrib = parameters->getInputAttrib<AttribDataFloat>(2, ATTRIB_SEMANTIC_CP_FLOAT);
+  AttribDataFloat* blendWeightAttrib = parameters->getOptionalInputAttrib<AttribDataFloat>(2, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Target position control parameter
   AttribDataVector3* targetPosAttrib = parameters->getInputAttrib<AttribDataVector3>(3, ATTRIB_SEMANTIC_CP_VECTOR3);
