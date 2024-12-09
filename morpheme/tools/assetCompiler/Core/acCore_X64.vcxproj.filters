@@ -257,12 +257,6 @@
     <ClInclude Include="include\core\NodeMirrorTransformsBuilder.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\NodeModifyJointTransformBuilder.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\NodeModifyTrajectoryTransformBuilder.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
     <ClInclude Include="include\core\NodeOperatorArithmeticBuilder.h">
       <Filter>include\core</Filter>
     </ClInclude>
@@ -678,12 +672,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\NodeMirrorTransformsBuilder.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NodeModifyJointTransformBuilder.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NodeModifyTrajectoryTransformBuilder.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\NodeOperatorArithmeticBuilder.cpp">

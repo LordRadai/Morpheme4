@@ -211,11 +211,11 @@ public:
     MR_TASKID_RETARGET_TRAJECTORY_DELTA_AND_TRANSFORMS,      ///< Retarget trajectory delta and transforms
     MR_TASKID_LOCKFOOTTRAJECTORY_DELTA_AND_TRANSFORMS,       ///< LockFoot trajectory delta and transforms
 
-    MR_TASKID_MODIFYJOINTTRANSFORM_TRANSFORMS,                           ///< ModifyJointTransform transforms
-    MR_TASKID_MODIFYJOINTTRANSFORM_TRAJECTORY_DELTA_AND_TRANSFORMS,      ///< ModifyJointTransform trajectory delta and transforms
+    //MR_TASKID_MODIFYJOINTTRANSFORM_TRANSFORMS,                           ///< ModifyJointTransform transforms
+    //MR_TASKID_MODIFYJOINTTRANSFORM_TRAJECTORY_DELTA_AND_TRANSFORMS,      ///< ModifyJointTransform trajectory delta and transforms
     
-    MR_TASKID_MODIFYTRAJECTORYTRANSFORM_TRAJECTORY_DELTA,                ///< ModifyTrajectoryTransform trajectory delta
-    MR_TASKID_MODIFYTRAJECTORYTRANSFORM_TRAJECTORY_DELTA_AND_TRANSFORMS, ///< ModifyTrajectoryTransform trajectory delta and transforms
+    //MR_TASKID_MODIFYTRAJECTORYTRANSFORM_TRAJECTORY_DELTA,                ///< ModifyTrajectoryTransform trajectory delta
+    //MR_TASKID_MODIFYTRAJECTORYTRANSFORM_TRAJECTORY_DELTA_AND_TRANSFORMS, ///< ModifyTrajectoryTransform trajectory delta and transforms
     
     MR_TASKID_SCALECHARACTERTRANSFORMS,                      ///< ScaleCharacter transforms
     MR_TASKID_SCALECHARACTERTRAJECTORYDELTA,                 ///< ScaleCharacter trajectory delta

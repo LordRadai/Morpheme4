@@ -301,8 +301,6 @@
     <ClInclude Include="include\morpheme\Nodes\mrNodeHipsIK.h" />
     <ClInclude Include="include\morpheme\Nodes\mrNodeLockFoot.h" />
     <ClInclude Include="include\morpheme\Nodes\mrNodeMirrorTransforms.h" />
-    <ClInclude Include="include\morpheme\Nodes\mrNodeModifyJointTransform.h" />
-    <ClInclude Include="include\morpheme\Nodes\mrNodeModifyTrajectoryTransform.h" />
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorArithmetic.h" />
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorFloatsToVector3.h" />
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorFloatToInt.h" />
@@ -491,8 +489,6 @@
     <ClCompile Include="src\Nodes\mrNodeHipsIK.cpp" />
     <ClCompile Include="src\Nodes\mrNodeLockFoot.cpp" />
     <ClCompile Include="src\Nodes\mrNodeMirrorTransforms.cpp" />
-    <ClCompile Include="src\Nodes\mrNodeModifyJointTransform.cpp" />
-    <ClCompile Include="src\Nodes\mrNodeModifyTrajectoryTransform.cpp" />
     <ClCompile Include="src\Nodes\mrNodeOperatorArithmetic.cpp" />
     <ClCompile Include="src\Nodes\mrNodeOperatorFloatsToVector3.cpp" />
     <ClCompile Include="src\Nodes\mrNodeOperatorFloatToInt.cpp" />

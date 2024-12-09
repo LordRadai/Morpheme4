@@ -87,8 +87,6 @@
 #include "morpheme/Nodes/mrNodeOperatorTimeLagInput.h"
 #include "morpheme/Nodes/mrNodeSequence.h"
 #include "morpheme/Nodes/mrNodePassThrough.h"
-#include "morpheme/Nodes/mrNodeModifyJointTransform.h"
-#include "morpheme/Nodes/mrNodeModifyTrajectoryTransform.h"
 #include "morpheme/mrMirroredAnimMapping.h"
 #include "morpheme/mrRigRetargetMapping.h"
 #include "morpheme/mrCharacterControllerAttribData.h"

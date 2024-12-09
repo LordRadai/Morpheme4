@@ -196,8 +196,6 @@
     <ClInclude Include="include\core\NodeHipsIKBuilder.h" />
     <ClInclude Include="include\core\NodeLockFootBuilder.h" />
     <ClInclude Include="include\core\NodeMirrorTransformsBuilder.h" />
-    <ClInclude Include="include\core\NodeModifyJointTransformBuilder.h" />
-    <ClInclude Include="include\core\NodeModifyTrajectoryTransformBuilder.h" />
     <ClInclude Include="include\core\NodeOperatorArithmeticBuilder.h" />
     <ClInclude Include="include\core\NodeOperatorArithmeticVector3Builder.h" />
     <ClInclude Include="include\core\NodeOperatorFloatsToVector3Builder.h" />
@@ -337,8 +335,6 @@
     <ClCompile Include="src\NodeHipsIKBuilder.cpp" />
     <ClCompile Include="src\NodeLockFootBuilder.cpp" />
     <ClCompile Include="src\NodeMirrorTransformsBuilder.cpp" />
-    <ClCompile Include="src\NodeModifyJointTransformBuilder.cpp" />
-    <ClCompile Include="src\NodeModifyTrajectoryTransformBuilder.cpp" />
     <ClCompile Include="src\NodeOperatorArithmeticBuilder.cpp" />
     <ClCompile Include="src\NodeOperatorArithmeticVector3Builder.cpp" />
     <ClCompile Include="src\NodeOperatorFloatsToVector3Builder.cpp" />

@@ -357,12 +357,6 @@
     <ClInclude Include="include\morpheme\Nodes\mrNodeMirrorTransforms.h">
       <Filter>include\morpheme\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="include\morpheme\Nodes\mrNodeModifyJointTransform.h">
-      <Filter>include\morpheme\Nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\morpheme\Nodes\mrNodeModifyTrajectoryTransform.h">
-      <Filter>include\morpheme\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="include\morpheme\Nodes\mrNodeOperatorArithmetic.h">
       <Filter>include\morpheme\Nodes</Filter>
     </ClInclude>
@@ -910,12 +904,6 @@
       <Filter>src\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\Nodes\mrNodeMirrorTransforms.cpp">
-      <Filter>src\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Nodes\mrNodeModifyJointTransform.cpp">
-      <Filter>src\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Nodes\mrNodeModifyTrajectoryTransform.cpp">
       <Filter>src\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="src\Nodes\mrNodeOperatorArithmetic.cpp">

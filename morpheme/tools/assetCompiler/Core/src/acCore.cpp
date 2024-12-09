@@ -43,8 +43,6 @@
 #include "NodeTwoBoneIKBuilder.h"
 #include "NodeLockFootBuilder.h"
 #include "NodeHipsIKBuilder.h"
-#include "NodeModifyJointTransformBuilder.h"
-#include "NodeModifyTrajectoryTransformBuilder.h"
 #include "NodeSingleFrameBuilder.h"
 #include "NodeClosestAnimBuilder.h"
 #include "NodeFreezeBuilder.h"
@@ -251,12 +249,6 @@ void initBuilders(AssetProcessor& assetProc)
 
   nodeBuilder = new NodeHipsIKBuilder();
   assetProc.registerNodeBuilder(NODE_TYPE_HIPS_IK, nodeBuilder);
-
-  nodeBuilder = new NodeModifyJointTransformBuilder();
-  assetProc.registerNodeBuilder(NODE_TYPE_MODIFY_JOINT_TRANSFORM, nodeBuilder);
-
-  nodeBuilder = new NodeModifyTrajectoryTransformBuilder();
-  assetProc.registerNodeBuilder(NODE_TYPE_MODIFY_TRAJECTORY_TRANSFORM, nodeBuilder);
   
   nodeBuilder = new NodeSingleFrameBuilder();
   assetProc.registerNodeBuilder(NODE_TYPE_SINGLEFRAME, nodeBuilder);
