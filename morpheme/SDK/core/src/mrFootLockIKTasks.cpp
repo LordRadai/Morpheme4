@@ -59,7 +59,10 @@ void subTaskLockFootTransforms(
   float ikFkBlendWeight = NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f);
 
   // Get the swivel orientation control parameter, or a default if none is connected
-  float swivelContributionToOrientation = swivelContributionToOrientationAttrib->m_value;
+  float swivelContributionToOrientation = lockFootSetupAttrib->m_defaultSwivelContributionToOrientation;
+
+  if (swivelContributionToOrientationAttrib)
+      swivelContributionToOrientation = swivelContributionToOrientationAttrib->m_value;
 
   // Get some other parameters or aliases of them
   const int32_t* joints = lockFootChainAttrib->m_jointIndex;
@@ -672,7 +675,7 @@ void TaskLockFootTransforms(Dispatcher::TaskParameters* parameters)
   // Weight to control how much swivel is used to help achieve the foot orientation, as opposed to
   // doing it all with rotation at the ankle
   const AttribDataFloat* swivelContributionToOrientationAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Animation set independent node attributes
   const AttribDataLockFootSetup* lockFootSetupAttrib =
@@ -845,7 +848,7 @@ AttribDataLockFootSetup* AttribDataLockFootSetup::init(
   result->m_assumeSimpleHierarchy = false;
   result->m_trackCharacterController = false;
   result->m_fVar4 = 1.f;
-  result->m_iVar5 = 0;
+  result->m_defaultSwivelContributionToOrientation = 0;
 
   // Multiple of the attrib data alignment
   resource.align(MR_ATTRIB_DATA_ALIGNMENT);

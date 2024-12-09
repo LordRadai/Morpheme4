@@ -1670,7 +1670,7 @@ public:
   bool         m_assumeSimpleHierarchy; ///< All joints are sequential in the hierarchy (currently must be true).
   bool         m_trackCharacterController; ///< Use CC for world trajectory, rather than accumulating deltas.
   float        m_fVar4;
-  int          m_iVar5;
+  float        m_defaultSwivelContributionToOrientation;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
