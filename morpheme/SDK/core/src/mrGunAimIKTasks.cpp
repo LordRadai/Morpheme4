@@ -187,8 +187,11 @@ void subTaskGunAimTransforms(
   // targetPos is a copy because we modify it - adjust it for trajectory deltas
   NMP::Vector3 targetPos = targetPosAttrib->m_value;
 
+  float blendWeight = gunAimSetupAttrib->m_defaultBlendWeight;
+
   // Connected control param providing blend weight.
-  float blendWeight = NMP::clampValue(blendWeightAttrib->m_value, 0.0f, 1.0f);
+  if (blendWeightAttrib)
+      blendWeight = NMP::clampValue(blendWeightAttrib->m_value, 0.0f, 1.0f);
 
   // Early declaration of some variables that we need in the outer scope for arm IK.
   NMRU::GeomUtils::PosQuat primaryHandLocalT = NMRU::GeomUtils::identityPosQuat();
@@ -562,7 +565,7 @@ void TaskGunAimTransforms(Dispatcher::TaskParameters* parameters)
 
   // Weight for blending between input and aiming pose
   const AttribDataFloat* blendWeightAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Contains the non-anim-set dependent node attributes
   const AttribDataGunAimSetup* gunAimSetupAttrib = parameters->getInputAttrib<AttribDataGunAimSetup>(4, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF);
@@ -709,7 +712,7 @@ AttribDataGunAimSetup* AttribDataGunAimSetup::init(
   result->setRefCount(refCount);
 
   result->m_worldUpAxis.set(NMP::Vector3YAxis());
-  result->m_fVar1 = 1.f;
+  result->m_defaultBlendWeight = 1.f;
   result->m_keepUpright = false;
   result->m_worldSpaceTarget = false;
   result->m_applyJointLimits = false;

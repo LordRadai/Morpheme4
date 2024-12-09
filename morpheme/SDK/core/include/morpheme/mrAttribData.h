@@ -2752,7 +2752,7 @@ public:
   // AttribData differs in size on 64 bit builds requiring a different member layout so that vector types are aligned without padding
 #ifdef NM_HOST_64_BIT
   NMP::Vector3 m_worldUpAxis;        ///< Used to apply the 'keep upright' parameter.
-  float        m_fVar1;
+  float        m_defaultBlendWeight;
   bool         m_keepUpright;        ///< Prevents tilting of the gun.
   bool         m_worldSpaceTarget;   ///< Target CP is expressed in world space rather than character space.
   bool         m_applyJointLimits;   ///< Clamps result to joint limits if they exist.
