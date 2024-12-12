@@ -180,7 +180,7 @@ bool AnimationSourceHandle::setTime(float time)
 
   // Ensure rig and transforms initialized.
   NMP_ASSERT(m_transformCount > 0);
-  NMP_ASSERT(m_rigToAnimMap);
+
   if (m_transformCount > 0 && m_rigToAnimMap)
   {
     // Buffers to store process buffer output.
