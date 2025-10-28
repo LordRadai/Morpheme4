@@ -628,6 +628,8 @@ private:
 #ifndef NM_HOST_CELL_SPU
   /// All objects/assets used by Morpheme (NetworkDefs, AnimationsLibraries, Rigs, EventTracks, RigToAnimMaps etc.)
   NMP::StaticFreeList*         m_objectPool;
+  char                         m_unk30[48];
+  void*                        m_unk50;
   ObjectRegistryEntry          m_objRegistry; ///< Empty list head structure.
 
   TaskQueuingFnRegistryEntry   m_taskQueuingFns[MAX_NUM_QUEUING_FNS];
