@@ -4777,14 +4777,14 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
     for (uint32_t i = 0; i < numStrings; ++i)
     {
         const ME::NodeExport* nodeExport = netDefExport->getNode(i);
-        const char* messageName = nodeExport->getName();
-        uint32_t messageID = nodeExport->getNodeID();
+        const char* nodeName = nodeExport->getName();
+        uint32_t nodeID = nodeExport->getNodeID();
 
-        ids[i] = messageID;
+        ids[i] = nodeID;
         stringOffsets[i] = currentOffset;
-        memcpy(currentPtr, messageName, strlen(messageName) + 1);
-        currentOffset += (uint32_t)(strlen(messageName) + 1);
-        currentPtr += (uint32_t)(strlen(messageName) + 1);
+        memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
+        currentOffset += (uint32_t)(strlen(nodeName) + 1);
+        currentPtr += (uint32_t)(strlen(nodeName) + 1);
     }
 
     // Initialize the table from the stream.
