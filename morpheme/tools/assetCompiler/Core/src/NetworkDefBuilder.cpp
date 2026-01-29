@@ -4731,7 +4731,9 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
   tableDataSize = 0;
   numStrings = 0;
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
   std::vector<ME::NodeExport*> stateMachineNodes;
+#endif
 
   // Compute the size required for all the nodes
   for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
@@ -4740,14 +4742,17 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
     // Calc the size of the node names
     const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
     if (nodeDefExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
 		stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeDefExport));
+#endif
 
     const char* nodeName = nodeDefExport->getName();
     tableDataSize += (uint32_t)(strlen(nodeName) + 1);
     ++numStrings;
   }
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
   // Compute the size required for all the substate nodes
   for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
   {
@@ -4778,6 +4783,7 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
           ++numStrings;
       }
   }
+#endif
 
   return NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableDataSize);
 }
@@ -4810,7 +4816,9 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
     char* currentPtr = stringsBuffer;
     uint32_t currentOffset = 0;
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
     std::vector<ME::NodeExport*> stateMachineNodes;
+#endif
 
 	int currentTableIndex = 0;
     // First put in all the names of actual nodes
@@ -4818,8 +4826,10 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
     {
         const ME::NodeExport* nodeExport = netDefExport->getNode(i);
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
         if (nodeExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
             stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeExport));
+#endif
 
         const char* nodeName = nodeExport->getName();
         uint32_t nodeID = nodeExport->getNodeID();
@@ -4833,6 +4843,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
         currentTableIndex++;
     }
 
+#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
     // Compute the size required for all the substate nodes
     for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
     {
@@ -4867,6 +4878,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
             currentTableIndex++;
         }
     }
+#endif
 
     // Initialize the table from the stream.
     NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(
