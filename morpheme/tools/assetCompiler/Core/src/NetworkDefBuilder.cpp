@@ -4769,7 +4769,18 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
 		  datablock->readNetworkNodeId(childStateNodeID, paramName);
 
           const ME::NodeExport* nodeDefExport = netDefExport->getNode(childStateNodeID);
+		  const ME::NodeExport* parentNodeExport = netDefExport->getNode(nodeDefExport->getDownstreamParentID());
+
           const char* nodeName = nodeDefExport->getName();
+
+          const char* parentName = parentNodeExport->getName();
+          uint32_t nodeID = nodeDefExport->getNodeID();
+
+          if (nodeDefExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
+          {
+              nodeName = parentName; // For nested state machines we just use the parent name
+          }
+
           tableDataSize += (uint32_t)(strlen(nodeName) + 1);
           ++numStrings;
       }
@@ -4808,6 +4819,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
 
     std::vector<ME::NodeExport*> stateMachineNodes;
 
+	int currentTableIndex = 0;
     // First put in all the names of actual nodes
     for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
     {
@@ -4819,11 +4831,13 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
         const char* nodeName = nodeExport->getName();
         uint32_t nodeID = nodeExport->getNodeID();
 
-        ids[i] = nodeID;
-        stringOffsets[i] = currentOffset;
+        ids[currentTableIndex] = nodeID;
+        stringOffsets[currentTableIndex] = currentOffset;
         memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
         currentOffset += (uint32_t)(strlen(nodeName) + 1);
         currentPtr += (uint32_t)(strlen(nodeName) + 1);
+
+        currentTableIndex++;
     }
 
     // Compute the size required for all the substate nodes
@@ -4847,15 +4861,24 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
             datablock->readNetworkNodeId(childStateNodeID, paramName);
 
             const ME::NodeExport* nodeExport = netDefExport->getNode(childStateNodeID);
+            const ME::NodeExport* parentNodeExport = netDefExport->getNode(nodeExport->getDownstreamParentID());
 
             const char* nodeName = nodeExport->getName();
+            const char* parentName = parentNodeExport->getName();
             uint32_t nodeID = nodeExport->getNodeID();
 
-            ids[i] = nodeID;
-            stringOffsets[i] = currentOffset;
+            if (nodeExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
+            {
+				nodeName = parentName; // For nested state machines we just use the parent name
+            }
+
+            ids[currentTableIndex] = nodeID;
+            stringOffsets[currentTableIndex] = currentOffset;
             memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
             currentOffset += (uint32_t)(strlen(nodeName) + 1);
             currentPtr += (uint32_t)(strlen(nodeName) + 1);
+
+            currentTableIndex++;
         }
     }
 
