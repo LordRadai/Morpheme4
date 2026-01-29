@@ -4731,15 +4731,48 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
   tableDataSize = 0;
   numStrings = 0;
 
+  std::vector<ME::NodeExport*> stateMachineNodes;
+
   // Compute the size required for all the nodes
   for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
   {
     //----------------------
     // Calc the size of the node names
     const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
+
+    if (nodeDefExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
+		stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeDefExport));
+
     const char* nodeName = nodeDefExport->getName();
     tableDataSize += (uint32_t)(strlen(nodeName) + 1);
     ++numStrings;
+  }
+
+  // Compute the size required for all the substate nodes
+  for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
+  {
+      //----------------------
+      // Calc the size of the node names
+      const ME::NodeExport* stateMachineNodeExport = stateMachineNodes[i];
+
+	  const ME::DataBlockExport* datablock = stateMachineNodeExport->getDataBlock();
+
+	  uint32_t numSubStates = 0;
+      datablock->readUInt(numSubStates, "ChildNodeCount");
+
+	  char paramName[32];
+      for (size_t j = 0; j < numSubStates; j++)
+      {
+		  int childStateNodeID = -1;
+		  sprintf_s(paramName, "RuntimeChildNodeID_%d", static_cast<int>(j));
+
+		  datablock->readNetworkNodeId(childStateNodeID, paramName);
+
+          const ME::NodeExport* nodeDefExport = netDefExport->getNode(childStateNodeID);
+          const char* nodeName = nodeDefExport->getName();
+          tableDataSize += (uint32_t)(strlen(nodeName) + 1);
+          ++numStrings;
+      }
   }
 
   return NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableDataSize);
@@ -4773,10 +4806,16 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
     char* currentPtr = stringsBuffer;
     uint32_t currentOffset = 0;
 
+    std::vector<ME::NodeExport*> stateMachineNodes;
+
     // First put in all the names of actual nodes
-    for (uint32_t i = 0; i < numStrings; ++i)
+    for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
     {
         const ME::NodeExport* nodeExport = netDefExport->getNode(i);
+
+        if (nodeExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
+            stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeExport));
+
         const char* nodeName = nodeExport->getName();
         uint32_t nodeID = nodeExport->getNodeID();
 
@@ -4785,6 +4824,39 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
         memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
         currentOffset += (uint32_t)(strlen(nodeName) + 1);
         currentPtr += (uint32_t)(strlen(nodeName) + 1);
+    }
+
+    // Compute the size required for all the substate nodes
+    for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
+    {
+        //----------------------
+        // Calc the size of the node names
+        const ME::NodeExport* stateMachineNodeExport = stateMachineNodes[i];
+
+        const ME::DataBlockExport* datablock = stateMachineNodeExport->getDataBlock();
+
+        uint32_t numSubStates = 0;
+        datablock->readUInt(numSubStates, "ChildNodeCount");
+
+        char paramName[32];
+        for (size_t j = 0; j < numSubStates; j++)
+        {
+            int childStateNodeID = -1;
+            sprintf_s(paramName, "RuntimeChildNodeID_%d", static_cast<int>(j));
+
+            datablock->readNetworkNodeId(childStateNodeID, paramName);
+
+            const ME::NodeExport* nodeExport = netDefExport->getNode(childStateNodeID);
+
+            const char* nodeName = nodeExport->getName();
+            uint32_t nodeID = nodeExport->getNodeID();
+
+            ids[i] = nodeID;
+            stringOffsets[i] = currentOffset;
+            memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
+            currentOffset += (uint32_t)(strlen(nodeName) + 1);
+            currentPtr += (uint32_t)(strlen(nodeName) + 1);
+        }
     }
 
     // Initialize the table from the stream.
