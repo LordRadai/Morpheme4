@@ -4772,14 +4772,7 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
 		  const ME::NodeExport* parentNodeExport = netDefExport->getNode(nodeDefExport->getDownstreamParentID());
 
           const char* nodeName = nodeDefExport->getName();
-
-          const char* parentName = parentNodeExport->getName();
           uint32_t nodeID = nodeDefExport->getNodeID();
-
-          if (nodeDefExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
-          {
-              nodeName = parentName; // For nested state machines we just use the parent name
-          }
 
           tableDataSize += (uint32_t)(strlen(nodeName) + 1);
           ++numStrings;
@@ -4861,16 +4854,9 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
             datablock->readNetworkNodeId(childStateNodeID, paramName);
 
             const ME::NodeExport* nodeExport = netDefExport->getNode(childStateNodeID);
-            const ME::NodeExport* parentNodeExport = netDefExport->getNode(nodeExport->getDownstreamParentID());
 
             const char* nodeName = nodeExport->getName();
-            const char* parentName = parentNodeExport->getName();
             uint32_t nodeID = nodeExport->getNodeID();
-
-            if (nodeExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
-            {
-				nodeName = parentName; // For nested state machines we just use the parent name
-            }
 
             ids[currentTableIndex] = nodeID;
             stringOffsets[currentTableIndex] = currentOffset;
