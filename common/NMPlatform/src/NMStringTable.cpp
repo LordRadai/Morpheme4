@@ -185,12 +185,7 @@ const char* IDMappedStringTable::getStringForID(uint32_t id) const
   {
     if (m_IDs[i] == id)
     {
-      size_t strSize = NMP_STRLEN(getEntryString(i));
-      if(strSize >= len)
-      {
-        len = strSize;
-        currStr = getEntryString(i);
-      }
+      return getEntryString(i);
     }
   }
   return currStr;
