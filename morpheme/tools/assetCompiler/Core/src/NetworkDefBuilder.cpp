@@ -4731,9 +4731,7 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
   tableDataSize = 0;
   numStrings = 0;
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-  std::vector<ME::NodeExport*> stateMachineNodes;
-#endif
+  std::map<std::string, uint32_t> tempMap;
 
   // Compute the size required for all the nodes
   for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
@@ -4741,49 +4739,51 @@ NMP::Memory::Format NetworkDefBuilder::getNodeIDNameMappingTableMemReqs(
     //----------------------
     // Calc the size of the node names
     const ME::NodeExport* nodeDefExport = netDefExport->getNode(i);
+    MR::NodeType nodeType = nodeDefExport->getTypeID();
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-    if (nodeDefExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
-		stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeDefExport));
-#endif
+    if (nodeType == NODE_TYPE_STATE_MACHINE)
+    {
+        // How many states in this state machine.
+        uint32_t numStates = 0;
+        ME::DataBlockExport* datablock = const_cast<ME::DataBlockExport*>(nodeDefExport->getDataBlock());
+        datablock->readUInt(numStates, "ChildNodeCount");
+
+        CHAR paramID[16];
+        for (uint32_t stateIdx = 0; stateIdx < numStates; ++stateIdx)
+        {
+            // Need to get the nodeIDs of the states.
+            uint32_t childStateNodeID;
+            std::string paramName = "RuntimeChildNodeID_";
+            sprintf_s(paramID, "%i", stateIdx);
+            paramName += paramID;
+            datablock->readUInt(childStateNodeID, paramName.c_str());
+
+            // Get the name of this state. This is actually the name of the node inside the state machine.
+            // We will strip this off to leave the state name only.
+            const ME::NodeExport* childStateNodeExport = netDefExport->getNode(childStateNodeID);
+            std::string childStateNodeName = childStateNodeExport->getName();
+
+            // remove the last bit of the name (i.e. the node name so that we are left with the state name)
+            // "MyStateMachine|MyState|Blend2" becomes "MyStateMachine|MyState"
+            size_t pipePos = childStateNodeName.rfind('|');
+            if (pipePos != childStateNodeName.npos)
+            {
+                childStateNodeName.resize(pipePos);
+                tempMap.insert(std::make_pair(childStateNodeName, stateIdx));
+            }
+        }
+    }
 
     const char* nodeName = nodeDefExport->getName();
     tableDataSize += (uint32_t)(strlen(nodeName) + 1);
     ++numStrings;
   }
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-  // Compute the size required for all the substate nodes
-  for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
+  for (std::map<std::string, uint32_t>::iterator it = tempMap.begin(); it != tempMap.end(); ++it)
   {
-      //----------------------
-      // Calc the size of the node names
-      const ME::NodeExport* stateMachineNodeExport = stateMachineNodes[i];
-
-	  const ME::DataBlockExport* datablock = stateMachineNodeExport->getDataBlock();
-
-	  uint32_t numSubStates = 0;
-      datablock->readUInt(numSubStates, "ChildNodeCount");
-
-	  char paramName[32];
-      for (size_t j = 0; j < numSubStates; j++)
-      {
-		  int childStateNodeID = -1;
-		  sprintf_s(paramName, "RuntimeChildNodeID_%d", static_cast<int>(j));
-
-		  datablock->readNetworkNodeId(childStateNodeID, paramName);
-
-          const ME::NodeExport* nodeDefExport = netDefExport->getNode(childStateNodeID);
-		  const ME::NodeExport* parentNodeExport = netDefExport->getNode(nodeDefExport->getDownstreamParentID());
-
-          const char* nodeName = nodeDefExport->getName();
-          uint32_t nodeID = nodeDefExport->getNodeID();
-
-          tableDataSize += (uint32_t)(strlen(nodeName) + 1);
-          ++numStrings;
-      }
+      tableDataSize += (uint32_t)(it->first.length() + 1);
+      ++numStrings;
   }
-#endif
 
   return NMP::IDMappedStringTable::getMemoryRequirements(numStrings, tableDataSize);
 }
@@ -4816,20 +4816,47 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
     char* currentPtr = stringsBuffer;
     uint32_t currentOffset = 0;
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-    std::vector<ME::NodeExport*> stateMachineNodes;
-#endif
+    std::map<std::string, uint32_t> tempMap;
 
 	int currentTableIndex = 0;
     // First put in all the names of actual nodes
     for (uint32_t i = 0; i < netDefExport->getNumNodes(); ++i)
     {
         const ME::NodeExport* nodeExport = netDefExport->getNode(i);
+        MR::NodeType nodeType = nodeExport->getTypeID();
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-        if (nodeExport->getTypeID() == NODE_TYPE_STATE_MACHINE)
-            stateMachineNodes.push_back(const_cast<ME::NodeExport*>(nodeExport));
-#endif
+        if (nodeType == NODE_TYPE_STATE_MACHINE)
+        {
+            // How many states in this state machine.
+            uint32_t numStates = 0;
+            ME::DataBlockExport* datablock = const_cast<ME::DataBlockExport*>(nodeExport->getDataBlock());
+            datablock->readUInt(numStates, "ChildNodeCount");
+
+            CHAR paramID[16];
+            for (uint32_t stateIdx = 0; stateIdx < numStates; ++stateIdx)
+            {
+                // Need to get the nodeIDs of the states.
+                uint32_t childStateNodeID;
+                std::string paramName = "RuntimeChildNodeID_";
+                sprintf_s(paramID, "%i", stateIdx);
+                paramName += paramID;
+                datablock->readUInt(childStateNodeID, paramName.c_str());
+
+                // Get the name of this state. This is actually the name of the node inside the state machine.
+                // We will strip this off to leave the state name only.
+                const ME::NodeExport* childStateNodeExport = netDefExport->getNode(childStateNodeID);
+                std::string childStateNodeName = childStateNodeExport->getName();
+
+                // remove the last bit of the name (i.e. the node name so that we are left with the state name)
+                // "MyStateMachine|MyState|Blend2" becomes "MyStateMachine|MyState"
+                size_t pipePos = childStateNodeName.rfind('|');
+                if (pipePos != childStateNodeName.npos)
+                {
+                    childStateNodeName.resize(pipePos);
+                    tempMap.insert(std::make_pair(childStateNodeName, stateIdx));
+                }
+            }
+        }
 
         const char* nodeName = nodeExport->getName();
         uint32_t nodeID = nodeExport->getNodeID();
@@ -4843,42 +4870,16 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
         currentTableIndex++;
     }
 
-#ifdef NODE_ID_NAME_TABLE_INCLUDE_SUBSTATE_NODES
-    // Compute the size required for all the substate nodes
-    for (uint32_t i = 0; i < stateMachineNodes.size(); ++i)
+    for (std::map<std::string, uint32_t>::iterator it = tempMap.begin(); it != tempMap.end(); ++it)
     {
-        //----------------------
-        // Calc the size of the node names
-        const ME::NodeExport* stateMachineNodeExport = stateMachineNodes[i];
+        ids[currentTableIndex] = it->second;
+        stringOffsets[currentTableIndex] = currentOffset;
+        memcpy(currentPtr, it->first.c_str(), it->first.length() + 1);
+        currentOffset += (uint32_t)(it->first.length() + 1);
+        currentPtr += (uint32_t)(it->first.length() + 1);
 
-        const ME::DataBlockExport* datablock = stateMachineNodeExport->getDataBlock();
-
-        uint32_t numSubStates = 0;
-        datablock->readUInt(numSubStates, "ChildNodeCount");
-
-        char paramName[32];
-        for (size_t j = 0; j < numSubStates; j++)
-        {
-            int childStateNodeID = -1;
-            sprintf_s(paramName, "RuntimeChildNodeID_%d", static_cast<int>(j));
-
-            datablock->readNetworkNodeId(childStateNodeID, paramName);
-
-            const ME::NodeExport* nodeExport = netDefExport->getNode(childStateNodeID);
-
-            const char* nodeName = nodeExport->getName();
-            uint32_t nodeID = nodeExport->getNodeID();
-
-            ids[currentTableIndex] = nodeID;
-            stringOffsets[currentTableIndex] = currentOffset;
-            memcpy(currentPtr, nodeName, strlen(nodeName) + 1);
-            currentOffset += (uint32_t)(strlen(nodeName) + 1);
-            currentPtr += (uint32_t)(strlen(nodeName) + 1);
-
-            currentTableIndex++;
-        }
+        currentTableIndex++;
     }
-#endif
 
     // Initialize the table from the stream.
     NMP::IDMappedStringTable* result = NMP::IDMappedStringTable::init(
