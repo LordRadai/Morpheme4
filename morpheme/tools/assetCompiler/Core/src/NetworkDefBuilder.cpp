@@ -4853,7 +4853,7 @@ NMP::IDMappedStringTable* NetworkDefBuilder::buildNodeIDNameMappingTable(const M
                 if (pipePos != childStateNodeName.npos)
                 {
                     childStateNodeName.resize(pipePos);
-                    tempMap.insert(std::make_pair(childStateNodeName, stateIdx));
+                    tempMap.insert(std::make_pair(childStateNodeName, childStateNodeID));
                 }
             }
         }
