@@ -385,7 +385,6 @@ NM_ASSERT_COMPILE_TIME((NodeID)NMP_STRING_NOT_FOUND == INVALID_NODE_ID);
 NodeID NetworkDef::getNodeIDFromNodeName(const char* name) const
 {
   NMP_ASSERT_MSG(m_nodeIDNamesTable, "NodeID name table doesn't exist.");
-  //NMP_ASSERT_MSG(m_nodeIDNamesTable->findNumEntriesForString(name) < 2, "More than one instance of node name %s found.", name);
   // Note that casting NMP_STRING_NOT_FOUND into NodeID results in INVALID_NODE_ID 
   // (even though the values are different).
   return (NodeID)m_nodeIDNamesTable->getIDForString(name);
