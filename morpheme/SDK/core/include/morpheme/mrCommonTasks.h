@@ -150,25 +150,15 @@ void TaskLockFootTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* parame
 void TaskHipsIKTransforms(Dispatcher::TaskParameters* parameters);
 void TaskHipsIKTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* parameters);
 
-void TaskModifyJointTransformTransforms(Dispatcher::TaskParameters* parameters);
-void TaskModifyJointTransformTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* parameters);
-
-void TaskModifyTrajectoryTransformTrajectoryDelta(Dispatcher::TaskParameters* parameters);
-void TaskModifyTrajectoryTransformTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* parameters);
-
 void TaskBasicUnevenTerrainIKSetup(Dispatcher::TaskParameters* parameters);
 void TaskBasicUnevenTerrainFootLiftingTarget(Dispatcher::TaskParameters* parameters);
 void TaskBasicUnevenTerrainTransforms(Dispatcher::TaskParameters* parameters);
 
 void TaskPredictiveUnevenTerrainIKSetup(Dispatcher::TaskParameters* parameters);
-void TaskPredictiveUnevenTerrainIKTrajectoryDeltaAndTransformsSetup(Dispatcher::TaskParameters* parameters);
 void TaskPredictiveUnevenTerrainFootLiftingTarget(Dispatcher::TaskParameters* parameters);
 
 void TaskCombine2SampledEventsBuffers(Dispatcher::TaskParameters* parameters);
-void TaskAdd2SampledEventsBuffers(Dispatcher::TaskParameters* parameters);
 void TaskCombine2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskParameters* parameters);
-void TaskAdd2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskParameters* parameters);
-void TaskAddSampledDurationEventsToSampleEventBuffer(Dispatcher::TaskParameters* parameters);
 void TaskBlend2DurationEventTrackSets(Dispatcher::TaskParameters* parameters);
 
 void TaskBlend2TrajectoryDeltaTransformsAddAttAddPos(Dispatcher::TaskParameters* parameters);

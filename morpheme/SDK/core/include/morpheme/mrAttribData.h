@@ -3924,10 +3924,6 @@ public:
     uint16_t     numWeights,
     const float* weights);
 
-  NM_INLINE void setSampledEventsWeights(
-    uint16_t     numWeights,
-    const float* weights);
-
   NM_INLINE void setAllWeights(
     float weight);
 
@@ -3939,12 +3935,10 @@ public:
   uint16_t      m_maxNumWeights;                      ///< The maximum number of weights in any sub catergory. NOT the total number of weights.
   uint16_t      m_trajectoryAndTransformsNumWeights;  ///<
   uint16_t      m_eventsNumWeights;                   ///< The number of weights for all non-sampled events.
-  uint16_t      m_sampledEventsNumWeights;            ///< The number of weights for the sampled events only.
 
   // Blend node weights
   float*        m_trajectoryAndTransformsWeights;
   float*        m_eventsWeights;
-  float*        m_sampledEventsWeights;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3969,23 +3963,12 @@ NM_INLINE void AttribDataBlendWeights::setEventsWeights(
     m_eventsWeights[i] = weights[i];
 }
 
-//---------------------------------------------------------------------------------------------------------------------- 
-NM_INLINE void AttribDataBlendWeights::setSampledEventsWeights(
-  uint16_t     numWeights,
-  const float* weights)
-{
-  NMP_ASSERT(numWeights <= m_maxNumWeights);
-  m_sampledEventsNumWeights = numWeights;
-  for (uint16_t i = 0; i < numWeights; ++i)
-    m_sampledEventsWeights[i] = weights[i];
-}
-
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE void AttribDataBlendWeights::setAllWeights(float weight)
 {
   NMP_ASSERT(m_maxNumWeights == 1);
-  m_trajectoryAndTransformsNumWeights = m_eventsNumWeights = m_sampledEventsNumWeights = 1;
-  m_trajectoryAndTransformsWeights[0] = m_eventsWeights[0] = m_sampledEventsWeights[0] = weight;
+  m_trajectoryAndTransformsNumWeights = m_eventsNumWeights = 1;
+  m_trajectoryAndTransformsWeights[0] = m_eventsWeights[0] = weight;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3996,12 +3979,10 @@ NM_INLINE void AttribDataBlendWeights::setAllWeights(
   NMP_ASSERT(numWeights <= m_maxNumWeights);
   m_trajectoryAndTransformsNumWeights = numWeights;
   m_eventsNumWeights = numWeights;
-  m_sampledEventsNumWeights = numWeights;
   for (uint16_t i = 0; i < numWeights; ++i)
   {
     m_trajectoryAndTransformsWeights[i] = weights[i];
     m_eventsWeights[i] = weights[i];
-    m_sampledEventsWeights[i] = weights[i];
   }
 }
 

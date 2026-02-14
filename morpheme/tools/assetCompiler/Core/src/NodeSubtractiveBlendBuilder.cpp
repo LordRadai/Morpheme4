@@ -240,7 +240,7 @@ void NodeSubtractiveBlendBuilder::initTaskQueuingFns(
     }
     else if (eventBlendMode == kAddSampledEvents)
     {
-      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2SyncEventsQueueAddSampledEventsBuffers), logger);
+      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2SyncEventsQueueSampledEventsBuffers), logger);
     }
 
     //---------------------------
@@ -276,7 +276,7 @@ void NodeSubtractiveBlendBuilder::initTaskQueuingFns(
       }
       else if (eventBlendMode == kAddSampledEvents)
       {
-        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2QueueAddSampledEventsBuffers), logger);
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2QueueSampledEventsBuffers), logger);
       }
     }
   }

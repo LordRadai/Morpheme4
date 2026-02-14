@@ -92,107 +92,40 @@ Task* nodeBlend2x2SyncEventsQueueSampledEventsBuffers(
 
     NMP_ASSERT(currFrameNo > 0);
     NMP_ASSERT(activeNodeConnections->m_numActiveChildNodes == 4);
-    NMP_ASSERT( activeNodeConnections->m_sampledEventsNumNodeIDs == 4 ||
-                activeNodeConnections->m_sampledEventsNumNodeIDs == 2 ||
-                activeNodeConnections->m_sampledEventsNumNodeIDs == 1 );
 
-    if( activeNodeConnections->m_sampledEventsNumNodeIDs == 4 )
-    {
-      // Combine the source sampled events buffers and sample the duration events buffers if there are any.
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[0] ));
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[1] ));
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[2] ));
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[3] ));
+    // Combine the source sampled events buffers and sample the duration events buffers if there are any.
+    NMP_ASSERT(nodeDef->hasChildNodeID(activeNodeConnections->m_activeChildNodeIDs[0]));
+    NMP_ASSERT(nodeDef->hasChildNodeID(activeNodeConnections->m_activeChildNodeIDs[1]));
+    NMP_ASSERT(nodeDef->hasChildNodeID(activeNodeConnections->m_activeChildNodeIDs[2]));
+    NMP_ASSERT(nodeDef->hasChildNodeID(activeNodeConnections->m_activeChildNodeIDs[3]));
 
-      task = queue->createNewTaskOnQueue(
+    task = queue->createNewTaskOnQueue(
         CoreTaskIDs::MR_TASKID_COMBINE2X2SAMPLEDEVENTSBUFFERSANDSAMPLEDURATIONEVENTS,
         nodeDef->getNodeID(),
         10,
         dependentParameter);
 #ifdef NODE_TASKS_QUEUE_BY_SEMANTICS
-      NMP_ASSERT(task)
+    NMP_ASSERT(task)
 #else
-      if (task)
+    if (task)
 #endif
-      {
+    {
         net->TaskAddOutputParamZeroLifespan(task, 0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, INVALID_NODE_ID, currFrameNo);
 
-        net->TaskAddParamAndDependency(task, 1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[0], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[1], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 3, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[2], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 4, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[3], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
+        net->TaskAddParamAndDependency(task, 1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
+            activeNodeConnections->m_activeChildNodeIDs[0], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
+        net->TaskAddParamAndDependency(task, 2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
+            activeNodeConnections->m_activeChildNodeIDs[1], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
+        net->TaskAddParamAndDependency(task, 3, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
+            activeNodeConnections->m_activeChildNodeIDs[2], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
+        net->TaskAddParamAndDependency(task, 4, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
+            activeNodeConnections->m_activeChildNodeIDs[3], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
 
         net->TaskAddParamAndDependency(task, 5, ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET, ATTRIB_TYPE_DURATION_EVENT_TRACK_SET, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
         net->TaskAddParamAndDependency(task, 6, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, ATTRIB_TYPE_SYNC_EVENT_TRACK, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
         net->TaskAddParamAndDependency(task, 7, ATTRIB_SEMANTIC_FRACTION_POS, ATTRIB_TYPE_PLAYBACK_POS, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo);
         net->TaskAddNetInputParam(task, 8, ATTRIB_SEMANTIC_BLEND_WEIGHTS, nodeDef->getNodeID(), INVALID_NODE_ID, currFrameNo, ANIMATION_SET_ANY);
         net->TaskAddDefInputParam(task, 9, ATTRIB_SEMANTIC_LOOP, nodeDef->getNodeID());
-      }
-    }
-    else if( activeNodeConnections->m_sampledEventsNumNodeIDs == 2 )
-    {
-      // Combine the 2 source sampled events buffers and sample the duration events buffers if there are any.
-
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[0] ));
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[1] ));
-
-      task = queue->createNewTaskOnQueue(
-        CoreTaskIDs::MR_TASKID_COMBINE2SAMPLEDEVENTSBUFFERSANDSAMPLEDURATIONEVENTS,
-        nodeDef->getNodeID(),
-        8,
-        dependentParameter);
-#ifdef NODE_TASKS_QUEUE_BY_SEMANTICS
-      NMP_ASSERT(task)
-#else
-      if (task)
-#endif
-      {
-        net->TaskAddOutputParamZeroLifespan(task, 0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, INVALID_NODE_ID, currFrameNo);
-
-        net->TaskAddParamAndDependency(task, 1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[0], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[1], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        
-        net->TaskAddParamAndDependency(task, 3, ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET, ATTRIB_TYPE_DURATION_EVENT_TRACK_SET, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 4, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, ATTRIB_TYPE_SYNC_EVENT_TRACK, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 5, ATTRIB_SEMANTIC_FRACTION_POS, ATTRIB_TYPE_PLAYBACK_POS, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo);
-        net->TaskAddNetInputParam(task, 6, ATTRIB_SEMANTIC_BLEND_WEIGHTS, nodeDef->getNodeID(), INVALID_NODE_ID, currFrameNo);
-        net->TaskAddDefInputParam(task, 7, ATTRIB_SEMANTIC_LOOP, nodeDef->getNodeID());
-      }
-    }
-    else
-    {
-      // Here only one node is active when considering events. Sampled events can be optimised in this case.
-      // We will sample the duration events into the one active node's sampled events buffer.
-      
-      NMP_ASSERT( nodeDef->hasChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[0] ));
-
-      task = queue->createNewTaskOnQueue(
-        CoreTaskIDs::MR_TASKID_ADDSAMPLEDDURATIONEVENTSTOSAMPLEDEVENTBUFFER,
-        nodeDef->getNodeID(),
-        6,
-        dependentParameter);
-#ifdef NODE_TASKS_QUEUE_BY_SEMANTICS
-      NMP_ASSERT(task)
-#else
-      if (task)
-#endif
-      {
-        net->TaskAddOutputParamZeroLifespan(task, 0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, INVALID_NODE_ID, currFrameNo);
-        
-        net->TaskAddParamAndDependency(task, 1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-          activeNodeConnections->m_sampledEventsNodeIDs[0], INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-
-        net->TaskAddParamAndDependency(task, 2, ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET, ATTRIB_TYPE_DURATION_EVENT_TRACK_SET, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 3, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, ATTRIB_TYPE_SYNC_EVENT_TRACK, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo, activeAnimSetIndex);
-        net->TaskAddParamAndDependency(task, 4, ATTRIB_SEMANTIC_FRACTION_POS, ATTRIB_TYPE_PLAYBACK_POS, nodeDef->getNodeID(), INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo);
-        net->TaskAddDefInputParam(task, 5, ATTRIB_SEMANTIC_LOOP, nodeDef->getNodeID());
-      }
     }
   }
 

@@ -577,8 +577,8 @@ void TaskCombine2SampledEventsBuffers(Dispatcher::TaskParameters* parameters)
   AttribDataSampledEvents* source1SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
   AttribDataBlendWeights* blendWeights = parameters->getInputAttrib<AttribDataBlendWeights>(3, ATTRIB_SEMANTIC_BLEND_WEIGHTS);
   
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 1);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[0] >= 0.0f && blendWeights->m_sampledEventsWeights[0] <= 1.0f);
+  NMP_ASSERT(blendWeights->m_eventsNumWeights == 1);
+  NMP_ASSERT(blendWeights->m_eventsWeights[0] >= 0.0f && blendWeights->m_eventsWeights[0] <= 1.0f);
 
   NMP_ASSERT(
     source0SampledEventsBuffer->m_curveBuffer &&
@@ -596,47 +596,9 @@ void TaskCombine2SampledEventsBuffers(Dispatcher::TaskParameters* parameters)
   AttribDataSampledEventsCreateDesc desc(totalNumTriggeredDiscreteEvents, totalNumCurveEventSamples);
   AttribDataSampledEvents* sampledEvents = parameters->createOutputAttrib<AttribDataSampledEvents>(0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, &desc);
 
-  float weight = 1.0f - blendWeights->m_sampledEventsWeights[0];
+  float weight = 1.0f - blendWeights->m_eventsWeights[0];
   sampledEvents->m_discreteBuffer->combine(source0SampledEventsBuffer->m_discreteBuffer, source1SampledEventsBuffer->m_discreteBuffer, weight);
   sampledEvents->m_curveBuffer->combine(source0SampledEventsBuffer->m_curveBuffer, source1SampledEventsBuffer->m_curveBuffer, weight);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-void TaskAdd2SampledEventsBuffers(Dispatcher::TaskParameters* parameters)
-{
-  AttribDataSampledEvents* source0SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
-  AttribDataSampledEvents* source1SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
-  AttribDataBlendWeights* blendWeights = parameters->getInputAttrib<AttribDataBlendWeights>(3, ATTRIB_SEMANTIC_BLEND_WEIGHTS);
-
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 1);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[0] >= 0.0f && blendWeights->m_sampledEventsWeights[0] <= 1.0f);
-
-  NMP_ASSERT(
-    source0SampledEventsBuffer->m_curveBuffer &&
-    source1SampledEventsBuffer->m_curveBuffer &&
-    source0SampledEventsBuffer->m_discreteBuffer &&
-    source1SampledEventsBuffer->m_discreteBuffer);
-
-  // Grab our events for this frame
-  uint32_t totalNumTriggeredDiscreteEvents =
-    source0SampledEventsBuffer->m_discreteBuffer->getNumTriggeredEvents() +
-    source1SampledEventsBuffer->m_discreteBuffer->getNumTriggeredEvents();
-  uint32_t totalNumCurveEventSamples =
-    source0SampledEventsBuffer->m_curveBuffer->getNumSampledEvents() +
-    source1SampledEventsBuffer->m_curveBuffer->getNumSampledEvents();
-  AttribDataSampledEventsCreateDesc desc(totalNumTriggeredDiscreteEvents, totalNumCurveEventSamples);
-  AttribDataSampledEvents* sampledEvents = parameters->createOutputAttrib<AttribDataSampledEvents>(0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, &desc);
-
-  // Add both sources discrete event buffers together, preserve blend weight for source 0 and attenuate for source 1.
-  sampledEvents->m_discreteBuffer->additiveCombine(
-    source0SampledEventsBuffer->m_discreteBuffer, 
-    source1SampledEventsBuffer->m_discreteBuffer, 
-    blendWeights->m_sampledEventsWeights[0]);
-  
-  // And add each of our curve event buffers into our output buffer, preserve blend weight for source 0 and attenuate for source 1.
-  sampledEvents->m_curveBuffer->fill(source0SampledEventsBuffer->m_curveBuffer);
-  uint32_t startingIndex = sampledEvents->m_curveBuffer->getNumSampledEvents();
-  sampledEvents->m_curveBuffer->fillAtAndScale(startingIndex, source1SampledEventsBuffer->m_curveBuffer, blendWeights->m_sampledEventsWeights[0]);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -649,9 +611,9 @@ void TaskCombine2x2SampledEventsBuffers(Dispatcher::TaskParameters* parameters)
   AttribDataSampledEvents* source3SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(4, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
   AttribDataBlendWeights* blendWeights = parameters->getInputAttrib<AttribDataBlendWeights>(5, ATTRIB_SEMANTIC_BLEND_WEIGHTS);
   
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 2);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[0] >= 0.0f && blendWeights->m_sampledEventsWeights[0] <= 1.0f);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[1] >= 0.0f && blendWeights->m_sampledEventsWeights[1] <= 1.0f);
+  NMP_ASSERT(blendWeights->m_eventsNumWeights == 2);
+  NMP_ASSERT(blendWeights->m_eventsWeights[0] >= 0.0f && blendWeights->m_eventsWeights[0] <= 1.0f);
+  NMP_ASSERT(blendWeights->m_eventsWeights[1] >= 0.0f && blendWeights->m_eventsWeights[1] <= 1.0f);
 
   NMP_ASSERT(
     source0SampledEventsBuffer->m_curveBuffer &&
@@ -677,14 +639,14 @@ void TaskCombine2x2SampledEventsBuffers(Dispatcher::TaskParameters* parameters)
   AttribDataSampledEventsCreateDesc desc(totalNumTriggeredDiscreteEvents, totalNumCurveEventSamples);
   AttribDataSampledEvents* sampledEvents = parameters->createOutputAttrib<AttribDataSampledEvents>(0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, &desc);
 
-  float omx = 1.0f - blendWeights->m_sampledEventsWeights[0];
-  float omy = 1.0f - blendWeights->m_sampledEventsWeights[1];
+  float omx = 1.0f - blendWeights->m_eventsWeights[0];
+  float omy = 1.0f - blendWeights->m_eventsWeights[1];
   const float weights[4] =
   {
     omy * omx,
-    omy * blendWeights->m_sampledEventsWeights[0],
-    blendWeights->m_sampledEventsWeights[1]  * omx,
-    blendWeights->m_sampledEventsWeights[1] * blendWeights->m_sampledEventsWeights[0]
+    omy * blendWeights->m_eventsWeights[0],
+    blendWeights->m_eventsWeights[1]  * omx,
+    blendWeights->m_eventsWeights[1] * blendWeights->m_eventsWeights[0]
   };
 
   {

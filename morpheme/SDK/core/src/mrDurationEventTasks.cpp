@@ -180,7 +180,7 @@ void TaskCombine2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskPar
   AttribDataSyncEventTrack* syncEventTrack = parameters->getInputAttrib<AttribDataSyncEventTrack>(4, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK);
   AttribDataPlaybackPos* fractionalTimePos = parameters->getInputAttrib<AttribDataPlaybackPos>(5, ATTRIB_SEMANTIC_FRACTION_POS);
   AttribDataBlendWeights* blendWeights = parameters->getInputAttrib<AttribDataBlendWeights>(6, ATTRIB_SEMANTIC_BLEND_WEIGHTS);
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 1);
+  NMP_ASSERT(blendWeights->m_eventsNumWeights == 1);
   AttribDataBool* loopableAttrib = parameters->getInputAttrib<AttribDataBool>(7, ATTRIB_SEMANTIC_LOOP);
 
   //-----------------------------
@@ -215,7 +215,7 @@ void TaskCombine2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskPar
 
   //-----------------------------
   // Combine both input buffers into the output.
-  float weight = 1.0f - blendWeights->m_sampledEventsWeights[0];
+  float weight = 1.0f - blendWeights->m_eventsWeights[0];
   sampledEvents->m_discreteBuffer->combine(source0SampledEventsBuffer->m_discreteBuffer, source1SampledEventsBuffer->m_discreteBuffer, weight);
   sampledEvents->m_curveBuffer->combine(source0SampledEventsBuffer->m_curveBuffer, source1SampledEventsBuffer->m_curveBuffer, weight);
 
@@ -228,124 +228,6 @@ void TaskCombine2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskPar
     sampledEvents->m_curveBuffer->addSampledEvent(sampledEvent);
   }
 }
-
-//----------------------------------------------------------------------------------------------------------------------
-void TaskAdd2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskParameters* parameters)
-{
-  AttribDataSampledEvents* source0SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
-  AttribDataSampledEvents* source1SampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(2, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
-  AttribDataDurationEventTrackSet* durationEventTrackSet = parameters->getInputAttrib<AttribDataDurationEventTrackSet>(3, ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET);
-  AttribDataSyncEventTrack* syncEventTrack = parameters->getInputAttrib<AttribDataSyncEventTrack>(4, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK);
-  AttribDataPlaybackPos* fractionalTimePos = parameters->getInputAttrib<AttribDataPlaybackPos>(5, ATTRIB_SEMANTIC_FRACTION_POS);
-  AttribDataBlendWeights* blendWeights = parameters->getInputAttrib<AttribDataBlendWeights>(6, ATTRIB_SEMANTIC_BLEND_WEIGHTS);
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 1);
-  AttribDataBool* loopableAttrib = parameters->getInputAttrib<AttribDataBool>(7, ATTRIB_SEMANTIC_LOOP);
-
-  //-----------------------------
-  // Find out if the blend should be loopable.
-  bool loopable = loopableAttrib->m_value;
-
-  //-----------------------------
-  // Sampling duration event buffers.
-  SampledCurveEventsBuffer workingSampledDurationEventsBuffer;
-  SampledCurveEvent workingSampledDurationEventsArray[MAX_NUM_DISCRETE_EVENTS];
-  workingSampledDurationEventsBuffer.init(MAX_NUM_DISCRETE_EVENTS, workingSampledDurationEventsArray);
-  durationEventTrackSet->m_durationEventTrackSet->sample(
-    &workingSampledDurationEventsBuffer,
-    fractionalTimePos->m_currentPosAdj,
-    fractionalTimePos->m_previousPosAdj,
-    &(syncEventTrack->m_syncEventTrack),
-    loopable);
-  //-----------------------------
-  // Calculate the event count totals that we need to output.
-  uint32_t totalNumTriggeredDiscreteEvents =
-    source0SampledEventsBuffer->m_discreteBuffer->getNumTriggeredEvents() +
-    source1SampledEventsBuffer->m_discreteBuffer->getNumTriggeredEvents();
-  uint32_t totalNumCurveEventSamples =
-    source0SampledEventsBuffer->m_curveBuffer->getNumSampledEvents() +
-    source1SampledEventsBuffer->m_curveBuffer->getNumSampledEvents() +
-    workingSampledDurationEventsBuffer.getNumSampledEvents();
-
-  //-----------------------------
-  // Now we know how many events we will need to output we can create our output events buffer.
-  AttribDataSampledEventsCreateDesc desc(totalNumTriggeredDiscreteEvents, totalNumCurveEventSamples);
-  AttribDataSampledEvents* sampledEvents = parameters->createOutputAttrib<AttribDataSampledEvents>(0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, &desc);
-
-  //-----------------------------
-  // Add both input discrete buffers together in the output (preserves the blend weight).
-  sampledEvents->m_discreteBuffer->additiveCombine(
-    source0SampledEventsBuffer->m_discreteBuffer, 
-    source1SampledEventsBuffer->m_discreteBuffer,
-    blendWeights->m_sampledEventsWeights[0]);
-
-  //-----------------------------
-  // Add both input curve buffers into our output (preserves the blend weight).
-  sampledEvents->m_curveBuffer->fill(source0SampledEventsBuffer->m_curveBuffer);
-  uint32_t startingIndex = sampledEvents->m_curveBuffer->getNumSampledEvents();
-  sampledEvents->m_curveBuffer->fillAtAndScale(startingIndex, source1SampledEventsBuffer->m_curveBuffer, blendWeights->m_sampledEventsWeights[0]);
-
-  //-----------------------------
-  // Copy sampled duration events from the working buffer into our output buffer.
-  for (uint32_t i = 0; i < workingSampledDurationEventsBuffer.getNumSampledEvents(); ++i)
-  {
-    NMP_ASSERT(sampledEvents->m_curveBuffer);
-    const SampledCurveEvent* sampledEvent = workingSampledDurationEventsBuffer.getSampledEvent(i);
-    sampledEvents->m_curveBuffer->addSampledEvent(sampledEvent);
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-void TaskAddSampledDurationEventsToSampleEventBuffer(Dispatcher::TaskParameters* parameters)
-{
-  AttribDataSampledEvents*          sourceSampledEventsBuffer = parameters->getInputAttrib<AttribDataSampledEvents>(1, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER);
-  AttribDataDurationEventTrackSet*  durationEventTrackSet     = parameters->getInputAttrib<AttribDataDurationEventTrackSet>(2, ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET);
-  AttribDataSyncEventTrack*         syncEventTrack            = parameters->getInputAttrib<AttribDataSyncEventTrack>(3, ATTRIB_SEMANTIC_SYNC_EVENT_TRACK);
-  AttribDataPlaybackPos*            fractionalTimePos         = parameters->getInputAttrib<AttribDataPlaybackPos>(4, ATTRIB_SEMANTIC_FRACTION_POS);
-  AttribDataBool*                   loopableAttrib            = parameters->getInputAttrib<AttribDataBool>(5, ATTRIB_SEMANTIC_LOOP);
-
-  //-----------------------------
-  // Find out if the blend should be loopable.
-  bool loopable = loopableAttrib->m_value;
-
-  //-----------------------------
-  // Sampling duration event buffers.
-  SampledCurveEventsBuffer workingSampledDurationEventsBuffer;
-  SampledCurveEvent workingSampledDurationEventsArray[MAX_NUM_CURVE_EVENTS];
-  workingSampledDurationEventsBuffer.init(MAX_NUM_CURVE_EVENTS, workingSampledDurationEventsArray);
-  durationEventTrackSet->m_durationEventTrackSet->sample(
-    &workingSampledDurationEventsBuffer,
-    fractionalTimePos->m_currentPosAdj,
-    fractionalTimePos->m_previousPosAdj,
-    &(syncEventTrack->m_syncEventTrack),
-    loopable);
-  //-----------------------------
-  // Calculate the event count totals that we need to output.
-  uint32_t totalNumTriggeredDiscreteEvents =
-    sourceSampledEventsBuffer->m_discreteBuffer->getNumTriggeredEvents();
-  uint32_t totalNumCurveEventSamples =
-    sourceSampledEventsBuffer->m_curveBuffer->getNumSampledEvents() +
-    workingSampledDurationEventsBuffer.getNumSampledEvents();
-
-  //-----------------------------
-  // Now we know how many events we will need to output we can create our output events buffer.
-  AttribDataSampledEventsCreateDesc desc(totalNumTriggeredDiscreteEvents, totalNumCurveEventSamples);
-  AttribDataSampledEvents* sampledEvents = parameters->createOutputAttrib<AttribDataSampledEvents>(0, ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, &desc);
-
-  //-----------------------------
-  // Copy both input buffers into the output.
-  sampledEvents->m_discreteBuffer->fillAt(0, sourceSampledEventsBuffer->m_discreteBuffer);
-  sampledEvents->m_curveBuffer->fill(sourceSampledEventsBuffer->m_curveBuffer);
-
-  //-----------------------------
-  // Copy sampled duration events from the working buffer into our output buffer.
-  for (uint32_t i = 0; i < workingSampledDurationEventsBuffer.getNumSampledEvents(); ++i)
-  {
-    NMP_ASSERT(sampledEvents->m_curveBuffer);
-    const SampledCurveEvent* sampledEvent = workingSampledDurationEventsBuffer.getSampledEvent(i);
-    sampledEvents->m_curveBuffer->addSampledEvent(sampledEvent);
-  }
-}
-
 
 //----------------------------------------------------------------------------------------------------------------------
 void TaskCombine2x2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskParameters* parameters)
@@ -364,9 +246,9 @@ void TaskCombine2x2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskP
   // Find out if the blend should be loopable.
   bool loopable = loopableAttrib->m_value;
 
-  NMP_ASSERT(blendWeights->m_sampledEventsNumWeights == 2);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[0] >= 0.0f && blendWeights->m_sampledEventsWeights[0] <= 1.0f);
-  NMP_ASSERT(blendWeights->m_sampledEventsWeights[1] >= 0.0f && blendWeights->m_sampledEventsWeights[1] <= 1.0f);
+  NMP_ASSERT(blendWeights->m_trajectoryAndTransformsNumWeights == 2);
+  NMP_ASSERT(blendWeights->m_trajectoryAndTransformsWeights[0] >= 0.0f && blendWeights->m_trajectoryAndTransformsWeights[0] <= 1.0f);
+  NMP_ASSERT(blendWeights->m_trajectoryAndTransformsWeights[1] >= 0.0f && blendWeights->m_trajectoryAndTransformsWeights[1] <= 1.0f);
 
   //-----------------------------
   // Sampling duration event buffers.
@@ -413,8 +295,8 @@ void TaskCombine2x2SampledEventsBuffersAndSampleDurationEvents(Dispatcher::TaskP
 
   //-----------------------------
   // Combine both input buffers into the output.
-  float blendWeightX = blendWeights->m_sampledEventsWeights[0];
-  float blendWeightY = blendWeights->m_sampledEventsWeights[1];
+  float blendWeightX = blendWeights->m_trajectoryAndTransformsWeights[0];
+  float blendWeightY = blendWeights->m_trajectoryAndTransformsWeights[1];
   temp0SampledEvents->m_discreteBuffer->combine(source0SampledEventsBuffer->m_discreteBuffer, source1SampledEventsBuffer->m_discreteBuffer, 1.0f - blendWeightX);
   temp0SampledEvents->m_curveBuffer->combine(source0SampledEventsBuffer->m_curveBuffer, source1SampledEventsBuffer->m_curveBuffer, 1.0f - blendWeightX);
   temp1SampledEvents->m_discreteBuffer->combine(source2SampledEventsBuffer->m_discreteBuffer, source3SampledEventsBuffer->m_discreteBuffer, 1.0f - blendWeightX);

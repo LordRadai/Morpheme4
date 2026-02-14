@@ -8249,7 +8249,6 @@ AttribDataBlendWeights* AttribDataBlendWeights::init(
   result->m_maxNumWeights = maxNumWeights;
   result->m_trajectoryAndTransformsNumWeights = 0;
   result->m_eventsNumWeights = 0;
-  result->m_sampledEventsNumWeights = 0;
 
   // Blend weights
   if (maxNumWeights > 0)
@@ -8257,13 +8256,11 @@ AttribDataBlendWeights* AttribDataBlendWeights::init(
     NMP::Memory::Format memReqsWeights(sizeof(float) * maxNumWeights, NMP_NATURAL_TYPE_ALIGNMENT);
     result->m_trajectoryAndTransformsWeights = (float*)resource.alignAndIncrement(memReqsWeights);
     result->m_eventsWeights = (float*)resource.alignAndIncrement(memReqsWeights);
-    result->m_sampledEventsWeights = static_cast<float*>( resource.alignAndIncrement(memReqsWeights) );
   }
   else
   {
     result->m_trajectoryAndTransformsWeights = NULL;
     result->m_eventsWeights = NULL;
-    result->m_sampledEventsWeights = NULL;
   }
 
   // Make sure size is a multiple of the alignment requirement.
@@ -8331,7 +8328,6 @@ void AttribDataBlendWeights::locate(AttribData* target)
   NMP::endianSwap(result->m_maxNumWeights);
   NMP::endianSwap(result->m_trajectoryAndTransformsNumWeights);
   NMP::endianSwap(result->m_eventsNumWeights);
-  NMP::endianSwap(result->m_sampledEventsNumWeights);
 
   // Blend weights
   if (result->m_maxNumWeights > 0)
@@ -8341,9 +8337,6 @@ void AttribDataBlendWeights::locate(AttribData* target)
 
     REFIX_SWAP_PTR_RELATIVE(float, result->m_eventsWeights, result);
     NMP::endianSwapArray(result->m_eventsWeights, result->m_maxNumWeights);
-
-    REFIX_SWAP_PTR_RELATIVE(float, result->m_sampledEventsWeights, result);
-    NMP::endianSwapArray(result->m_sampledEventsWeights, result->m_maxNumWeights);
   }
 }
 
@@ -8360,16 +8353,12 @@ void AttribDataBlendWeights::dislocate(AttribData* target)
 
     NMP::endianSwapArray(result->m_eventsWeights, result->m_maxNumWeights);
     UNFIX_SWAP_PTR_RELATIVE(float, result->m_eventsWeights, result);
-
-    NMP::endianSwapArray(result->m_sampledEventsWeights, result->m_maxNumWeights);
-    UNFIX_SWAP_PTR_RELATIVE(float, result->m_sampledEventsWeights, result);
   }
 
   // Header
   NMP::endianSwap(result->m_maxNumWeights);
   NMP::endianSwap(result->m_trajectoryAndTransformsNumWeights);
   NMP::endianSwap(result->m_eventsNumWeights);
-  NMP::endianSwap(result->m_sampledEventsNumWeights);
 
   AttribData::dislocate(target);
 }
@@ -8391,7 +8380,6 @@ void AttribDataBlendWeights::relocate(AttribData* target, void* location)
     NMP::Memory::Format memReqsWeights(sizeof(float) * result->m_maxNumWeights, NMP_NATURAL_TYPE_ALIGNMENT);
     result->m_trajectoryAndTransformsWeights = (float*)NMP::Memory::alignAndIncrement(ptr, memReqsWeights);
     result->m_eventsWeights = (float*)NMP::Memory::alignAndIncrement(ptr, memReqsWeights);
-    result->m_sampledEventsWeights = static_cast<float*>(NMP::Memory::alignAndIncrement(ptr, memReqsWeights));
   }
 }
 

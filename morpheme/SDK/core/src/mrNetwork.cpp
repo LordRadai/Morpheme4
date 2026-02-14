@@ -216,10 +216,8 @@ BlendOptNodeConnections* BlendOptNodeConnections::init(
   // Connected node IDs
   NMP::Memory::Format memReqsNodeIDs(sizeof(NodeID) * maxNumActiveChildNodes, NMP_NATURAL_TYPE_ALIGNMENT);
   result->m_trajectoryAndTransformsNodeIDs = (NodeID*)resource.alignAndIncrement(memReqsNodeIDs);
-  result->m_sampledEventsNodeIDs = (NodeID*)resource.alignAndIncrement(memReqsNodeIDs);
 
   result->m_trajectoryAndTransformsNumNodeIDs = 0;
-  result->m_sampledEventsNumNodeIDs = 0;
 
   return result;
 }

@@ -48,8 +48,6 @@ AttribDataBlendWeights* nodeSubtractiveBlendCreateBlendWeights(
     // Validate the fixed weights
     NMP_ASSERT(attribBlendWeights->m_eventsNumWeights == 1);
     NMP_ASSERT(attribBlendWeights->m_eventsWeights[0] == 1.0f);
-    NMP_ASSERT(attribBlendWeights->m_sampledEventsNumWeights == 1);
-    NMP_ASSERT(attribBlendWeights->m_sampledEventsWeights[0] == 1.0f);
     NMP_ASSERT(attribBlendWeights->m_trajectoryAndTransformsNumWeights == 1);
     NMP_ASSERT(attribBlendWeights->m_trajectoryAndTransformsWeights[0] == 1.0f);
   }

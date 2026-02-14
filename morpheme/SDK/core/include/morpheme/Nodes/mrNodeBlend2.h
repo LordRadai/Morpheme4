@@ -102,8 +102,6 @@ Task* nodeBlend2QueueTask(
 //----------------------------------------------------------------------------------------------------------------------
 // Time and events
 Task* nodeBlend2QueueSampledEventsBuffers(NodeDef* nodeDef, TaskQueue* queue, Network* net, TaskParameter* dependentParameter);
-Task* nodeBlend2QueueAddSampledEventsBuffers(NodeDef* nodeDef, TaskQueue* queue, Network* net, TaskParameter* dependentParameter);
-Task* nodeBlend2QueueSampledEventsBuffersBase(NodeDef* nodeDef, TaskQueue* queue, Network* net, TaskParameter* dependentParameter, MR::TaskID taskID);
 
 //----------------------------------------------------------------------------------------------------------------------
 // Transforms

@@ -123,7 +123,7 @@ Task* nodeScatterBlend2DSyncEventsQueueSampledEventsBuffers(
   NMP_ASSERT(activeNodeConnections->m_numActiveChildNodes == 3);
 
   Task* task;
-  if( activeNodeConnections->m_sampledEventsNumNodeIDs == 3 )
+  if( activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 3 )
   {
     NodeID activeParentNodeID = activeNodeConnections->m_activeParentNodeID;
     if (net->nodeFindGeneratingNodeForSemantic(activeParentNodeID, ATTRIB_SEMANTIC_UPDATE_SYNC_EVENT_POS, false, nodeDef->getNodeID()) != INVALID_NODE_ID)
@@ -164,10 +164,10 @@ Task* nodeScatterBlend2DSyncEventsQueueSampledEventsBuffers(
       }
     }
   }
-  else //from if( activeNodeConnections->m_sampledEventsNumNodeIDs == 3 )
+  else //from if( activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 3 )
   {
-    NMP_ASSERT( activeNodeConnections->m_sampledEventsNumNodeIDs == 2 ||
-                activeNodeConnections->m_sampledEventsNumNodeIDs == 1 );
+    NMP_ASSERT( activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 2 ||
+                activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 1 );
 
     task = nodeBlend2SyncEventsQueueSampledEventsBuffers( nodeDef,
                                                           queue,

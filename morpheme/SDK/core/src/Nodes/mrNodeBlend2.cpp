@@ -396,67 +396,19 @@ Task* nodeBlend2QueueSampledEventsBuffers(
   Network*        net,
   TaskParameter*  dependentParameter)
 {
-  return nodeBlend2QueueSampledEventsBuffersBase(
+    // Get the blend node optimised connections.
+    const BlendOptNodeConnections* activeNodeConnections = (const BlendOptNodeConnections*)net->getActiveNodesConnections(nodeDef->getNodeID());
+    NMP_ASSERT(
+        activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 1 ||
+        activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 2);
+
+  return nodeBlend2QueueTask(
     nodeDef, queue, net, dependentParameter,
-    CoreTaskIDs::MR_TASKID_COMBINE2SAMPLEDEVENTSBUFFERS );
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-// Time and events
-Task* nodeBlend2QueueAddSampledEventsBuffers(
-  NodeDef*        nodeDef,
-  TaskQueue*      queue,
-  Network*        net,
-  TaskParameter*  dependentParameter)
-{
-  return nodeBlend2QueueSampledEventsBuffersBase(
-    nodeDef, queue, net, dependentParameter,
-    CoreTaskIDs::MR_TASKID_ADD2SAMPLEDEVENTSBUFFERS );
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-// Time and events
-Task* nodeBlend2QueueSampledEventsBuffersBase(
-  NodeDef*        nodeDef,
-  TaskQueue*      queue,
-  Network*        net,
-  TaskParameter*  dependentParameter,
-  MR::TaskID      taskID )
-{
-  // Get the blend node optimised connections.
-  const BlendOptNodeConnections* activeNodeConnections = static_cast<const BlendOptNodeConnections*>( net->getActiveNodesConnections(nodeDef->getNodeID()) );
-  NMP_ASSERT( activeNodeConnections->m_sampledEventsNumNodeIDs == 1 ||
-              activeNodeConnections->m_sampledEventsNumNodeIDs == 2 );
-
-  Task* task( NULL );
-
-  // Here only one node is active when considering events. Sampled events can be optimised in this case.
-  if (activeNodeConnections->m_sampledEventsNumNodeIDs == 1)
-  {
-    NMP_ASSERT( activeNodeConnections->hasActiveChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[0] ) );
-
-    task = queuePassThroughOnChildNodeID(
-      activeNodeConnections->m_sampledEventsNodeIDs[0],
-      nodeDef,
-      queue,
-      net,
-      dependentParameter);
-  }
-  else
-  {
-    NMP_ASSERT( activeNodeConnections->hasActiveChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[0] ) );
-    NMP_ASSERT( activeNodeConnections->hasActiveChildNodeID( activeNodeConnections->m_sampledEventsNodeIDs[1] ) );
-
-    task = nodeBlend2QueueTask(
-      nodeDef, queue, net, dependentParameter,
-      taskID,
-      ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER,
-      ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
-      activeNodeConnections->m_sampledEventsNodeIDs[0],
-      activeNodeConnections->m_sampledEventsNodeIDs[1]);
-  }
-
-  return task;    
+    CoreTaskIDs::MR_TASKID_COMBINE2SAMPLEDEVENTSBUFFERS, 
+    ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, 
+    ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
+    activeNodeConnections->m_trajectoryAndTransformsNodeIDs[0],
+    activeNodeConnections->m_trajectoryAndTransformsNodeIDs[1]);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -824,16 +776,6 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
-
-    // Optimise sampled events
-    nodeBlend2AdditiveBlendWeightCheck(
-      blendFlags->m_alwaysCombineSampledEvents,
-      blendWeightEvents,
-      activeNodeConnections->m_activeChildNodeIDs,
-      attribBlendWeights->m_sampledEventsNumWeights,
-      attribBlendWeights->m_sampledEventsWeights,
-      activeNodeConnections->m_sampledEventsNumNodeIDs,
-      activeNodeConnections->m_sampledEventsNodeIDs);
   }
   else
   {
@@ -846,16 +788,6 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       attribBlendWeights->m_trajectoryAndTransformsWeights,
       activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
       activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
-
-    // Optimise sampled events
-    nodeBlend2BlendWeightCheck(
-      blendFlags->m_alwaysCombineSampledEvents,
-      blendWeightEvents,
-      activeNodeConnections->m_activeChildNodeIDs,
-      attribBlendWeights->m_sampledEventsNumWeights,
-      attribBlendWeights->m_sampledEventsWeights,
-      activeNodeConnections->m_sampledEventsNumNodeIDs,
-      activeNodeConnections->m_sampledEventsNodeIDs);
   }
 
   //------------------------
@@ -868,9 +800,7 @@ NodeID nodeBlend2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   // if we did not delete it no time would be requested so the time would not update hence the two sources for the
   // blend node would get out of sync.
   NodeID nodeIDToDel = INVALID_NODE_ID;
-  if( activeNodeConnections->m_sampledEventsNumNodeIDs == 1 &&
-      activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 1 && 
-      activeNodeConnections->m_trajectoryAndTransformsNodeIDs[0] == activeNodeConnections->m_sampledEventsNodeIDs[0] )
+  if( activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 1)
   {
     // we want to the node we are not going to process for trajectory/transforms or sampled events
     nodeIDToDel = activeNodeConnections->m_activeChildNodeIDs[0];

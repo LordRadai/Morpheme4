@@ -275,8 +275,8 @@ Task* nodeBlend2x2QueueSampledEventsBuffers(
     CoreTaskIDs::MR_TASKID_COMBINE2SAMPLEDEVENTSBUFFERS,
     ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, 
     ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER,
-    activeNodeConnections->m_sampledEventsNumNodeIDs,
-    activeNodeConnections->m_sampledEventsNodeIDs );
+    activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
+    activeNodeConnections->m_trajectoryAndTransformsNodeIDs );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -459,10 +459,10 @@ void nodeBlend2x2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       blendFlags->m_alwaysCombineSampledEvents,
       blendWeightsAlwaysBlend,
       activeNodeConnections->m_activeChildNodeIDs,
-      attribBlendWeights->m_sampledEventsNumWeights,
-      attribBlendWeights->m_sampledEventsWeights,
-      activeNodeConnections->m_sampledEventsNumNodeIDs,
-      activeNodeConnections->m_sampledEventsNodeIDs);
+      attribBlendWeights->m_trajectoryAndTransformsNumWeights,
+      attribBlendWeights->m_trajectoryAndTransformsWeights,
+      activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
+      activeNodeConnections->m_trajectoryAndTransformsNodeIDs);
 
   //------------------------
   // Sync event track and events are always blended

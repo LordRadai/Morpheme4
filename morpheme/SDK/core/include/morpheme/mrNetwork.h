@@ -169,18 +169,11 @@ public:
   NM_INLINE void setTrajectoryAndTransformsNodeIDs(
     uint16_t numNodeIDs,
     const NodeID* nodeIDs);
-  
-  NM_INLINE void setSampledEventsNodeIDs(
-    uint16_t numNodeIDs,
-    const NodeID* nodeIDs);
   //@}
 
 public:
   uint16_t      m_trajectoryAndTransformsNumNodeIDs;
-  uint16_t      m_sampledEventsNumNodeIDs;
-
   NodeID*       m_trajectoryAndTransformsNodeIDs;
-  NodeID*       m_sampledEventsNodeIDs;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -193,19 +186,6 @@ NM_INLINE void BlendOptNodeConnections::setTrajectoryAndTransformsNodeIDs(
   for (uint16_t i = 0; i < numNodeIDs; ++i)
   {
     m_trajectoryAndTransformsNodeIDs[i] = nodeIDs[i];
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-NM_INLINE void BlendOptNodeConnections::setSampledEventsNodeIDs(
-  uint16_t numNodeIDs,
-  const NodeID* nodeIDs)
-{
-  NMP_ASSERT(numNodeIDs <= m_maxNumActiveChildNodes);
-  m_sampledEventsNumNodeIDs = numNodeIDs;
-  for (uint16_t i = 0; i < numNodeIDs; ++i)
-  {
-    m_sampledEventsNodeIDs[i] = nodeIDs[i];
   }
 }
 

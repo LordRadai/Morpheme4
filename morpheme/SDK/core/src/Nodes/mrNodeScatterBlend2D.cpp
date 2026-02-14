@@ -497,7 +497,6 @@ NodeID nodeScatterBlend2DOfflineUpdateConnections(
   // Set the blend weights and sources
   attribBlendWeights->setAllWeights(attribDef->m_numWeights, attribDef->m_weights);
   activeNodeConnections->setTrajectoryAndTransformsNodeIDs(attribDef->m_numNodeIDs, attribDef->m_nodeIDs);
-  activeNodeConnections->setSampledEventsNodeIDs(attribDef->m_numNodeIDs, attribDef->m_nodeIDs);
 
   //------------------------
   // Update the active node connections
