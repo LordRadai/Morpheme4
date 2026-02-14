@@ -117,7 +117,7 @@ bool CoreCommandsHandler::doHandleCommand(CmdPacketBase* cmdPacket)
   uint16_t pktId = cmdPacket->hdr.m_id;
   NMP::netEndianSwap(pktId);
 
-#ifdef _DEBUG
+#ifdef PKT_LOGGING
   if (pktId < 111)
   {
       CmdPacketBase debugPacketCopy = *cmdPacket;
