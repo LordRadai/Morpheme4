@@ -294,9 +294,15 @@ void NodeBlend2Builder::initTaskQueuingFnsEvents(
     }
     else if (eventBlendMode == kAddSampledEvents)
     {
-      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2SyncEventsQueueSampledEventsBuffers), logger);
+      if (passThroughMode == kNodePassThroughSource0)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild0), logger);
+      }
+      else if (passThroughMode == kNodePassThroughSource1)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild1), logger);
+      }
     }
-
   }
   //---------------------------
   // NO MATCH EVENTS
@@ -327,7 +333,14 @@ void NodeBlend2Builder::initTaskQueuingFnsEvents(
     }
     else if (eventBlendMode == kAddSampledEvents)
     {
-      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2QueueSampledEventsBuffers), logger);
+      if (passThroughMode == kNodePassThroughSource0)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild0), logger);
+      }
+      else if (passThroughMode == kNodePassThroughSource1)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild1), logger);
+      }
     }
   }
 }
