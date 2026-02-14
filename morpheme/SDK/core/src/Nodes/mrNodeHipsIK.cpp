@@ -67,7 +67,7 @@ Task* nodeHipsIKQueueUpdateTransforms(
     net->TaskAddDefInputParam(task, 4, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF_ANIM_SET, nodeID, activeAnimSetIndex);
 
     // PositionDelta control parameter
-    net->TaskAddOptionalInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
+    net->TaskAddInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     // RotationDelta control parameter. (Is optional since the RotationDelta control parameter is
     // either connected to Vector3 or Vector4 pins as a quat or an Euler vector).
