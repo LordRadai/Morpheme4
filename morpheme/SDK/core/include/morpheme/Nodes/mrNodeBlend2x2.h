@@ -43,9 +43,7 @@ void nodeBlend2x2BlendWeightsCheck(
   uint16_t&     numBlendWeights,          ///< OUT: The number of optimised weights
   float*        blendWeights,             ///< OUT: The optimised blend weights
   uint16_t&     numChildNodeIDs,          ///< OUT: The number of optimised active connected children
-  NodeID*       childNodeIDs,             ///< OUT: The optimised node IDs of the active connected children
-  uint16_t&     numInvalidChildNodeIDs,   ///< OUT: The number of children node ids that are optimised away
-  NodeID*       invalidChildNodeIDs       ///< OUT: The optimised away node IDs
+  NodeID*       childNodeIDs              ///< OUT: The optimised node IDs of the active connected children
 );
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -54,15 +54,13 @@ void nodeBlend2x2BlendWeightsCheck(
   uint16_t&     numBlendWeights,          ///< OUT: The number of optimised weights
   float*        blendWeights,             ///< OUT: The optimised blend weights
   uint16_t&     numChildNodeIDs,          ///< OUT: The number of optimised active connected children
-  NodeID*       childNodeIDs,             ///< OUT: The optimised node IDs of the active connected children
-  uint16_t&     numInvalidChildNodeIDs,   ///< OUT: The number of children node ids that are optimised away
-  NodeID*       invalidChildNodeIDs)      ///< OUT: The optimised away node IDs
+  NodeID*       childNodeIDs              ///< OUT: The optimised node IDs of the active connected children
+)
 {
   NMP_ASSERT(blendWeightsAlwaysBlend);
   NMP_ASSERT(childNodeIDsAlwaysBlend);
   NMP_ASSERT(blendWeights);
   NMP_ASSERT(childNodeIDs);
-  NMP_ASSERT(invalidChildNodeIDs);
   NMP_ASSERT(blendWeightsAlwaysBlend[0] >= 0.0f && blendWeightsAlwaysBlend[0] <= 1.0f);
   NMP_ASSERT(blendWeightsAlwaysBlend[1] >= 0.0f && blendWeightsAlwaysBlend[1] <= 1.0f);
 
@@ -75,7 +73,6 @@ void nodeBlend2x2BlendWeightsCheck(
     numChildNodeIDs = 4;
     for (uint16_t i = 0; i < 4; ++i)
       childNodeIDs[i] = childNodeIDsAlwaysBlend[i];
-    numInvalidChildNodeIDs = 0;
     return;
   }
 
@@ -134,7 +131,6 @@ void nodeBlend2x2BlendWeightsCheck(
   }
 
   // Compute the active child nodes
-  numInvalidChildNodeIDs = 0;
   numChildNodeIDs = 0;
   for (uint16_t i = 0; i < 4; ++i)
   {
@@ -142,11 +138,6 @@ void nodeBlend2x2BlendWeightsCheck(
     {
       childNodeIDs[numChildNodeIDs] = childNodeIDsAlwaysBlend[i];
       ++numChildNodeIDs;
-    }
-    else
-    {
-      invalidChildNodeIDs[numInvalidChildNodeIDs] = childNodeIDsAlwaysBlend[i];
-      ++numInvalidChildNodeIDs;
     }
   }
 }
@@ -460,11 +451,6 @@ void nodeBlend2x2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
   NMP_ASSERT(net->getActiveChildNodeID(nodeDef->getNodeID(),1) == activeNodeConnections->m_activeChildNodeIDs[1] );
   NMP_ASSERT(net->getActiveChildNodeID(nodeDef->getNodeID(),2) == activeNodeConnections->m_activeChildNodeIDs[2] );
   NMP_ASSERT(net->getActiveChildNodeID(nodeDef->getNodeID(),3) == activeNodeConnections->m_activeChildNodeIDs[3] );
-  
-  // will populate this array with node ids that have been optimised for both
-  // trajectory/transforms and sampled events.
-  uint16_t numInvalidChildNodeIDs;
-  NodeID invalidChildNodeIDs[ 3 ];
 
   //------------------------
   // Optimise transforms
@@ -476,56 +462,7 @@ void nodeBlend2x2UpdateConnectionsSetBlendWeightsCheckForOptimisation(
       attribBlendWeights->m_sampledEventsNumWeights,
       attribBlendWeights->m_sampledEventsWeights,
       activeNodeConnections->m_sampledEventsNumNodeIDs,
-      activeNodeConnections->m_sampledEventsNodeIDs,
-      numInvalidChildNodeIDs,
-      invalidChildNodeIDs);
-
-  NMP_ASSERT( numInvalidChildNodeIDs <= 3 );
-  NMP_ASSERT( (numInvalidChildNodeIDs + activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs) == 4 );
-
-  /*
-  //------------------------
-  // Optimise sampled events.
-  // as we do not have a separate event weight if the blend flags are 
-  // the same we can re-use the trajectory and transforms result.
-  if( blendFlags->m_alwaysBlendTrajectoryAndTransforms == blendFlags->m_alwaysCombineSampledEvents )
-  {
-    attribBlendWeights->setSampledEventsWeights( attribBlendWeights->m_trajectoryAndTransformsNumWeights,
-                                                 attribBlendWeights->m_trajectoryAndTransformsWeights );
-    activeNodeConnections->setSampledEventsNodeIDs( activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs,
-                                                    activeNodeConnections->m_trajectoryAndTransformsNodeIDs );
-
-    //------------------------
-    // If we are optimising both trajectory/transforms and events then we need to delete nodes that 
-    // have both; otherwise we do not create a dependency on time and the time is not updated. 
-    // The will lead to this transform source being out of sync with others connected.
-    // By deleting; when the sync track is requested the node is recreated and the temporal data is
-    // set correctly.
-    if( blendFlags->m_alwaysBlendTrajectoryAndTransforms == false )
-    {
-      for( uint32_t i=0; i<numInvalidChildNodeIDs; ++i )
-      {
-        net->deleteNodeInstance(invalidChildNodeIDs[i]);
-      }
-    }
-  }
-  else
-  {
-    nodeBlend2x2BlendWeightsCheck(
-      blendFlags->m_alwaysCombineSampledEvents,
-      blendWeightsAlwaysBlend,
-      activeNodeConnections->m_activeChildNodeIDs,
-      attribBlendWeights->m_sampledEventsNumWeights,
-      attribBlendWeights->m_sampledEventsWeights,
-      activeNodeConnections->m_sampledEventsNumNodeIDs,
-      activeNodeConnections->m_sampledEventsNodeIDs,
-      numInvalidChildNodeIDs,
-      invalidChildNodeIDs );
-
-      NMP_ASSERT( numInvalidChildNodeIDs <= 3 );
-      NMP_ASSERT( (numInvalidChildNodeIDs + activeNodeConnections->m_sampledEventsNumNodeIDs) == 4 );
-  }
-  */
+      activeNodeConnections->m_sampledEventsNodeIDs);
 
   //------------------------
   // Sync event track and events are always blended
