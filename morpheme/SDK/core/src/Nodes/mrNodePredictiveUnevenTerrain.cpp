@@ -175,7 +175,7 @@ Task* nodePredictiveUnevenTerrainQueueTransformBuffs(
 
   // Queue the transforms task
   Task* task = queue->createNewTaskOnQueue(
-    CoreTaskIDs::MR_TASKID_BASIC_UNEVEN_TERRAIN_TRANSFORMS,
+    CoreTaskIDs::MR_TASKID_BASIC_UNEVEN_TERRAIN_TRANSFORMS3,
     node->getNodeID(),
     12,
     dependentParameter);
@@ -203,9 +203,9 @@ Task* nodePredictiveUnevenTerrainQueueTransformBuffs(
     // Uneven terrain input IK state (may not exist)
     net->TaskAddOptionalNetInputOutputParam(task, 9, ATTRIB_SEMANTIC_NODE_SPECIFIC_STATE, ATTRIB_TYPE_BASIC_UNEVEN_TERRAIN_IK_STATE, INVALID_NODE_ID, currFrameNo);
     // IkHipsWeight
-    net->TaskAddInputCP(task, 10, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, 10, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
     // IkFkBlendWeight
-    net->TaskAddInputCP(task, 11, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
+    net->TaskAddOptionalInputCP(task, 11, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
   }
 
   return task;
