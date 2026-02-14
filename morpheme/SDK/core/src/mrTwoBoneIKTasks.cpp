@@ -110,9 +110,17 @@ NM_INLINE void subTaskTwoBoneIKTransforms(
     targetPos = effectorTargetAttrib->m_value;
   }
 
-  float swivelAngle = swivelAngleAttrib->m_value;
-  float ikFkBlendWeight = ikFkBlendWeightAttrib->m_value;
-  float swivelContributionToOrientation = swivelContributionToOrientationAttrib->m_value;
+  float swivelAngle = twoBoneIKSetupAttrib->m_defaultSwivelAngle;
+  if (swivelAngleAttrib)
+   swivelAngle = swivelAngleAttrib->m_value;
+
+  float ikFkBlendWeight = twoBoneIKSetupAttrib->m_defaultIkFkBlendWeight;
+  if (ikFkBlendWeightAttrib)
+    ikFkBlendWeight = ikFkBlendWeightAttrib->m_value;
+
+  float swivelContributionToOrientation = twoBoneIKSetupAttrib->m_defaultSwivelContributionToOrientation;
+  if (swivelContributionToOrientationAttrib)
+    swivelContributionToOrientation = swivelContributionToOrientationAttrib->m_value;
   
   // For world-space targets, retrieve the current trajectory and move the target into character space.
   // We have to use the previous frame's trajectory because the current frame's value may contain some but
@@ -259,20 +267,20 @@ void TaskTwoBoneIKTransforms(Dispatcher::TaskParameters* parameters)
 
   // IK target orientation (Optional - runtime defined)
   const AttribDataVector4* targetOrientationAttrib =
-    parameters->getOptionalInputAttrib<AttribDataVector4>(3, ATTRIB_SEMANTIC_CP_VECTOR4);
+    parameters->getInputAttrib<AttribDataVector4>(3, ATTRIB_SEMANTIC_CP_VECTOR4);
 
   // Angle of swivel for controlling redundant rotation at the root of the IK system
   const AttribDataFloat* swivelAngleAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(4, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(4, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Weight for blending between the input and the IK solution
   const AttribDataFloat* ikFkBlendWeightAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(5, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(5, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Weight to control how much swivel is used to help achieve the desired orientation, as opposed to
   // doing it all with rotation at the end joint
   const AttribDataFloat* swivelContributionToOrientationAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(6, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(6, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // The non-anim-set dependent IK attributes
   const AttribDataTwoBoneIKSetup* twoBoneIKSetupAttrib =
@@ -321,7 +329,7 @@ void TaskTwoBoneIKTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* param
 
   // IK target position
   const AttribDataVector3* effectorTargetAttrib =
-    parameters->getInputAttrib<AttribDataVector3>(1, ATTRIB_SEMANTIC_CP_VECTOR3);
+    parameters->getOptionalInputAttrib<AttribDataVector3>(1, ATTRIB_SEMANTIC_CP_VECTOR3);
 
   // IK target orientation (Optional - runtime defined)
   const AttribDataVector4* targetOrientationAttrib =
@@ -329,16 +337,16 @@ void TaskTwoBoneIKTrajectoryDeltaAndTransforms(Dispatcher::TaskParameters* param
 
   // Angle of swivel for controlling redundant rotation at the root of the IK system
   const AttribDataFloat* swivelAngleAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(3, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Weight for blending between the input and the IK solution
   const AttribDataFloat* ikFkBlendWeightAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(4, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(4, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // Weight to control how much swivel is used to help achieve the desired orientation, as opposed to
   // doing it all with rotation at the end joint
   const AttribDataFloat* swivelContributionToOrientationAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(5, ATTRIB_SEMANTIC_CP_FLOAT);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(5, ATTRIB_SEMANTIC_CP_FLOAT);
 
   // The non-anim-set dependent IK attributes
   const AttribDataTwoBoneIKSetup* twoBoneIKSetupAttrib =
@@ -387,6 +395,8 @@ void AttribDataTwoBoneIKSetup::locate(AttribData* target)
 
   // swap everything that needs to be swapped...
   NMP::endianSwap(result->m_defaultTargetOrientation);
+  NMP::endianSwap(result->m_defaultSwivelAngle);
+  NMP::endianSwap(result->m_defaultIkFkBlendWeight);
   NMP::endianSwap(result->m_assumeSimpleHierarchy);
   NMP::endianSwap(result->m_keepEndEffOrientation);
   NMP::endianSwap(result->m_userControlledOrientation);
@@ -394,6 +404,7 @@ void AttribDataTwoBoneIKSetup::locate(AttribData* target)
   NMP::endianSwap(result->m_worldSpaceTarget);
   NMP::endianSwap(result->m_useSpecifiedJointAsTarget);
   NMP::endianSwap(result->m_useSpecifiedJointOrientation);
+  NMP::endianSwap(result->m_defaultSwivelContributionToOrientation);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -402,6 +413,8 @@ void AttribDataTwoBoneIKSetup::dislocate(AttribData* target)
   AttribDataTwoBoneIKSetup* result = (AttribDataTwoBoneIKSetup*)target;
 
   NMP::endianSwap(result->m_defaultTargetOrientation);
+  NMP::endianSwap(result->m_defaultSwivelAngle);
+  NMP::endianSwap(result->m_defaultIkFkBlendWeight);
   NMP::endianSwap(result->m_assumeSimpleHierarchy);
   NMP::endianSwap(result->m_keepEndEffOrientation);
   NMP::endianSwap(result->m_userControlledOrientation);
@@ -409,6 +422,7 @@ void AttribDataTwoBoneIKSetup::dislocate(AttribData* target)
   NMP::endianSwap(result->m_worldSpaceTarget);
   NMP::endianSwap(result->m_useSpecifiedJointAsTarget);
   NMP::endianSwap(result->m_useSpecifiedJointOrientation);
+  NMP::endianSwap(result->m_defaultSwivelContributionToOrientation);
 
   AttribData::dislocate(target);
 }
@@ -435,8 +449,8 @@ AttribDataTwoBoneIKSetup* AttribDataTwoBoneIKSetup ::init(
   result->setType(ATTRIB_TYPE_TWO_BONE_IK_SETUP);
   result->setRefCount(refCount);
 
-  result->m_fVar1 = 0.f;
-  result->m_fVar2 = 1.f;
+  result->m_defaultSwivelAngle = 0.f;
+  result->m_defaultIkFkBlendWeight = 1.f;
   result->m_userControlledOrientation = false;
   result->m_keepEndEffOrientation = true;
   result->m_assumeSimpleHierarchy = true;
@@ -444,7 +458,7 @@ AttribDataTwoBoneIKSetup* AttribDataTwoBoneIKSetup ::init(
   result->m_worldSpaceTarget = false;
   result->m_useSpecifiedJointAsTarget = false;
   result->m_useSpecifiedJointOrientation = false;
-  result->m_iVar3 = 0;
+  result->m_defaultSwivelContributionToOrientation = 0.f;
 
   result->m_defaultTargetOrientation.identity();
 

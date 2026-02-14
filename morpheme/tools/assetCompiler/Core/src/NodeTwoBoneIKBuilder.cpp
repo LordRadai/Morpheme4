@@ -69,12 +69,11 @@ void NodeTwoBoneIKBuilder::preInit(
   AssetProcessor*             NMP_UNUSED(processor))
 {
   // Control parameters
-  declareDataPin(netDefCompilationInfo, nodeDefExport, "EffectorTarget",  0,  true, MR::ATTRIB_SEMANTIC_CP_VECTOR3);
+  declareDataPin(netDefCompilationInfo, nodeDefExport, "EffectorTarget",  0,  false, MR::ATTRIB_SEMANTIC_CP_VECTOR3);
   declareDataPin(netDefCompilationInfo, nodeDefExport, "TargetOrientation",  1,  true, MR::ATTRIB_SEMANTIC_CP_VECTOR4);
   declareDataPin(netDefCompilationInfo, nodeDefExport, "SwivelAngle",  2,  true, MR::ATTRIB_SEMANTIC_CP_FLOAT);
   declareDataPin(netDefCompilationInfo, nodeDefExport, "IkFkBlendWeight",  3,  true, MR::ATTRIB_SEMANTIC_CP_FLOAT);
   declareDataPin(netDefCompilationInfo, nodeDefExport, "SwivelContributionToOrientation",  4,  true, MR::ATTRIB_SEMANTIC_CP_FLOAT);
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------

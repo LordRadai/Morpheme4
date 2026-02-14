@@ -26,19 +26,19 @@ NodeID nodeTwoBoneIKUpdateConnections(
   AnimSetIndex animSet = net->getOutputAnimSetIndex(node->getNodeID());
 
   // EffectorTarget
-  net->updateInputCPConnection<AttribDataVector3>(node->getInputCPConnection(0), animSet);
+  net->updateOptionalInputCPConnection<AttribDataVector3>(node->getInputCPConnection(0), animSet);
   
   // TargetOrientation (Optional - runtime defined)
   net->updateOptionalInputCPConnection<AttribDataVector4>(node->getInputCPConnection(1), animSet);
 
   // SwivelAngle
-  net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(2), animSet);
+  net->updateOptionalInputCPConnection<AttribDataFloat>(node->getInputCPConnection(2), animSet);
 
   // IkFkBlendWeight
-  net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(3), animSet);
+  net->updateOptionalInputCPConnection<AttribDataFloat>(node->getInputCPConnection(3), animSet);
 
   // SwivelContributionToOrientation
-  net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(4), animSet);
+  net->updateOptionalInputCPConnection<AttribDataFloat>(node->getInputCPConnection(4), animSet);
 
   // Recurse to children.
   NodeID activeChildNodeID = net->getActiveChildNodeID(node->getNodeID(), 0);
@@ -139,19 +139,19 @@ NM_INLINE Task* nodeTwoBoneIKQueueTwoBoneIKTransforms(
     // control parameters
 
     // EffectorTarget
-    net->TaskAddInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     // TargetOrientation (Optional - runtime defined)
     net->TaskAddOptionalInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_VECTOR4, node->getInputCPConnection(1));
 
     // SwivelAngle
-    net->TaskAddInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(2));
+    net->TaskAddOptionalInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(2));
 
     // IkFkBlendWeight
-    net->TaskAddInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
+    net->TaskAddOptionalInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
     
     // SwivelContributionToOrientation
-    net->TaskAddInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
+    net->TaskAddOptionalInputCP(task, taskIndex++, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
     
     // IK const setup
     net->TaskAddDefInputParam(task, taskIndex++, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF, node->getNodeID());
