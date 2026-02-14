@@ -67,7 +67,7 @@ Task* nodeHipsIKQueueUpdateTransforms(
     net->TaskAddDefInputParam(task, 4, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF_ANIM_SET, nodeID, activeAnimSetIndex);
 
     // PositionDelta control parameter
-    net->TaskAddInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     // RotationDelta control parameter. (Is optional since the RotationDelta control parameter is
     // either connected to Vector3 or Vector4 pins as a quat or an Euler vector).
@@ -78,10 +78,10 @@ Task* nodeHipsIKQueueUpdateTransforms(
     net->TaskAddOptionalInputCP(task, 7, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(2));
 
     // FootTurnWeight control parameter
-    net->TaskAddInputCP(task, 8, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
+    net->TaskAddOptionalInputCP(task, 8, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
 
     // IkFkBlendWeight control parameter
-    net->TaskAddInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
+    net->TaskAddOptionalInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
   }
 
   return task;
@@ -96,6 +96,11 @@ Task* nodeHipsIKQueueUpdateTrajectoryDeltaAndTransforms(
 {
   NodeID nodeID = node->getNodeID();
   AnimSetIndex animSet = net->getOutputAnimSetIndex(node->getNodeID());
+
+  if (node->getInputCPConnection(4)->m_sourceNodeID == MR::INVALID_NODE_ID)
+  {
+    return queuePassThroughChild0(node, queue, net, dependentParameter);
+  }
 
   // No need to queue the task if the blend weight is zero
   const AttribDataFloat* blendWeight = net->updateInputCPConnection<AttribDataFloat>(node->getInputCPConnection(4), animSet);
@@ -139,7 +144,7 @@ Task* nodeHipsIKQueueUpdateTrajectoryDeltaAndTransforms(
     net->TaskAddDefInputParam(task, 4, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF_ANIM_SET, nodeID, activeAnimSetIndex);
 
     // PositionDelta control parameter
-    net->TaskAddInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, 5, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     // RotationDelta control parameter. (Is optional since the RotationDelta control parameter is
     // either connected to Vector3 or Vector4 pins as a quat or an Euler vector).
@@ -150,10 +155,10 @@ Task* nodeHipsIKQueueUpdateTrajectoryDeltaAndTransforms(
     net->TaskAddOptionalInputCP(task, 7, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(2));
 
     // FootTurnWeight control parameter
-    net->TaskAddInputCP(task, 8, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
+    net->TaskAddOptionalInputCP(task, 8, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(3));
 
     // IkFkBlendWeight control parameter
-    net->TaskAddInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
+    net->TaskAddOptionalInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(4));
   }
 
   return task;
