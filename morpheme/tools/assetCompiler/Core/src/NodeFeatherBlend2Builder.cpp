@@ -369,10 +369,11 @@ void NodeFeatherBlend2Builder::initTaskQueuingFnsEvents(
 {
   if (timeStretchMode == kNodeTimeStretchMatchEvents)
   {
-    //---------------------------
-    // Sync Event Track
-    nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, FN_NAME(nodeBlend2SyncEventsQueueSyncEventTrack), logger);
-    nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET, FN_NAME(nodeBlend2SyncEventsQueueBlend2DurationEventTrackSets), logger);
+    if (passThroughMode == kNodePassThroughNone)
+    {
+      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SYNC_EVENT_TRACK, FN_NAME(nodeBlend2SyncEventsQueueSyncEventTrack), logger);
+      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_DURATION_EVENT_TRACK_SET, FN_NAME(nodeBlend2SyncEventsQueueBlend2DurationEventTrackSets), logger);
+    }
 
     //---------------------------
     // Time
@@ -392,7 +393,14 @@ void NodeFeatherBlend2Builder::initTaskQueuingFnsEvents(
     }
     else if (eventBlendMode == kAddSampledEvents)
     {
-      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2SyncEventsQueueSampledEventsBuffers), logger);
+      if (passThroughMode == kNodePassThroughSource1)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild1), logger);
+      }
+      else
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild0), logger);
+      }
     }
   }
   //---------------------------
@@ -416,7 +424,7 @@ void NodeFeatherBlend2Builder::initTaskQueuingFnsEvents(
       nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_PLAYBACK_POS_INIT, FN_NAME(queuePassThroughChild0), logger);
     }
 
-    //---------------------------
+    //-----------
     // Events
     if (eventBlendMode == kMergeSampledEvents)
     {
@@ -424,7 +432,14 @@ void NodeFeatherBlend2Builder::initTaskQueuingFnsEvents(
     }
     else if (eventBlendMode == kAddSampledEvents)
     {
-      nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(nodeBlend2QueueSampledEventsBuffers), logger);
+      if (passThroughMode == kNodePassThroughSource1)
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild1), logger);
+      }
+      else
+      {
+        nodeDef->setTaskQueuingFnId(taskQueuingFns, MR::ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, FN_NAME(queuePassThroughChild0), logger);
+      }
     }
   }
 }
