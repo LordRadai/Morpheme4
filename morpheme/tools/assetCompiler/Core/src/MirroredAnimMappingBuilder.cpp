@@ -189,13 +189,13 @@ void MirroredAnimMappingBuilder::init(
     uint32_t nJoints = (uint32_t)unmapped.size();
     for (uint32_t i = 0; i != nJoints; ++i)
     {
-        // store orient offset for the unmapped quat
-        animMapping->m_unmappedQuatOffsets[i] = rotations[i] * outRotations[i];
+      // store orient offset for the unmapped quat
+      animMapping->m_unmappedQuatOffsets[i] = rotations[unmapped[i]] * outRotations[unmapped[i]];
     }
 
     for (size_t i = 0; i < unmapped.size(); i++)
     {
-        animMapping->m_unmappedBoneIDs[i] = unmapped[i];
+      animMapping->m_unmappedBoneIDs[i] = unmapped[i];
     }
 
     // Finally clean up after ourselves.
