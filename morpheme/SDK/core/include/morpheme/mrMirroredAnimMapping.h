@@ -72,6 +72,12 @@ public:
   /// \brief returned the right bone for the specified mapping index pair.
   uint32_t getRightBone(uint32_t mappingIndex) const;
 
+  /// \brief  returned the left bone up vector for the specified mapping index pair.
+  NMP::Quat getLeftBoneUp(uint32_t mappingIndex) const;
+
+  /// \brief returned the right bone up vector for the specified mapping index pair.
+  NMP::Quat getRightBoneUp(uint32_t mappingIndex) const;
+
   /// \brief Track ID mappings.
   uint32_t getNumTrackIdsToRemap() const;
   uint32_t getLeftTrackIdMapping(const uint32_t index) const;
@@ -82,14 +88,14 @@ public:
   uint32_t getLeftEventIdMapping(const uint32_t index) const;
   uint32_t getRightEventIdMapping(const uint32_t index) const;
 
-  /// \brief returns the number of bones
-  uint32_t getNumBones() { return m_numUnmappedBones; }
+  /// \brief returns the number of unmapped bones
+  uint32_t getNumUnmappedBones() { return m_numUnmappedBones; }
 
   /// \brief
-  const NMP::Quat* getOffset(uint32_t idx) const;
+  const NMP::Quat* getUnmappedOffset(uint32_t idx) const;
 
   /// \brief
-  const uint32_t getBoneID(uint32_t idx) const;
+  const uint32_t getUnmappedBoneID(uint32_t idx) const;
 
   /// \return Found mapped track ID or the input track ID if not found.
   uint32_t findTrackIDMapping(uint32_t trackID) const;
@@ -114,13 +120,13 @@ public:
 //----------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const NMP::Quat* AttribDataMirroredAnimMapping::getOffset(uint32_t idx) const
+NM_INLINE const NMP::Quat* AttribDataMirroredAnimMapping::getUnmappedOffset(uint32_t idx) const
 {
   return m_unmappedQuatOffsets + idx;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-NM_INLINE const uint32_t AttribDataMirroredAnimMapping::getBoneID(uint32_t idx) const
+NM_INLINE const uint32_t AttribDataMirroredAnimMapping::getUnmappedBoneID(uint32_t idx) const
 {
     return m_unmappedBoneIDs[idx];
 }
@@ -145,6 +151,22 @@ NM_INLINE uint32_t AttribDataMirroredAnimMapping::getRightBone(uint32_t mappingI
   NMP_ASSERT(m_boneMappings);
   NMP_ASSERT(mappingIndex < getNumMappings());
   return m_boneMappings[mappingIndex].rightIndex;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE NMP::Quat AttribDataMirroredAnimMapping::getLeftBoneUp(uint32_t mappingIndex) const
+{
+    NMP_ASSERT(m_boneMappings);
+    NMP_ASSERT(mappingIndex < getNumMappings());
+    return m_boneMappings[mappingIndex].leftUp;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+NM_INLINE NMP::Quat AttribDataMirroredAnimMapping::getRightBoneUp(uint32_t mappingIndex) const
+{
+    NMP_ASSERT(m_boneMappings);
+    NMP_ASSERT(mappingIndex < getNumMappings());
+    return m_boneMappings[mappingIndex].rightUp;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

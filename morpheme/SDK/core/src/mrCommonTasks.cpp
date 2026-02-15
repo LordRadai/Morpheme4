@@ -1897,16 +1897,16 @@ void subTaskMirrorTransformsWithMapping(
 
   uint32_t numBonesInMap = mirroredAnimMap->getNumMappings();
 
-  // The TM's are now mirrored, but some TM's need to be swapped over
-  // Even missing channels must be swapped over, to account for offset rotations.
   for (uint32_t mappingIndex = 0; mappingIndex != numBonesInMap; ++mappingIndex)
   {
     // get indices of transforms to swap
     uint32_t left = mirroredAnimMap->getLeftBone(mappingIndex);
     uint32_t right = mirroredAnimMap->getRightBone(mappingIndex);
+	NMP::Quat leftUp = *characterSpaceTransforms->getPosQuatChannelQuat(left);
+	NMP::Quat rightUp = *characterSpaceTransforms->getPosQuatChannelQuat(right);
 
     // check to see if channels are used
-    bool leftUsed  = characterSpaceTransforms->hasChannel(left);
+    bool leftUsed = characterSpaceTransforms->hasChannel(left);
     bool rightUsed = characterSpaceTransforms->hasChannel(right);
 
     // temp vars to hold swapped values
@@ -1921,11 +1921,11 @@ void subTaskMirrorTransformsWithMapping(
     rotR = *characterSpaceTransforms->getPosQuatChannelQuat(right);
     translateR = *characterSpaceTransforms->getPosQuatChannelPos(right);
 
-    characterSpaceTransforms->setPosQuatChannelQuat(left, rotR);
+    characterSpaceTransforms->setPosQuatChannelQuat(left, rotR * rightUp);
     characterSpaceTransforms->setPosQuatChannelPos(left, translateR);
 
     // finally copy the data for the right side into the left
-    characterSpaceTransforms->setPosQuatChannelQuat(right, rotL);
+    characterSpaceTransforms->setPosQuatChannelQuat(right, rotL * leftUp);
     characterSpaceTransforms->setPosQuatChannelPos(right, translateL);
 
     // Swap the channel used flags
@@ -1933,15 +1933,14 @@ void subTaskMirrorTransformsWithMapping(
     characterSpaceTransforms->setChannelUsedFlag(right, leftUsed);
   }
 
-  // Now apply offsets to joints that are not swapped.
-  // Again, we need to do this for all joints even if they are unused channels, in case they
-  // have children which are used.
-  NMP_ASSERT(mirroredAnimMap->getNumBones() == numRigJoints);
-  for (uint32_t boneIndex = 0; boneIndex != numRigJoints; ++boneIndex)
+  uint32_t numUnmappedJoints = mirroredAnimMap->getNumUnmappedBones();
+  for (uint32_t unmappedJointIdx = 0; unmappedJointIdx < numUnmappedJoints; unmappedJointIdx++)
   {
-   NMP::Quat rotate = *characterSpaceTransforms->getPosQuatChannelQuat(boneIndex);
-   rotate = rotate * *mirroredAnimMap->getOffset(boneIndex);
-   characterSpaceTransforms->setPosQuatChannelQuat(boneIndex, rotate);
+	uint32_t boneID = mirroredAnimMap->getUnmappedBoneID(unmappedJointIdx);
+
+    NMP::Quat rotate = *characterSpaceTransforms->getPosQuatChannelQuat(boneID);
+    rotate = rotate * *mirroredAnimMap->getUnmappedOffset(boneID);
+    characterSpaceTransforms->setPosQuatChannelQuat(boneID, rotate);
   }
 }
 
