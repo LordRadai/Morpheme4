@@ -38,7 +38,16 @@ float calcAnimSamplePos(float timePos, AttribDataSourceAnim* sourceAnim)
     animSamplePos += ((sourceAnim->m_sourceAnimDuration * (sourceAnim->m_clipEndFraction - sourceAnim->m_clipStartFraction)) - timePos);
   else
     animSamplePos += timePos;
-  NMP_ASSERT(animSamplePos >= 0.0f && animSamplePos <= sourceAnim->m_sourceAnimDuration);
+
+  if (animSamplePos < 0.f)
+  {
+    animSamplePos = 0.f;
+  }
+
+  if (animSamplePos > sourceAnim->m_sourceAnimDuration)
+  {
+	animSamplePos = sourceAnim->m_sourceAnimDuration;
+  }
 
   return animSamplePos;
 }
