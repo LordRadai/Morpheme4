@@ -50,7 +50,7 @@ static const uint32_t MAX_NUM_PREDICTION_MODEL_TYPES = 256;
 
 /// Sets the maximum number of EventTrackDuration's that a EventTrackDurationSet can contain.
 // MORPH-21340: Artificial limit due to fixed array size, needs removing.
-#define MAX_NUM_DURATION_EVENT_TRACKS_PER_SET (16)
+#define MAX_NUM_DURATION_EVENT_TRACKS_PER_SET (32)
 
 //----------------------------------------------------------------------------------------------------------------------
 /// Allows us to set params to NULL dependent on whether compiling for SPU or not.
