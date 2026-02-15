@@ -1902,8 +1902,8 @@ void subTaskMirrorTransformsWithMapping(
     // get indices of transforms to swap
     uint32_t left = mirroredAnimMap->getLeftBone(mappingIndex);
     uint32_t right = mirroredAnimMap->getRightBone(mappingIndex);
-	NMP::Quat leftUp = *characterSpaceTransforms->getPosQuatChannelQuat(left);
-	NMP::Quat rightUp = *characterSpaceTransforms->getPosQuatChannelQuat(right);
+	NMP::Quat leftUp = mirroredAnimMap->getLeftBoneUp(mappingIndex);
+	NMP::Quat rightUp = mirroredAnimMap->getRightBoneUp(mappingIndex);
 
     // check to see if channels are used
     bool leftUsed = characterSpaceTransforms->hasChannel(left);
@@ -1942,7 +1942,8 @@ void subTaskMirrorTransformsWithMapping(
 	NMP_ASSERT(boneID < numRigJoints);
 
     NMP::Quat rotate = *characterSpaceTransforms->getPosQuatChannelQuat(boneID);
-    rotate = rotate * *mirroredAnimMap->getUnmappedOffset(boneID);
+	NMP::Quat offset = *mirroredAnimMap->getUnmappedOffset(boneID);
+    rotate = rotate * offset;
     characterSpaceTransforms->setPosQuatChannelQuat(boneID, rotate);
   }
 }
