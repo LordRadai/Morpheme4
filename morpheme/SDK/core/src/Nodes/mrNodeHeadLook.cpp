@@ -118,7 +118,7 @@ Task* nodeHeadLookQueueHeadLookTransformBuffs(
       TPARAM_FLAG_INPUT, currFrameNo);
 
     // Two connected control parameters providing the blend weight and the target pos for the head look.
-    net->TaskAddInputCP(task, 2, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
+    net->TaskAddOptionalInputCP(task, 2, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
     net->TaskAddInputCP(task, 3, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     net->TaskAddDefInputParam(
@@ -171,7 +171,7 @@ Task* nodeHeadLookQueueHeadLookTrajectoryDeltaAndTransformBuffs(
       TPARAM_FLAG_INPUT, currFrameNo);
 
     // Two connected control parameters providing the blend weight and the target pos for the head look.
-    net->TaskAddInputCP(task, 1, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
+    net->TaskAddOptionalInputCP(task, 1, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
     net->TaskAddInputCP(task, 2, ATTRIB_SEMANTIC_CP_VECTOR3, node->getInputCPConnection(0));
 
     net->TaskAddDefInputParam(
