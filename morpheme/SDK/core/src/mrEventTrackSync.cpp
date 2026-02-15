@@ -39,11 +39,10 @@ void EventTrackSync::init(
   float clipEndFraction = clipStartFraction + clipDurationFraction;
 
   // What source event do we start in.
-  NMP_ASSERT(sourceTrack);
   uint32_t srcEventIndex = startDiscreteEventIndex;
  
   // Find remaining events within the clip.
-  if (clipDurationFraction > ERROR_LIMIT)
+  if (sourceTrack && clipDurationFraction > ERROR_LIMIT)
   {
     float srcEventStart;
     while (srcEventIndex < sourceTrack->getNumEvents())
@@ -65,7 +64,6 @@ void EventTrackSync::init(
       srcEventIndex++;
     }
   }
-
 
   if (clipEventIndex == 0)
   {
