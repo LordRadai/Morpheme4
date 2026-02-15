@@ -1934,9 +1934,14 @@ void subTaskMirrorTransformsWithMapping(
   }
 
   uint32_t numUnmappedJoints = mirroredAnimMap->getNumUnmappedBones();
+
+  NMP_ASSERT(numUnmappedJoints + numBonesInMap == numRigJoints);
+
   for (uint32_t unmappedJointIdx = 0; unmappedJointIdx < numUnmappedJoints; unmappedJointIdx++)
   {
 	uint32_t boneID = mirroredAnimMap->getUnmappedBoneID(unmappedJointIdx);
+
+	NMP_ASSERT(boneID < numRigJoints);
 
     NMP::Quat rotate = *characterSpaceTransforms->getPosQuatChannelQuat(boneID);
     rotate = rotate * *mirroredAnimMap->getUnmappedOffset(boneID);
