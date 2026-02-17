@@ -677,8 +677,10 @@ static const NodeOutputDataType INVALID_NODE_OUTPUT_DATA_TYPE = 0xFFFF;
 #define NODE_OUTPUT_DATA_TYPE_CONDITION_SET_STATE         GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 10) ///< Gets the status of a Transition Condition in a StateMachine.
 #define NODE_OUTPUT_DATA_TYPE_INT                         GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 11)
 #define NODE_OUTPUT_DATA_TYPE_UINT                        GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 12)
-#define NODE_OUTPUT_DATA_TYPE_PHYSICS_OBJECT_POINTER      GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 13)
-#define NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 14)
+#define NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 13)
+
+// Move it to 14 cause connect 3.6.2 uses 13 for NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS.
+#define NODE_OUTPUT_DATA_TYPE_PHYSICS_OBJECT_POINTER      GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 14)
 
 #define NODE_OUTPUT_DATA_TYPE_RUNTIME_TYPE                GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 50) ///< Indicates that we are using a runtime AttribAddress to identify this data
                                                                                                     ///< rather than the old NODE_OUTPUT_DATA_TYPE system.
