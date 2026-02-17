@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <MinimalRebuild>false</MinimalRebuild>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>NDEBUG;NM_TARGET_BIGENDIAN=0;WIN32;_LIB;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NM_TARGET_BIGENDIAN=0;WIN32;_LIB;_WIN64;MR_DISABLE_OUTPUT_DEBUGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDatabaseFileName>$(OutDir)morphemeCore.pdb</ProgramDatabaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
