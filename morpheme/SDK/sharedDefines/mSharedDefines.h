@@ -679,7 +679,7 @@ static const NodeOutputDataType INVALID_NODE_OUTPUT_DATA_TYPE = 0xFFFF;
 #define NODE_OUTPUT_DATA_TYPE_UINT                        GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 12)
 #define NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 13)
 
-// Move it to 14 cause connect 3.6.2 uses 13 for NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS.
+// Move it to 14 cause connect 3.6.2 uses 13 for NODE_OUTPUT_DATA_TYPE_TRAJECTORY_DELTA_TRANSFORMS. If we left it at 13, our runtime target would not be able to provide connect with node output transforms.
 #define NODE_OUTPUT_DATA_TYPE_PHYSICS_OBJECT_POINTER      GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 14)
 
 #define NODE_OUTPUT_DATA_TYPE_RUNTIME_TYPE                GEN_NAMESPACED_ID_16(NM_ID_NAMESPACE, 50) ///< Indicates that we are using a runtime AttribAddress to identify this data
