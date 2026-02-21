@@ -2026,8 +2026,14 @@ void TaskPredictiveUnevenTerrainIKSetup(Dispatcher::TaskParameters* parameters)
   predictionDefAttr = parameters->getInputAttrib<AttribDataPredictiveUnevenTerrainPredictionDef>(12, ATTRIB_SEMANTIC_UNEVEN_TERRAIN_PREDICTION_DEF);
 
   // Prediction Enable
-  predictionEnableAttrib = parameters->getInputAttrib<AttribDataBool>(13, ATTRIB_SEMANTIC_CP_BOOL);
-  bool predictionEnable = predictionEnableAttrib->m_value;
+  bool predictionEnable = true;
+
+  predictionEnableAttrib = parameters->getOptionalInputAttrib<AttribDataBool>(13, ATTRIB_SEMANTIC_CP_BOOL);
+
+  if (predictionEnableAttrib)
+  {
+	predictionEnable = predictionEnableAttrib->m_value;
+  }
 
   // Trajectory delta transform
   inputTrajectoryDeltaAttrib = parameters->getInputAttrib<AttribDataTrajectoryDeltaTransform>(14, ATTRIB_SEMANTIC_TRAJECTORY_DELTA_TRANSFORM);
@@ -2126,8 +2132,14 @@ void TaskPredictiveUnevenTerrainFootLiftingTarget(Dispatcher::TaskParameters* pa
   inputIKStateAttrib = parameters->getOptionalInputAttrib<AttribDataBasicUnevenTerrainIKState>(8, ATTRIB_SEMANTIC_NODE_SPECIFIC_STATE);
 
   // Prediction Enable
-  predictionEnableAttrib = parameters->getInputAttrib<AttribDataBool>(9, ATTRIB_SEMANTIC_CP_BOOL);
-  bool predictionEnable = predictionEnableAttrib->m_value;
+  bool predictionEnable = true;
+
+  predictionEnableAttrib = parameters->getOptionalInputAttrib<AttribDataBool>(9, ATTRIB_SEMANTIC_CP_BOOL);
+
+  if (predictionEnableAttrib)
+  {
+	predictionEnable = predictionEnableAttrib->m_value;
+  }
 
   //---------------------------
   // Information
