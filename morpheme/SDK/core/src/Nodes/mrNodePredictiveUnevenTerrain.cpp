@@ -152,7 +152,7 @@ Task* nodePredictiveUnevenTerrainQueueFootLiftingTargets(
     // Uneven terrain input IK state (may not exist)
     net->TaskAddOptionalNetInputParam(task, 8, ATTRIB_SEMANTIC_NODE_SPECIFIC_STATE, node->getNodeID(), INVALID_NODE_ID, currFrameNo - 1);
     // Prediction Enable
-    net->TaskAddInputCP(task, 9, ATTRIB_SEMANTIC_CP_BOOL, node->getInputCPConnection(2));
+    net->TaskAddOptionalInputCP(task, 9, ATTRIB_SEMANTIC_CP_BOOL, node->getInputCPConnection(2));
   }
 
   return task;
