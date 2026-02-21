@@ -98,7 +98,7 @@ Task* nodePredictiveUnevenTerrainQueueIKSetup(
     // Uneven terrain prediction definition data
     net->TaskAddDefInputParam(task, 12, ATTRIB_SEMANTIC_UNEVEN_TERRAIN_PREDICTION_DEF, node->getNodeID(), activeAnimSetIndex);
     // Prediction Enable
-    net->TaskAddInputCP(task, 13, ATTRIB_SEMANTIC_CP_BOOL, node->getInputCPConnection(2));
+    net->TaskAddOptionalInputCP(task, 13, ATTRIB_SEMANTIC_CP_BOOL, node->getInputCPConnection(2));
 
     // Trajectory delta transform
     net->TaskAddParamAndDependency(task, 14, ATTRIB_SEMANTIC_TRAJECTORY_DELTA_TRANSFORM, ATTRIB_TYPE_TRAJECTORY_DELTA_TRANSFORM, activeChildNodeID, INVALID_NODE_ID, TPARAM_FLAG_INPUT, currFrameNo);
