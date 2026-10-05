@@ -121,7 +121,7 @@ Task* subTaskSmoothTransformsQueueTransforms(
       currFrameNo - 1);
 
     // Smoothing strength multiplier
-    net->TaskAddInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, 9, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
   }
 
   return task;
