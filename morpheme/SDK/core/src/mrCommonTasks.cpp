@@ -2582,8 +2582,8 @@ void subTaskOutputSmoothTransformsTransforms(Dispatcher::TaskParameters* paramet
 
   // Smoothing strength multiplier control parameter
   AttribDataFloat* smoothnessMultiplierAttr =
-    parameters->getInputAttrib<AttribDataFloat>(9, ATTRIB_SEMANTIC_CP_FLOAT);
-  float smoothnessMultiplier = smoothnessMultiplierAttr->m_value;
+    parameters->getOptionalInputAttrib<AttribDataFloat>(9, ATTRIB_SEMANTIC_CP_FLOAT);
+  float smoothnessMultiplier = smoothnessMultiplierAttr ? smoothnessMultiplierAttr->m_value : 1.0f;
 
   // Make sure that at the very least we pass through transforms
   inputTransforms->m_transformBuffer->copyTo(outputTransforms->m_transformBuffer);
