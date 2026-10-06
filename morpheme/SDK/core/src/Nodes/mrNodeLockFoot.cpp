@@ -174,10 +174,10 @@ Task* nodeLockFootQueueLockFootTrajectoryDeltaAndTransformsBuffs(NodeDef* node, 
       TPARAM_FLAG_INPUT, currFrameNo);
 
     // IkFkBlendWeight
-    net->TaskAddInputCP(task, 1, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
+    net->TaskAddOptionalInputCP(task, 1, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(0));
 
     // SwivelContributionToOrientation
-    net->TaskAddInputCP(task, 2, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
+    net->TaskAddOptionalInputCP(task, 2, ATTRIB_SEMANTIC_CP_FLOAT, node->getInputCPConnection(1));
 
     // Lock Foot const setup
     net->TaskAddDefInputParam(task, 3, ATTRIB_SEMANTIC_NODE_SPECIFIC_DEF, nodeID);
