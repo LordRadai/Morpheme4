@@ -282,13 +282,13 @@ void TaskHipsIKTransforms(Dispatcher::TaskParameters* parameters)
 
   // Weight for the amount of foot pivot around the vertical
   const AttribDataFloat* footTurnWeightAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(8, ATTRIB_SEMANTIC_CP_FLOAT);
-  float footTurnWeight = NMP::clampValue(footTurnWeightAttrib->m_value, 0.0f, 1.0f);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(8, ATTRIB_SEMANTIC_CP_FLOAT);
+  float footTurnWeight = footTurnWeightAttrib ? NMP::clampValue(footTurnWeightAttrib->m_value, 0.0f, 1.0f) : 1.0f;
 
   // Weight for blending between the input and the IK solution
   const AttribDataFloat* ikFkBlendWeightAttrib =
-    parameters->getInputAttrib<AttribDataFloat>(9, ATTRIB_SEMANTIC_CP_FLOAT);
-  float ikFkBlendWeight = NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f);
+    parameters->getOptionalInputAttrib<AttribDataFloat>(9, ATTRIB_SEMANTIC_CP_FLOAT);
+  float ikFkBlendWeight = ikFkBlendWeightAttrib ? NMP::clampValue(ikFkBlendWeightAttrib->m_value, 0.0f, 1.0f) : 1.0f;
 
   //--------------------------------------------
   // Pass to transforms sub task
