@@ -437,7 +437,7 @@ int main(
   //PROFILING_LOG_INIT("MorphProfiling.log")
 
   // Uncomment this line to log everything.
-  NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_PRIORITY_ALWAYS);
+  // NET_LOG_ADD_PRIORITY_RANGE(NMP::LOG_MIN_PRIORITY, NMP::LOG_PRIORITY_ALWAYS);
 
   // Uncomment this line to log queued parameters.
   // NET_LOG_ADD_PRIORITY_RANGE(98, 100);
@@ -464,7 +464,7 @@ int main(
 
   // Logging from live link and the simple bundler.
   //NM_LOG_ADD_PRIORITY_RANGE(RTT_LOGGER, RTT_MESSAGE_PRIORITY, RTT_MESSAGE_PRIORITY);
-  NM_LOG_ADD_PRIORITY_RANGE(MR::UTILS::g_SBLogger, MR::UTILS::SB_MESSAGE_PRIORITY, MR::UTILS::SB_MESSAGE_PRIORITY);
+  // NM_LOG_ADD_PRIORITY_RANGE(MR::UTILS::g_SBLogger, MR::UTILS::SB_MESSAGE_PRIORITY, MR::UTILS::SB_MESSAGE_PRIORITY);
 
   // Initialise morpheme.
   MR::Manager::initMorphemeLib();
