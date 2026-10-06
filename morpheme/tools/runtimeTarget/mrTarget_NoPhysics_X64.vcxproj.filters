@@ -6,6 +6,7 @@
   <ItemGroup>
     <ClCompile Include="defaultAssetMgr.cpp" />
     <ClInclude Include="defaultAssetMgr.h" />
+    <ClInclude Include="rttSpikeLog.h" />
     <ClCompile Include="defaultConnectionManager.cpp" />
     <ClInclude Include="defaultConnectionManager.h" />
     <ClCompile Include="defaultDataManager.cpp" />

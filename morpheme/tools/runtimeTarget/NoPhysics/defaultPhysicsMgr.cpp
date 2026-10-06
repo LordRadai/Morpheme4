@@ -16,6 +16,7 @@
 #include "comms/packet.h"
 #include "../iPhysicsMgr.h"
 #include "../iControllerMgr.h"
+#include "../rttSpikeLog.h"
 #include "morpheme/mrCharacterControllerInterface.h"
 #include "morpheme/mrCoreTaskIDs.h"
 #include "morpheme/mrNetwork.h"
@@ -357,45 +358,81 @@ void DefaultPhysicsMgr::update(float delta)
   NM_BEGIN_PROFILING("------- Update Root -------");
 
   // Update all instances
-  m_context->getNetworkInstanceManager()->applyAnimationSetChanges();
+  {
+    RTT_SPIKE_PHASE(kApplyAnimSetChanges);
+    m_context->getNetworkInstanceManager()->applyAnimationSetChanges();
+  }
 
   PHYSICS_LOG_LINE_DIVIDE();
 
-  m_characterControllerManager->updateInstanceNetworksBegin(delta);
+  {
+    RTT_SPIKE_PHASE(kNetStartUpdate);
+    m_characterControllerManager->updateInstanceNetworksBegin(delta);
+  }
 
   PHYSICS_LOG_MESSAGE("updateInstancesConnectivity");
   NM_BEGIN_PROFILING("updateInstancesConnectivity");
-  m_characterControllerManager->updateInstancesConnectivity(delta);
+  {
+    RTT_SPIKE_PHASE(kConnectivity);
+    m_characterControllerManager->updateInstancesConnectivity(delta);
+  }
   NM_END_PROFILING(); //"updateInstancesConnectivity"
 
-  m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATECHARACTERCONTROLLER);
+  {
+    RTT_SPIKE_PHASE(kNetDispatchController);
+    m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATECHARACTERCONTROLLER);
+  }
 
   PHYSICS_LOG_MESSAGE("updateInstancesPreController");
   NM_BEGIN_PROFILING("updateInstancesPreController");
-  m_characterControllerManager->updateInstancesPreController(delta);
+  {
+    RTT_SPIKE_PHASE(kPreController);
+    m_characterControllerManager->updateInstancesPreController(delta);
+  }
   NM_END_PROFILING(); //"updateInstancesPreController"
 
   PHYSICS_LOG_MESSAGE("updating character controllers");
   NM_BEGIN_PROFILING("updateControllers");
-  m_characterControllerManager->updateControllers(delta);
+  {
+    RTT_SPIKE_PHASE(kControllers);
+    m_characterControllerManager->updateControllers(delta);
+  }
   NM_END_PROFILING(); //"updateControllers"
 
-  m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATEPHYSICS);
+  {
+    RTT_SPIKE_PHASE(kNetDispatchPhysics);
+    m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATEPHYSICS);
+  }
 
   PHYSICS_LOG_MESSAGE("updateInstancesPrePhysics");
   NM_BEGIN_PROFILING("updateInstancesPrePhysics");
-  m_characterControllerManager->updateInstancesPrePhysics(delta);
+  {
+    RTT_SPIKE_PHASE(kPrePhysics);
+    m_characterControllerManager->updateInstancesPrePhysics(delta);
+  }
   NM_END_PROFILING(); //"updateInstancesPrePhysics"
 
-  m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATEROOT);
+  {
+    RTT_SPIKE_PHASE(kNetDispatchRoot);
+    m_characterControllerManager->updateInstanceNetworksContinue(MR::CoreTaskIDs::MR_TASKID_NETWORKUPDATEROOT);
+  }
 
   PHYSICS_LOG_MESSAGE("updateInstancesPostPhysics");
   NM_BEGIN_PROFILING("updateInstancesPostPhysics");
-  m_characterControllerManager->updateInstancesPostPhysics(delta);
+  {
+    RTT_SPIKE_PHASE(kPostPhysics);
+    m_characterControllerManager->updateInstancesPostPhysics(delta);
+  }
   NM_END_PROFILING(); //"updateInstancesPostPhysics"
 
-  m_characterControllerManager->updateInstanceNetworksContinue(MR::TASK_ID_UNSPECIFIED);
-  m_characterControllerManager->updateInstanceNetworksEnd();
+  {
+    RTT_SPIKE_PHASE(kNetDispatchFinal);
+    m_characterControllerManager->updateInstanceNetworksContinue(MR::TASK_ID_UNSPECIFIED);
+  }
+  {
+    RTT_SPIKE_PHASE(kNetEndUpdate);
+    m_characterControllerManager->updateInstanceNetworksEnd();
+  }
 
   NM_END_PROFILING(); //"updateInstances"
 
@@ -408,13 +445,22 @@ void DefaultPhysicsMgr::update(float delta)
   PHYSICS_LOG_MESSAGE("updateSceneObjects");
 
   // Update all scene objects.
-  updateSceneObjects(delta);
+  {
+    RTT_SPIKE_PHASE(kSceneObjects);
+    updateSceneObjects(delta);
+  }
 
   // Update the Connect-side representations of the character controllers
-  m_characterControllerManager->updateControllerRepresentations();
+  {
+    RTT_SPIKE_PHASE(kControllerReps);
+    m_characterControllerManager->updateControllerRepresentations();
+  }
 
 #ifdef MR_OUTPUT_DEBUGGING
-  m_characterControllerManager->sendInstanceProfileTimingDebugOutput();
+  {
+    RTT_SPIKE_PHASE(kProfileDebugOutput);
+    m_characterControllerManager->sendInstanceProfileTimingDebugOutput();
+  }
 #endif // MR_OUTPUT_DEBUGGING
 
   ++m_frameIndex;

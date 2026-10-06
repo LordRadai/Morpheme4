@@ -46,6 +46,7 @@
 #include "defaultPhysicsMgr.h"
 #include "defaultPhysicsDataManager.h"
 #include "runtimeTargetLogger.h"
+#include "rttSpikeLog.h"
 
 #if defined(NM_HOST_CELL_PPU)
   #include <cell/sysmodule.h>
@@ -127,8 +128,11 @@ void update(
   // CommsServr update takes care of managing the connections and receiving commands from connect.
   MCOMMS::CommsServer* const commsServer = MCOMMS::CommsServer::getInstance();
 
+  RTT_SPIKE_BEGIN_FRAME();
+
   if (commsServer)
   {
+    RTT_SPIKE_PHASE(kCommsUpdate);
     if (commsServer->update())
     {
       commsServer->scheduleStep(true);
@@ -148,6 +152,7 @@ void update(
 
     if (commsServer)
     {
+      RTT_SPIKE_PHASE(kCommsBeginFrame);
       commsServer->beginFrame(delta);
     }
 
@@ -199,8 +204,11 @@ void update(
 
     if (commsServer)
     {
+      RTT_SPIKE_PHASE(kCommsEndFrame);
       commsServer->endFrame(delta);
     }
+
+    RTT_SPIKE_END_FRAME(frameIndex);
   }
 }
 
