@@ -397,18 +397,18 @@ Task* nodeBlend2QueueSampledEventsBuffers(
   TaskParameter*  dependentParameter)
 {
     // Get the blend node optimised connections.
-    const BlendOptNodeConnections* activeNodeConnections = (const BlendOptNodeConnections*)net->getActiveNodesConnections(nodeDef->getNodeID());
+    const NodeConnections* activeNodeConnections = net->getActiveNodesConnections(nodeDef->getNodeID());
     NMP_ASSERT(
-        activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 1 ||
-        activeNodeConnections->m_trajectoryAndTransformsNumNodeIDs == 2);
+        activeNodeConnections->m_numActiveChildNodes == 1 ||
+        activeNodeConnections->m_numActiveChildNodes == 2);
 
   return nodeBlend2QueueTask(
     nodeDef, queue, net, dependentParameter,
     CoreTaskIDs::MR_TASKID_COMBINE2SAMPLEDEVENTSBUFFERS, 
     ATTRIB_SEMANTIC_SAMPLED_EVENTS_BUFFER, 
     ATTRIB_TYPE_SAMPLED_EVENTS_BUFFER, 
-    activeNodeConnections->m_trajectoryAndTransformsNodeIDs[0],
-    activeNodeConnections->m_trajectoryAndTransformsNodeIDs[1]);
+    activeNodeConnections->m_activeChildNodeIDs[0],
+    activeNodeConnections->m_activeChildNodeIDs[1]);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
