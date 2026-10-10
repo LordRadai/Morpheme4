@@ -82,7 +82,7 @@
 
 // Used by AttribDataSampledEvents
 const uint32_t MAX_NUM_DISCRETE_EVENTS = 80;
-const uint32_t MAX_NUM_CURVE_EVENTS = 384;
+const uint32_t MAX_NUM_CURVE_EVENTS = 684;
 
 // Used by AttribDataDurationEventTrackSet
 const uint32_t MAX_NUM_DURATION_EVENTS = 150;
