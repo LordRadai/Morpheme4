@@ -184,6 +184,13 @@ public:
     void*                     ///< Userdata
   );
 
+#if defined(MR_OUTPUT_DEBUGGING) && defined(MR_RELEASE_ABI)
+  /// CUSTOM CODE
+  /// \brief When set, registerAttrDataType only records debug serializers.
+  ///  For hosts whose registry is owned and filled by a release build.
+  static void setSerializerOnlyRegistration(bool enable);
+#endif
+
   /// \brief Helper function providing simple initialization of the morpheme core library.
   ///
   /// Creates Manager instance. Registers task queuing functions, attribute data types etc with Manager.
@@ -600,7 +607,7 @@ private:
 #endif // NM_HOST_CELL_SPU
     AttribRelocateFn    m_relocateFn;
 
-#if defined(MR_OUTPUT_DEBUGGING)
+#if defined(MR_OUTPUT_DEBUGGING) && !defined(MR_RELEASE_ABI)
     AttribSerializeTxFn m_serializeTxFn;
 #endif // MR_OUTPUT_DEBUGGING
 

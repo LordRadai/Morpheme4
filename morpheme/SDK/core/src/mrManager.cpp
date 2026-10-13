@@ -26,6 +26,12 @@
 
 namespace MR
 {
+#if defined(MR_RELEASE_ABI) && defined(MR_OUTPUT_DEBUGGING)
+static AttribSerializeTxFn s_attribSerializeTxFns[MAX_NUM_ATTR_DATA_TYPES];
+static bool s_serializerOnlyRegistration = false;
+
+void Manager::setSerializerOnlyRegistration(bool enable) { s_serializerOnlyRegistration = enable; }
+#endif
 
 Manager* Manager::sm_instance = 0;
 
@@ -156,7 +162,7 @@ Manager::Manager()
     m_attrDataRegistry[i].m_locateFn = NULL;
     m_attrDataRegistry[i].m_dislocateFn = NULL;
     m_attrDataRegistry[i].m_relocateFn = NULL;
-#if defined(MR_OUTPUT_DEBUGGING)
+#if defined(MR_OUTPUT_DEBUGGING) && !defined(MR_RELEASE_ABI)
     m_attrDataRegistry[i].m_serializeTxFn = NULL;
 #endif // MR_OUTPUT_DEBUGGING
 #if defined(NMP_ENABLE_ASSERTS)
@@ -1432,12 +1438,19 @@ void Manager::registerAttrDataType(
   NMP_ASSERT(!m_attrDataRegistry[attribType].m_dislocateFn);
   NMP_ASSERT(!m_attrDataRegistry[attribType].m_relocateFn);
     
+#if defined(MR_RELEASE_ABI) && defined(MR_OUTPUT_DEBUGGING)
+  s_attribSerializeTxFns[attribType] = srlzTxFn;
+
+  if (s_serializerOnlyRegistration)
+      return;
+#endif
+
   m_attrDataRegistry[attribType].m_locateFn = locateFn;
   m_attrDataRegistry[attribType].m_dislocateFn = dislocateFn;
   m_attrDataRegistry[attribType].m_outputMemReqsFn = outputMemReqsFn;
   m_attrDataRegistry[attribType].m_relocateFn = relocateFn;
 
-#if defined(MR_OUTPUT_DEBUGGING)
+#if defined(MR_OUTPUT_DEBUGGING) && !defined(MR_RELEASE_ABI)
   NMP_ASSERT(!m_attrDataRegistry[attribType].m_serializeTxFn);
   m_attrDataRegistry[attribType].m_serializeTxFn = srlzTxFn;
 #endif // MR_OUTPUT_DEBUGGING
@@ -1482,7 +1495,10 @@ AttribRelocateFn Manager::getAttribRelocateFn(AttribDataType attribType)
 //----------------------------------------------------------------------------------------------------------------------
 AttribSerializeTxFn Manager::getAttribSerializeTxFn(AttribDataType MR_OUTPUT_DEBUG_ARG(attribType))
 {
-#if defined(MR_OUTPUT_DEBUGGING)
+#if defined(MR_OUTPUT_DEBUGGING) && defined(MR_RELEASE_ABI)
+    NMP_ASSERT((attribType < INVALID_ATTRIB_TYPE) && (attribType < MAX_NUM_ATTR_DATA_TYPES));
+    return s_attribSerializeTxFns[attribType];
+#elif defined(MR_OUTPUT_DEBUGGING)
   NMP_ASSERT((attribType < INVALID_ATTRIB_TYPE) && (attribType < MAX_NUM_ATTR_DATA_TYPES));
   return m_attrDataRegistry[attribType].m_serializeTxFn;
 #else  // MR_OUTPUT_DEBUGGING

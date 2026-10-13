@@ -33,7 +33,7 @@ class AnimationSourceHandle;
 namespace MCOMMS
 {
 
-#if defined(MR_ATTRIB_DEBUG_BUFFERING)
+#if defined(MR_OUTPUT_DEBUGGING)
 //----------------------------------------------------------------------------------------------------------------------
 /// \class SimpleAnimBrowserManager
 /// \brief Implements AnimationBrowserInterface.
@@ -117,7 +117,7 @@ private:
   void removeConnection(Connection* connection);
 };
 
-#endif // defined(MR_ATTRIB_DEBUG_BUFFERING)
+#endif // defined(MR_OUTPUT_DEBUGGING)
 
 } // namespace MCOMMS
 

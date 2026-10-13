@@ -644,7 +644,7 @@ bool SimpleDataManager::setDebugOutputOnNodes(
   uint32_t                MR_OUTPUT_DEBUG_ARG(numSemantics),
   MR::AttribDataSemantic* MR_OUTPUT_DEBUG_ARG(semantics))
 {
-#ifdef MR_OUTPUT_DEBUGGING
+#ifdef MR_ATTRIB_DEBUG_BUFFERING
   MR::Network* const network = SIMPLE_DATA_MANAGER_GET_NETWORK(return false);
   MR::NetworkDef* networkDef = network->getNetworkDef();
 

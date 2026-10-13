@@ -63,9 +63,14 @@ SocketStatus checkConnectionsInboundActivity(ConnectionManager* const connection
 
   ++maxSock;
 
+  uint32_t timeoutUSec = 15000;
+  PlaybackManagementInterface* playbackMgr = getRuntimeTarget()->getPlaybackManager();
+  if (playbackMgr && !playbackMgr->canStepInSynch())
+      timeoutUSec = 0;
+
   // Set timeout values for ::select. A reasonable timeout value is needed in order to avoid spinning around this
   // and losing potential step messages.  We check for messages on all of our connections in one go.
-  int32_t socketsWithMessages = NMP::getSocketsWithMessages(maxSock, &readSockets, 0, 0, 15000);
+  int32_t socketsWithMessages = NMP::getSocketsWithMessages(maxSock, &readSockets, 0, 0, timeoutUSec);
 
   // Some of the checked sockets has messages.
   if (socketsWithMessages > 0)

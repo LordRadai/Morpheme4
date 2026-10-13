@@ -49,7 +49,7 @@
 namespace MCOMMS
 {
 
-#if defined(MR_ATTRIB_DEBUG_BUFFERING)
+#if defined(MR_OUTPUT_DEBUGGING)
 
 /// \def ANIM_BROWSER_INSTANCE_ID
 ///
@@ -592,10 +592,16 @@ void SimpleAnimBrowserManager::ConnectionData::initDebugInterfaces()
   {
     MR::NodeID targetNodeID = m_dataSourceNodeIDs[i];
 
-    if(targetNodeID != MR::INVALID_NODE_ID)
+    if (targetNodeID != MR::INVALID_NODE_ID)
     {
-      MR::NodeBin* nodeBin = m_network->getNodeBin(targetNodeID);
-      nodeBin->setDebugOutputAllSemantics(true);
+#ifdef MR_ATTRIB_DEBUG_BUFFERING
+
+        MR::NodeBin* nodeBin = m_network->getNodeBin(targetNodeID);
+        nodeBin->setDebugOutputAllSemantics(true);
+#else
+        m_network->addPostUpdateAccessAttrib(targetNodeID, MR::ATTRIB_SEMANTIC_TRANSFORM_BUFFER, 1);
+        m_network->addPostUpdateAccessAttrib(targetNodeID, MR::ATTRIB_SEMANTIC_TRAJECTORY_DELTA_TRANSFORM, 1);
+#endif
     }
   }
 }

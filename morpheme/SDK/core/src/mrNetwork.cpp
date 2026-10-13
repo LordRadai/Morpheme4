@@ -1734,10 +1734,11 @@ uint32_t Network::getNumActiveControlParamAndOpNodes()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-#if defined(MR_OUTPUT_DEBUGGING)
+#if defined(MR_ATTRIB_DEBUG_BUFFERING)
 
 void Network::sendInstanceProfileTimingDebugOutput()
 {
+#ifndef MR_RELEASE_ABI
   InstanceDebugInterface* debugInterface = m_dispatcher->getDebugInterface();
 
   //-----------------------------------------
@@ -1749,9 +1750,10 @@ void Network::sendInstanceProfileTimingDebugOutput()
       debugInterface->logProfilePointTiming(m_profilePointNames[i], m_outDbgTimings[i]);
     }
   }
+#endif
 }
 
-#endif // MR_OUTPUT_DEBUGGING
+#endif // MR_ATTRIB_DEBUG_BUFFERING
 
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t Network::getMaxTransformCount() const

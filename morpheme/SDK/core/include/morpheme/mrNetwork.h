@@ -1293,7 +1293,7 @@ private:
   TaskParamList*         m_taskTrace;
 #endif // MR_CIRCDEPS_DEBUGGING
 
-#ifdef MR_OUTPUT_DEBUGGING
+#if defined(MR_OUTPUT_DEBUGGING) && !defined(MR_RELEASE_ABI)
   /// Profile timings for debug output.
   NMP::Timer m_outDbgProfilingTimer;
   float      m_outDbgTimings[NumOutputDebuggingProfilerPoints];
@@ -1385,6 +1385,7 @@ NM_INLINE void Network::endTraceParam(MR::TaskParameter* param)
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE void Network::outputDebugTimingReset()
 {
+#ifndef MR_RELEASE_ABI
   if (m_dispatcher &&
       m_dispatcher->getDebugInterface() &&
       m_dispatcher->getDebugInterface()->debugOutputsAreOn(DEBUG_OUTPUT_PROFILING))
@@ -1396,22 +1397,26 @@ NM_INLINE void Network::outputDebugTimingReset()
 
     m_dispatcher->getDebugInterface()->clearNodeTimings();
   }
+#endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE void Network::outputDebugTimingBegin()
 {
+#ifndef MR_RELEASE_ABI
   if (m_dispatcher &&
       m_dispatcher->getDebugInterface() &&
       m_dispatcher->getDebugInterface()->debugOutputsAreOn(DEBUG_OUTPUT_PROFILING))
   {
     m_outDbgProfilingTimer.start();
   }
+#endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 NM_INLINE void Network::outputDebugTimingEnd(OutputDebuggingProfilerPoints profilePoint)
 {
+#ifndef MR_RELEASE_ABI
   if (m_dispatcher &&
       m_dispatcher->getDebugInterface() &&
       m_dispatcher->getDebugInterface()->debugOutputsAreOn(DEBUG_OUTPUT_PROFILING))
@@ -1419,6 +1424,7 @@ NM_INLINE void Network::outputDebugTimingEnd(OutputDebuggingProfilerPoints profi
     NMP_ASSERT(profilePoint < NumOutputDebuggingProfilerPoints);
     m_outDbgTimings[profilePoint] += m_outDbgProfilingTimer.stop();
   }
+#endif
 }
 
   #define OUTDBG_TIMING_RESET(_net)  { NMP_ASSERT(_net); _net->outputDebugTimingReset(); }

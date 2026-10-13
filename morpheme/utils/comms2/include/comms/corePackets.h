@@ -63,7 +63,7 @@ struct ReplyPacket : public PacketBase
   ResultValue m_result;
   
   uint16_t    m_requestedCmd; ///< Holds the original request type.
-  uint16_t    m_pad = 0;
+  uint16_t    m_pad;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
