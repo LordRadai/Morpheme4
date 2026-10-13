@@ -1432,18 +1432,17 @@ void Manager::registerAttrDataType(
   AttribRelocateFn      relocateFn,
   AttribPrepForSpuFn    NMP_UNUSED(prepForSpuFn),
   AttribSerializeTxFn   MR_OUTPUT_DEBUG_ARG(srlzTxFn))
-{
-  NMP_ASSERT((attribType < INVALID_ATTRIB_TYPE) && (attribType < MAX_NUM_ATTR_DATA_TYPES));
-  NMP_ASSERT(!m_attrDataRegistry[attribType].m_locateFn);     // Make sure we are not already registered.
-  NMP_ASSERT(!m_attrDataRegistry[attribType].m_dislocateFn);
-  NMP_ASSERT(!m_attrDataRegistry[attribType].m_relocateFn);
-    
+{    
 #if defined(MR_RELEASE_ABI) && defined(MR_OUTPUT_DEBUGGING)
   s_attribSerializeTxFns[attribType] = srlzTxFn;
 
   if (s_serializerOnlyRegistration)
       return;
 #endif
+  NMP_ASSERT((attribType < INVALID_ATTRIB_TYPE) && (attribType < MAX_NUM_ATTR_DATA_TYPES));
+  NMP_ASSERT(!m_attrDataRegistry[attribType].m_locateFn);     // Make sure we are not already registered.
+  NMP_ASSERT(!m_attrDataRegistry[attribType].m_dislocateFn);
+  NMP_ASSERT(!m_attrDataRegistry[attribType].m_relocateFn);
 
   m_attrDataRegistry[attribType].m_locateFn = locateFn;
   m_attrDataRegistry[attribType].m_dislocateFn = dislocateFn;
