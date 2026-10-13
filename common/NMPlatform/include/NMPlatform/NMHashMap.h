@@ -70,6 +70,21 @@ NM_INLINE uint32_t hashFunction(uint64_t key)
 }
 
 ///---------------------------------------------------------------------------------------------------------------------
+/// \brief 64 bit hash for signed 64 bit keys (ptrdiff_t ObjectIDs). Returns the full 64 bit hash, matching the
+///  release runtime, which takes the table index modulo on all 64 bits.
+NM_INLINE uint64_t hashFunction(int64_t skey)
+{
+    uint64_t key = (uint64_t)skey;
+    key = (~key) + (key << 18);
+    key = key ^ (key >> 31);
+    key = key * 21;
+    key = key ^ (key >> 11);
+    key = key + (key << 6);
+    key = key ^ (key >> 22);
+    return key;
+}
+
+///---------------------------------------------------------------------------------------------------------------------
 /// \brief Well-performing hash function for a single u32 value
 NM_INLINE uint32_t hashFunction(uint32_t key)
 {
@@ -96,6 +111,10 @@ NM_INLINE int32_t hashFunction(KeyType* key)
 {
   return (int32_t)hashFunction((uint32_t)(ptrdiff_t)key);
 }
+
+NM_INLINE unsigned int hashToIndex(uint64_t hash, unsigned int hashSize) { return (unsigned int)(hash % hashSize); }
+NM_INLINE unsigned int hashToIndex(uint32_t hash, unsigned int hashSize) { return hash % hashSize; }
+NM_INLINE unsigned int hashToIndex(int32_t hash, unsigned int hashSize) { return (uint32_t)hash % hashSize; }
 
 //----------------------------------------------------------------------------------------------------------------------
 /// \class NMP::hash_map
@@ -396,8 +415,7 @@ protected:
   /// core worker function that turns a key into a table index
   NM_INLINE void hashToTableIndex(unsigned int& result, const KeyType& key, unsigned int hashSize) const
   {
-    result = hashFunction(key);
-    result %= hashSize;
+      result = hashToIndex(hashFunction(key), hashSize);
   }
 
   /// number of slots that can be occupied until the table is re-hashed;
