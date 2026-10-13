@@ -134,7 +134,9 @@ void Manager::setCreateReferenceToInputTaskID(uint32_t semantic_id, TaskID task_
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-Manager::Manager()
+Manager::Manager() :
+    m_objIdMap(8),
+    m_objPtrMap(8)
 {
   m_initialised = false;
   m_objectPool = NULL;
@@ -194,12 +196,6 @@ Manager::Manager()
   NMP::Memory::Resource desc = NMPMemoryAllocateFromFormat(format);
   NMP_ASSERT(desc.ptr);
   m_objectPool = NMP::StaticFreeList::init(desc, entryMemoryFormat, numObjects);
-
-  // Initialise empty list head entry.
-  m_objRegistry.m_ptr       = NULL;
-  m_objRegistry.m_next      = NULL;
-  m_objRegistry.m_objectID  = INVALID_OBJECT_ID;
-  m_objRegistry.m_typeID    = kAsset_Invalid;
 
   // Initialise profiling (note that this is a null op if NM_PROFILING is not defined)
   NM_INIT_PROFILING();
@@ -428,15 +424,10 @@ bool Manager::registerObject(const void* ptr, AssetType typeID, ObjectID objectI
   newEntry->m_ptr = ptr;
   newEntry->m_refCount = 0;
   newEntry->m_typeID = typeID;
-  newEntry->m_next = NULL;
 
   // Insert the new object into the registry (currently we just stick it at the end).
-  ObjectRegistryEntry* currentEntry = &m_objRegistry;
-  while (currentEntry->m_next != NULL)
-  {
-    currentEntry = currentEntry->m_next;
-  }
-  currentEntry->m_next = newEntry;
+  m_objIdMap.insert(objectID, newEntry);
+  m_objPtrMap.insert(const_cast<void*>(ptr), newEntry);
 
   return true;
 }
@@ -445,8 +436,7 @@ bool Manager::registerObject(const void* ptr, AssetType typeID, ObjectID objectI
 bool Manager::unregisterObject(const void* ptr)
 {
   NMP_ASSERT(ptr != 0);
-  ObjectRegistryEntry* prev = NULL;
-  ObjectRegistryEntry* entry = FindRegEntryFromPtr(ptr, &prev);
+  ObjectRegistryEntry* entry = FindRegEntryFromPtr(ptr);
 
   if (entry == NULL)
   {
@@ -460,7 +450,9 @@ bool Manager::unregisterObject(const void* ptr)
     entry->m_objectID,
     entry->m_refCount);
 
-  prev->m_next = entry->m_next;
+  m_objIdMap.erase(entry->m_objectID);
+  m_objPtrMap.erase(const_cast<void*>(entry->m_ptr));
+
   m_objectPool->deallocateEntry(entry);
 
   return true;
@@ -470,8 +462,7 @@ bool Manager::unregisterObject(const void* ptr)
 bool Manager::unregisterObject(uint32_t objectID)
 {
   NMP_ASSERT(objectID != 0);
-  ObjectRegistryEntry* prev = NULL;
-  ObjectRegistryEntry* entry = FindRegEntryFromID(objectID, &prev);
+  ObjectRegistryEntry* entry = FindRegEntryFromID(objectID);
 
   if (entry == NULL)
   {
@@ -485,7 +476,9 @@ bool Manager::unregisterObject(uint32_t objectID)
     entry->m_objectID,
     entry->m_refCount);
 
-  prev->m_next = entry->m_next;
+  m_objIdMap.erase(entry->m_objectID);
+  m_objPtrMap.erase(const_cast<void*>(entry->m_ptr));
+
   m_objectPool->deallocateEntry(entry);
 
   return true;
@@ -543,55 +536,21 @@ Manager::AssetType Manager::getAssetTypeFromObjectPtr(const void* ptr)
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-Manager::ObjectRegistryEntry* Manager::FindRegEntryFromID(ObjectID objectID, ObjectRegistryEntry** prev)
+Manager::ObjectRegistryEntry* Manager::FindRegEntryFromID(ObjectID objectID)
 {
-  NMP_ASSERT(objectID != 0);
-  ObjectRegistryEntry* prevEntry = &m_objRegistry;
-  ObjectRegistryEntry* currentEntry = prevEntry->m_next;
-
-  while (currentEntry != NULL)
-  {
-    if (currentEntry->m_objectID == objectID)
-    {
-      // Found the entry.  Pass back the previous entry if it was requested.
-      if (prev)
-      {
-        *prev = prevEntry;
-      }
-      return currentEntry;
-    }
-
-    prevEntry = currentEntry;
-    currentEntry = currentEntry->m_next;
-  }
-
-  return NULL;
+    NMP_ASSERT(objectID != 0);
+    ObjectRegistryEntry* entry = NULL;
+    m_objIdMap.find(objectID, &entry);
+    return entry;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-Manager::ObjectRegistryEntry* Manager::FindRegEntryFromPtr(const void* ptr, ObjectRegistryEntry** prev)
+Manager::ObjectRegistryEntry* Manager::FindRegEntryFromPtr(const void* ptr)
 {
-  NMP_ASSERT(ptr != 0);
-  ObjectRegistryEntry* prevEntry = &m_objRegistry;
-  ObjectRegistryEntry* currentEntry = prevEntry->m_next;
-
-  while (currentEntry != NULL)
-  {
-    if (currentEntry->m_ptr == ptr)
-    {
-      // Found the entry.  Pass back the previous entry if it was requested.
-      if (prev)
-      {
-        *prev = prevEntry;
-      }
-      return currentEntry;
-    }
-
-    prevEntry = currentEntry;
-    currentEntry = currentEntry->m_next;
-  }
-
-  return NULL;
+    NMP_ASSERT(ptr != 0);
+    ObjectRegistryEntry* entry = NULL;
+    m_objPtrMap.find(const_cast<void*>(ptr), &entry);
+    return entry;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1687,44 +1646,36 @@ const Manager::AnimationFormatRegistryEntry* Manager::findAnimationFormatRegistr
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t Manager::getNumObjectsOfType(AssetType assetType)
 {
-  uint32_t numObjects = 0;
-  ObjectRegistryEntry* prevEntry = &m_objRegistry;
-  ObjectRegistryEntry* currentEntry = prevEntry->m_next;
+    uint32_t numObjects = 0;
 
-  while (currentEntry != 0)
-  {
-    if (currentEntry->m_typeID == assetType)
+    NMP::hash_map<ObjectID, ObjectRegistryEntry*>::const_value_walker it = m_objIdMap.constWalker();
+    while (it.next())
     {
-      ++numObjects;
+        const ObjectRegistryEntry* entry = it();
+        if (entry->m_typeID == assetType)
+            ++numObjects;
     }
 
-    prevEntry = currentEntry;
-    currentEntry = currentEntry->m_next;
-  }
-
-  return numObjects;
+    return numObjects;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 uint32_t Manager::getObjectsOfType(AssetType assetType, ObjectID* buffer)
 {
-  uint32_t numObjects = 0;
+    uint32_t numObjects = 0;
 
-  ObjectRegistryEntry* prevEntry = &m_objRegistry;
-  ObjectRegistryEntry* currentEntry = prevEntry->m_next;
-  while (currentEntry != 0)
-  {
-    if (currentEntry->m_typeID == assetType)
+    NMP::hash_map<ObjectID, ObjectRegistryEntry*>::const_value_walker it = m_objIdMap.constWalker();
+    while (it.next())
     {
-      buffer[numObjects] = currentEntry->m_objectID;
-      ++numObjects;
+        const ObjectRegistryEntry* entry = it();
+        if (entry->m_typeID == assetType)
+        {
+            buffer[numObjects] = entry->m_objectID;
+            ++numObjects;
+        }
     }
 
-    prevEntry = currentEntry;
-    currentEntry = currentEntry->m_next;
-  }
-
-  return numObjects;
+    return numObjects;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

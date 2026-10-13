@@ -18,6 +18,7 @@
 #include "NMPlatform/NMMemory.h"
 #include "morpheme/mrDefines.h"
 #include "NMPlatform/NMStaticFreeList.h"
+#include "NMPlatform/NMHashMap.h"
 
 #include "sharedDefines/mVersion.h"
 #include "morpheme/mrNode.h"
@@ -499,14 +500,12 @@ protected:
     const void*          m_ptr;
     uint32_t             m_refCount;
     bool                 m_located;
-    ObjectRegistryEntry* m_next;
-    bool                 m_unk28;
   };
 
   /// Use these functions to find entries in the registry (you can optionally provide a pointer to receive
   /// the previous reg entry in case you want to remove this one or insert something before it).
-  ObjectRegistryEntry* FindRegEntryFromID(ObjectID objectID, ObjectRegistryEntry** prev = NULL);
-  ObjectRegistryEntry* FindRegEntryFromPtr(const void* ptr, ObjectRegistryEntry** prev = NULL);
+  ObjectRegistryEntry* FindRegEntryFromID(ObjectID objectID);
+  ObjectRegistryEntry* FindRegEntryFromPtr(const void* ptr);
 
   bool m_initialised;
 
@@ -636,8 +635,8 @@ private:
 #ifndef NM_HOST_CELL_SPU
   /// All objects/assets used by Morpheme (NetworkDefs, AnimationsLibraries, Rigs, EventTracks, RigToAnimMaps etc.)
   NMP::StaticFreeList*         m_objectPool;
-  ObjectRegistryEntry          m_objRegistry; ///< Empty list head structure.
-  ObjectRegistryEntry          m_unkObjRegistry;
+  NMP::hash_map<ObjectID, ObjectRegistryEntry*> m_objIdMap;
+  NMP::hash_map<void*, ObjectRegistryEntry*> m_objPtrMap;
 
   TaskQueuingFnRegistryEntry   m_taskQueuingFns[MAX_NUM_QUEUING_FNS];
   uint32_t                     m_numRegisteredTaskQueuingFns;
