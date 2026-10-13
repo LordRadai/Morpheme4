@@ -264,6 +264,8 @@ protected:
 class DispatcherBasic : public Dispatcher
 {
 public:
+  static void setTaskTables(uint32_t maxNumTasks, TaskFunction** taskFnPtrs, const char** taskNames);
+
   /// \brief Create a new instance of MR::DispatcherBasic, using the NMP::Memory allocation routines.
   ///  Internally this function calls getMemoryRequirements() and init().
   static DispatcherBasic* createAndInit();

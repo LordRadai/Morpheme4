@@ -101,6 +101,14 @@ DispatcherBasic::DispatcherBasic()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+void DispatcherBasic::setTaskTables(uint32_t maxNumTasks, TaskFunction** taskFnPtrs, const char** taskNames)
+{
+  sm_maxNumTasks = maxNumTasks;
+  sm_taskFnPtrs = taskFnPtrs;
+  sm_taskNames = taskNames;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 DispatcherBasic* DispatcherBasic::createAndInit()
 {
   NMP::Memory::Resource resource = NMPMemoryAllocateFromFormat(getMemoryRequirements());
