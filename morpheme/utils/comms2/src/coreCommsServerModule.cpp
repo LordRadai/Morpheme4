@@ -225,7 +225,6 @@ void CoreCommsServerModule::sendInstanceFrameData(InstanceID instanceID, Connect
         }
       }
 
-      //morphemeConnect 3.6.2 can't handle this debug data correctly, it will crash if it receives it
 #if defined (MR_OUTPUT_DEBUGGING)
       //-----------------------------------------
       // Send a packet for each node output
